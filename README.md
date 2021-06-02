@@ -1,2 +1,1 @@
-# ninjamar.github.io
-my site
+[s](s)

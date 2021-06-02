@@ -1,1 +1,1 @@
-[s](https://g.co)
+[ninjamar.github.io](https://ninjamar.github.io)

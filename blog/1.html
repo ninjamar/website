@@ -19,7 +19,7 @@
       nasm -f bin boot.asm -o boot.bin
       qemu-system-x86_64 boot.bin
       </code></pre>
-      <p>Lets go through this line by line</p>
+      <p>A display window should open. It should be stuck in a infinite loop.Lets go through this line by line</p>
       <pre><code>
       main:
         jmp main
@@ -32,6 +32,6 @@
       <pre><code>
         dw 0xaa55
       </code></pre>
-      <p>That is somesort of magic byte thing</p>
+      <p>That is some sort of magic byte thing</p>
   </body>
 </html>

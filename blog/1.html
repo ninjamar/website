@@ -7,5 +7,11 @@
     <p>This article covers how to make a very simple os. As I develop <a href = "https://github.com/ninjamar/kewlos/tree/main/os">kewlos</a><, I will continue to make more articles/p><br>
       <p>You will need <a href = "https://www.nasm.us/">nasm</a> and <a href = "https://www.qemu.org/">qemu</a> to use this tutorial</p><br>
       <p>Make a file called <code>boot.asm</code></p>
+      <pre><code>
+      main:
+        jmp main
+      times 510-($-$$) db 0
+      dw 0xaa55
+      </code></pre>
   </body>
 </html>

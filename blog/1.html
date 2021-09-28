@@ -13,11 +13,25 @@
       times 510-($-$$) db 0
       dw 0xaa55
       </code></pre>
+      <p>We need to compile this</p>
+      <pre><code>
+      cd path/to/boot.asm
+      nasm -f bin boot.asm -o boot.bin
+      qemu-system-x86_64 boot.bin
+      </code></pre>
       <p>Lets go through this line by line</p>
       <pre><code>
       main:
         jmp main
       </code></pre>
-      <p>This makes a function called <code>main</code> the loops forever</p>
+      <p>This makes a function called <code>main</code> that loops forever</p>
+      <pre><code>
+        times 510-($-$$) db 0
+      </code></pre>
+      <p>This fills the rest of the file with <code>0</code> because the max size of the bootloader is 512</p>
+      <pre><code>
+        dw 0xaa55
+      </code></pre>
+      <p>That is somesort of magic byte thing</p>
   </body>
 </html>

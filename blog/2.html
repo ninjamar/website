@@ -15,6 +15,25 @@
     times 510-($-$$) db 0
     dw 0xaa55
     </code></pre>
-    <p>Once you compile the code, it should keep printing "A"</p>
+    <p>Once you compile the code, it should keep printing "A" to the screen. Right now we can only print a letter to the screen. If we want to print a string, we would have to keep reusing the printing code or we could make a function to do it for us</p>
+    <pre><code>
+    print_str:
+      lodsb
+      cmp al,0x00
+      je .done
+      mov ah,0x0E
+      int 0x10
+      jmp print_str
+    .done:
+      ret
+    msg db "Hello, World!",0
+    main:
+      mov si,msg
+      call print_str
+      jmp $
+    times 510-($-$$) db 0
+    dw 0xaa55
+    </code></pre>
+    <p>That is pretty complex.<code>lodsb</code> loads the next byte from si which contains msg.</p>
   </body>
 </html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Making an OS (part 2)</title>
+  </head>
+  <body>
+    <p>In the previous tutorial, we covered a simple boot. In part 2 we will add code</p><br>
+    <p>Change <code>boot.asm</code> to look like below</p>
+    <pre><code>
+    main:
+      mov ah, 0x0E
+      mov al,'A'
+      int 0x10
+      jmp main
+    times 510-($-$$) db 0
+    dw 0xaa55
+    </code></pre>
+    <p>Once you compile the code, it should keep printing "A"</p>
+  </body>
+</html>

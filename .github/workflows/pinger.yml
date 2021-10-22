@@ -1,0 +1,9 @@
+name: Website Pinger
+on: 
+  schedule:
+   - cron:  '30 5,17 * * *'
+jobs:
+  Pinger:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pinger.py

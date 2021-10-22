@@ -1,7 +1,7 @@
 name: Website Pinger
 on: 
   schedule:
-   - cron:  '*/15 * * * *'
+   - cron:  '*/25 * * * *'
   workflow_dispatch:
 jobs:
   Pinger:

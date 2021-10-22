@@ -1,9 +1,10 @@
 name: Website Pinger
 on: 
   schedule:
-   - cron:  '30 5,17 * * *'
+   - cron:  '*/15 * * * *'
+  workflow_dispatch:
 jobs:
   Pinger:
     runs-on: ubuntu-latest
     steps:
-      - run: pinger.py
+      - run: curl $(cat PING.txt)

@@ -1,3 +1,2 @@
 https://auth.ninjamar.dev
-https://testing.ninjamar.dev
 https://api.ninjamar.dev

@@ -2,13 +2,15 @@
 <html>
   <head>
     <title>ninjamar</title>
-    <script src = "https://api.ninjamar.dev/v1/files/visitor.js" ></script>
+    <script>
+      function main(){
+        visitor();
+        ping((res) => console.log('pinged subdomains'));
+      }
+    </script>
+    <script onload = "main()" async src = "https://api.ninjamar.dev/v1/files/visitor.js" ></script>
   </head>
   <body>
     <a href = "https://blog.ninjamar.dev">my blog</a>
-    <script>
-      vistor();
-      ping((res) => console.log('pinged subdomains'));
-    </script>
   </body>
 </html>

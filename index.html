@@ -2,17 +2,11 @@
 <html>
   <head>
     <title>ninjamar</title>
-    <script>
-      function main(){
-        visitor();
-        ping((res) => console.log('pinged subdomains'));
-      }
-    </script>
   </head>
   <body>
     <a href = "https://blog.ninjamar.dev">my blog</a>
   </body>
   <footer>
-    <script onload = "main()" src = "https://ninjamar.dev/js/visitor.js"></script>
+    <script onload = "visitor();ping((res) => console.log('pinged subdomains'));" src = "https://ninjamar.dev/js/visitor.js"></script>
   </footer>
 </html>

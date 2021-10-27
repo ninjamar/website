@@ -1,4 +1,4 @@
-function vistor(){
+function visitor(){
 	fetch('https://api.ninjamar.dev/v1/pageload/visitor');
 }
 function ping(callback){

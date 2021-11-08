@@ -1,4 +1,6 @@
 p {
   text-align: center;
   line-height: 100px;
+  vertical-align: middle;
+  display: table-cell;   
 }

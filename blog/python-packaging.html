@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ninjamar's kernel</title>
+    <link rel = "stylesheet" href = "/assets/css/blog.css">
+  </head>
+  <body>
+    <div class = "post">
+      <h1>How to upload a package to pypi</h1>
+      <p>Sorry for the bad formatting</p>
+      <p>This tutorial assumes you have a directory structure shown below</p>
+      <pre>
+          epp{
+            __init__.py
+          }
+          README.md
+          LICENSE
+          setup.py
+      </pre>
+      <p>The package directory is for the code of the package</p>
+      <p>Put a description of the package inside README.md and put the license inside LICENSE</p>  
+      <script src="https://emgithub.com/embed.js?target=https%3A%2F%2Fgithub.com%2Fninjamar%2Fexample-python-package%2Fblob%2Fmain%2Fsetup.py&style=github&showBorder=on&showLineNumbers=on&showFileMeta=on&showCopy=on"></script>
+      <p>The code above is how we get the package into a uploadable state</p>
+      <pre>
+          Lines 3,4 : Save the contents of README.md into long_description
+          Line 7 : The name of the package to be uploaded : what the pypi package will be called (not import name) : cannot conflict with existing packages
+          Line 8 : The version of the package : Must be changed everytime setup.py is run
+          Line 9 : Short description of the package
+          Line 10 : Author of the package
+          Line 11 : The homepage of the package or the repository for it
+          Line 12 : The directories we are uploading to pypi (import name)
+          Line 13 : The long description of the package (README.md)
+          Line 14 : Content type of the long description
+          Line 15 : The file for the license
+          Line 16 : The recomended version for the python package to work
+      </pre>
+      <p>In addition to the fields I have in the setup.py shown, there are many others which are optional.</p>
+      <p>Since we have the setup.py, we can upload it to pypi</p>
+      <p>Twine is needed for the uploading stages and can be installed via <pre>pip install twine</pre></p>
+      <p>Run the following in the terminal (You will need your pypi credentials)</p>
+      <pre>
+          python setup.py sdist
+          twine upload dist/*
+      </pre>
+      <p>These steps must be repeated whenever the python package is changed (remember to change the version field in setup.py)</p>
+      <p>Once the package is uploaded, we can install it through <pre>pip install epp</pre> and import the package through <pre>import epp</pre></p>
+    </div>
+  </body>
+</html>

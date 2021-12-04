@@ -1,7 +1,21 @@
-.post {
-   justify-content: center;
-   align-items: center;
+.post > p {
    text-align: center;
    margin:0 auto;
    max-width:800px;
+}
+
+.post > .pre-wrapper {
+   text-align: center;
+}
+.post > .pre-wrapper > pre {
+   display: inline-block;
+   text-align: left;
+}
+
+.post > .emgithub-container {
+    width: 500px;
+}
+
+.post > p > pre {
+   display: inline-block;
 }

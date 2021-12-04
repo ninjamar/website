@@ -1,4 +1,4 @@
-(() => {
+window.addEventListener('DOMContentLoaded',() => {
     var css_elem = document.createElement('link');
     css_elem.rel = 'stylesheet';
     css_elem.href = '/assets/css/blog.css';
@@ -6,8 +6,8 @@
 
     tags = document.querySelectorAll('.post > pre');
     for (var i = 0;i < tags.length;i++){
-        tags[i].innerHTML = '<div class = "pre_wrapper">'+tags[i].innerHTML+'</div>';
+        tags[i].innerHTML = '<div class = "pre-wrapper">'+tags[i].innerHTML+'</div>';
     }
-})()
+});
 
 // MAKE THIS RUN AFTER THE DOM IS LOADED NOT BEFORE BECAUSE THERE ARE NO ELEMENTD

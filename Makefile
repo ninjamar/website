@@ -1,5 +1,6 @@
 build:
 	staticjinja build --outpath ./dist
+	cp -r static dist
 clean:
 	rm -rf blog projects ./dist
 serve:

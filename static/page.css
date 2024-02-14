@@ -1,0 +1,116 @@
+/* Variables */
+:root {
+    --light-text-color: #333333;
+    --light-background-color: #f2f2f2;
+    --light-secondary-color: #C9C9C9;
+}
+
+/* Utility */
+html, body { /* Force all available height to be taken */
+    height: 100%;
+}
+
+/* Colors */
+body {
+    background: var(--light-background-color);
+}
+p, b, i, strong, li, h1, h2, h3, h4, h5, h6, span, pre, code, a {
+    color: var(--light-text-color);
+}
+pre, code {
+    background: var(--light-secondary-color);
+}
+hr {
+    background-color: var(--light-secondary-color);
+}
+
+/* Body layout */
+body {
+    /* Display mode*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* Somehow this forces the body to be in the center */
+    margin: auto;  /* This took some tinkering around */
+    /* width/2 on each side from center */
+    width: 50%;
+    /* Make sure text doesn't collapse too far */
+    min-width: 300px;
+    /* Make sure text is readable */
+    line-height: 1.5;
+}
+
+/* General Fonts */
+body, pre { /* Pre isn't always in pre code */
+    font-family: "Nunito", sans-serif;
+}
+
+/* Headers */
+h3, h4, h5, h6 { /* For headings inside text etc */
+    margin: 0.5%;
+}
+
+/* Codeblock/pre styling */
+code {
+    font-family: "Fira Code", monospace;
+    font-size: calc(1em - 1px); /* Fira Code is a little bit bigger than Nunito */
+    padding: 2px 4px;
+}
+pre {
+    width: 96%; /* Somehow this makes pre the width of the center column s*/
+    white-space: pre-wrap; /* Using this since overflow-x: auto; breaks the display */
+    padding: 1em;
+}
+pre, code {
+    border-radius: 10px;
+}
+
+/* Other */
+hr { /* Horizontal rules are defined in semantic terms  */
+    border: none;
+    border-radius: 10px;
+    height: 0.25em;
+}
+
+/* Utilty styles */
+/* Top Navbar */
+.navbar {
+    align-self: normal;
+    margin-top: 2%;
+}
+.navbar-contents * {
+    font-size: 1.5em;
+    text-decoration: none;
+    color: var(--text-color);
+}
+.navbar-contents :not(:first-child) {
+    padding-left: 0.5em;
+}
+
+/* Page Footer */
+.footer {
+    align-self: normal;
+    text-decoration: none;
+    margin-top: auto; /* Magic line */
+    margin-bottom: 2%;
+}
+
+/* Images TODO: Better image margins */
+.img-pretty {
+    border-radius: 10px;
+}
+.img-left {
+    float: left;
+    /* Don't want text to go to close to image  */
+    margin-right: 1%;
+}
+.img-right {
+    float: right;
+    margin-left: 1%;
+}
+/* Icons */
+/* Don't want icons to be selectable by default */
+.ci {
+    user-select: none;
+}

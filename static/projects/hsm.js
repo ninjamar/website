@@ -1,6 +1,7 @@
 /*
     Copyright (c) 2023 ninjamar
     https://github.com/ninjamar/hsm
+    Version: 0.0.15
 */
 
 
@@ -68,7 +69,7 @@ export default class Component extends HTMLElement {
     }
     delete(){
         // Remove all references to component
-        window.hsm.components = window.hsm.components.map((x) => x.hsm.id != this.hsmid ? x : {hsmid: -1});
+        window.hsm.components = window.hsm.components.map((x) => x.hsm.id != this.hsm.id ? x : {hsm: {id: -1}});
         this.remove();
     }
     render(){}

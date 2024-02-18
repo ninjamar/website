@@ -156,7 +156,11 @@ function draggable(elem){
 }
 var prevSave = [];
 function updateStorage(){
+    console.log("updating storage");
     let components = window.hsm.components.filter((x) => (x.hsm.id != -1) && (x instanceof Note));
+    // let components = window.hsm.components.filter(x => x instanceof Note);
+    console.log(components.map(x => x.hsm.id));
+
     let save = [];
     components.forEach((x, i) => {
         save.push([

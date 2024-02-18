@@ -12,11 +12,11 @@ import Component from "./hsm.js";
 
 class Note extends Component {
     urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    get content(){
+    get content(){ // Not sure what this does
         console.log("getting")
         return this.querySelector("#note-inner-content").innerHTML
     }
-    set content(value){
+    set content(value){ // Not sure what this does
         console.log("setting");
         return this.querySelector("#note-inner-content").innerHTML = value;
     }
@@ -156,11 +156,7 @@ function draggable(elem){
 }
 var prevSave = [];
 function updateStorage(){
-    console.log("updating storage");
     let components = window.hsm.components.filter((x) => (x.hsm.id != -1) && (x instanceof Note));
-    // let components = window.hsm.components.filter(x => x instanceof Note);
-    console.log(components.map(x => x.hsm.id));
-
     let save = [];
     components.forEach((x, i) => {
         save.push([

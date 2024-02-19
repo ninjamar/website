@@ -2,7 +2,32 @@
 {% block title %}Projects{% endblock title %}
 {% block content %}
 <h1>Projects</h1>
-<ul>
-    <li><a href="/projects/note.html">Note Taking App</a></li>
-</ul>
+<!-- Each project is in groups of two, for each row-->
+{% set projects = 
+    [
+        [
+            {
+                "title": "Note taking app",
+                "description": "An app to take notes",
+                "url": "/projects/note.html",
+                "image_url": "/static/projects/img/note.png"
+            }
+        ]            
+    ] 
+%}
+{% for group in projects %}
+    <div class="row">
+        {% for project in group %}
+        <a href="{{ project.url }}" style="text-decoration: none;">
+            <div class="card">
+                <div class="card-contents">
+                    <h3 class="center">{{ project.title }}</h3>
+                    <img class="img-pretty" src="{{ project.image_url }}" style="width: auto; max-height: 200px;">
+                    <p class="center">{{ project.description }}</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+{% endfor %}
 {% endblock content %}

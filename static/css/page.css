@@ -109,8 +109,33 @@ hr { /* Horizontal rules are defined in semantic terms  */
     float: right;
     margin-left: 1%;
 }
+
 /* Icons */
 /* Don't want icons to be selectable by default */
 .ci {
     user-select: none;
+}
+
+/* Cards */
+.card {
+    background: var(--light-secondary-color);
+    border-radius: 10px;
+    margin: 10px;
+}
+/* Inner section of cards */
+.card-contents {
+    padding: 10px;
+}
+
+/* Rows */
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    overflow: wrap;
+}
+
+/* Other */
+.center {
+    text-align: center;
 }

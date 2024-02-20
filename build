@@ -1,18 +1,25 @@
 #!/usr/bin/env bash
-trap 'kill 0' EXIT
-# live reload templates
-python3 templates.py > /dev/null 2>&1 &
-echo "started staticjinja"
-# staticjinja watch --outpath ./dist > /dev/null 2>&1 & 
-# copy static to dist
-cp -r static dist
-echo "copied static"
-# watch for changes in static, then recopy directory
-fswatch static | while IFS= read -r line; do cp -r static dist; done &
-echo "watching for static changes"
 
-cd dist
-# run server
-python3 -m http.server 8080 >/dev/null 2>&1 &
-echo "running server on port 8080"
-wait
+if [[ $1 == "prod" ]]; then
+    python3 templates.py prod
+    cp -r static dist
+else
+    trap 'kill 0' EXIT
+    # live reload templates
+    python3 templates.py dev > /dev/null 2>&1 &
+    echo "started staticjinja"
+    # staticjinja watch --outpath ./dist > /dev/null 2>&1 & 
+    # copy static to dist
+    cp -r static dist
+    echo "copied static"
+    # watch for changes in static, then recopy directory
+    fswatch static | while IFS= read -r line; do cp -r static dist; done &
+    echo "watching for static changes"
+
+    cd dist
+    # run server
+    python3 -m http.server 8080 >/dev/null 2>&1 &
+    echo "running server on port 8080"
+
+    wait
+fi

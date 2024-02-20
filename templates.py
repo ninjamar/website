@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 from staticjinja import Site
 from pathlib import Path
 
@@ -8,7 +9,7 @@ def chunkify(arr, n):
     return [arr[i : i + n] for i in range(0, len(arr), n)]
 
 
-def main():
+def main(is_dev=True):
     # Load the data directory into env
     data = {}
     for file in os.listdir("data"):
@@ -20,9 +21,9 @@ def main():
     # Post-process data
     data["projects"] = chunkify(data["projects"], 2)
 
-    site = Site.make_site(outpath="dist", env_globals=data)
-    site.render(use_reloader=True)
+    site = Site.make_site(outpath="./dist", env_globals=data)
+    site.render(use_reloader=is_dev)
 
 
 if __name__ == "__main__":
-    main()
+    main(True if "dev" in sys.argv else False)

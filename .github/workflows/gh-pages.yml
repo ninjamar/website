@@ -22,7 +22,7 @@ jobs:
         run: python3 -m pip install staticjinja
         
       - name: Build
-        run: make build
+        run: ./build prod
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

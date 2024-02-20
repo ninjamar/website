@@ -1,0 +1,50 @@
+[
+    {
+        "title": "Note taking app",
+        "description": "An app to take notes",
+        "url": "/projects/note.html",
+        "image_url": "/static/projects/index/img/note.png"
+    },
+    {
+        "title": "ninjamar.dev",
+        "description": "This website",
+        "url": "https://github.com/ninjamar/ninjamar.github.io",
+        "image_url": "/static/projects/index/img/ninjamar.github.io.png"
+    },
+    {
+        "title": "ninjasocial",
+        "description": "A social application",
+        "url": "https://github.com/ninjamar/ninjasocial",
+        "image_url": "/static/projects/index/img/ninjasocial.png"
+    },
+    {
+        "title": "hsm",
+        "description": "JavaScript Framework",
+        "url": "https://github.com/ninjamar/hsm",
+        "image_url": "/static/projects/index/img/hsm.png"
+    },
+    {
+        "title": "nm",
+        "description": "A lisp like programming language",
+        "url": "https://github.com/ninjamar/nm",
+        "image_url": "/static/projects/index/img/nm.png"
+    },
+    {
+        "title": "vm",
+        "description": "A virtual machine",
+        "url": "https://github.com/ninjamar/vm",
+        "image_url": "/static/projects/index/img/vm.png"
+    },
+    {
+        "title": "containd",
+        "description": "Containerization tool written in Python",
+        "url": "https://github.com/ninjamar/containd",
+        "image_url": "/static/projects/index/img/containd.png"
+    },
+    {
+        "title": "containd-cpp",
+        "description": "Containerization tool written in CPP",
+        "url": "https://github.com/ninjamar/containd-cpp",
+        "image_url": "/static/projects/index/img/containd-cpp.png"
+    }
+]

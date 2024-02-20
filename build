@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+trap 'kill 0' EXIT
+# live reload templates
+staticjinja watch --outpath ./dist > /dev/null 2>&1 & 
+# copy static to dist
+cp -r static dist
+# watch for changes in static, then recopy directory
+fswatch static | while IFS= read -r line; do cp -r static dist; done &
+
+cd dist
+# run server
+python3 -m http.server 8080 >/dev/null 2>&1 &
+
+wait

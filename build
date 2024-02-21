@@ -5,6 +5,8 @@ if [[ $1 == "prod" ]]; then
     cp -r static dist
 else
     trap 'kill 0' EXIT
+    mkdir -p dist
+    # mkdir -p dist/static
     # live reload templates
     python3 templates.py dev > /dev/null 2>&1 &
     echo "started staticjinja"

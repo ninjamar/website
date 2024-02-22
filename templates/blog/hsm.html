@@ -1,64 +1,87 @@
-<meta author="ninjamar" id="6" tag="blog_post" title="HSM: A JavaScript Framework"/>
 {% extends "base.html" %}
 {% block title %}HSM: A JavaScript framework{% endblock title %}
+{% block static %}
+    <script type="module">
+        import Component from "/static/projects/note/js/hsm.js";
+        class MyComponent extends Component {
+            foo(){
+                this.querySelector("#here").innerHTML = "test";
+            }
+            x = 0
+            increase(){
+                this.x = this.x + 1;
+                this.querySelector("#increase").innerHTML = this.x;
+            }
+            getstyle(){
+                return this.css`
+                    button {
+                        font-family: 'Courier New', Courier, monospace;
+                        border-radius: 5px;
+                        padding: 3px 10px 3px 10px;
+                        margin: 5px;
+                        background: yellow;
+                        border: none;
+                    }
+                `
+            }
+            render(){
+                return this.html`
+                    <button onclick="${this.foo}">Call foo()</button>  
+                    <p id="here"></p>
+                    <button onclick="${this.increase}">Increase</button>
+                    <p id="increase">0</p>
+                `;
+            }
+        }
+        customElements.define("my-component", MyComponent);
+    </script>
+{% endblock static %}
 {% block content %}
-<script type="module">
-    import Component from "/static/projects/hsm.js";
-    class MyComponent extends Component {
-        dostuff(){
-            this.querySelector("#here").innerHTML = "test";
-        }
-        x = 0
-        increase(){
-            this.x = this.x + 1;
-            this.querySelector("#increase").innerHTML = this.x;
-        }
-        render(){
-            return this.html`
-                <button onclick="${this.dostuff}">Call dostuff()</button>  
-                <p id="here"></p>
-                <button onclick="${this.increase}">Increase</button>
-                <p id="increase">0</p>
-            `;
-        }
-    }
-    customElements.define("my-component", MyComponent);
-</script>
+
+<h2>HSM: A JavaScript framework</h2>
 <p>
     HSM is a micro-framework for the web. HSM is an extension of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components">web component api</a>.
-    I designed HSM because I wanted to learn more about web technologies such as shadow root. I was inspired to write this after learning about <a href="https://github.com/developit/htm">Hyperscript Tagged Markup</a>
+    I designed HSM because I wanted to learn more about web technologies such as shadow root. I was inspired to write this after learning about <a href="https://github.com/developit/htm">Hyperscript Tagged Markup</a>. 
+    With HSM, I built a <a href="/projects/note.html">note taking app</a>. This app includes the ability to drag notes around and layer them.
 </p>
 <h3>Example</h3>
-<p>With HSM, I built a <a href="/projects/note">note taking app</a>. This app includes the ability to drag notes around and layer them.</p>
-<h3>Another Example</h3>
-<h4>JavaScript</h4>
 <pre><code>
-    import { Component } from &quot;./hsm.js&quot;;
-    class MyComponent extends Component {
-        dostuff(){
-            this.querySelector(&quot;#here&quot;).innerHTML = &quot;test&quot;;
-        }
-        x = 0
-        increase(){
-            this.x = this.x + 1;
-            this.querySelector(&quot;#increase&quot;).innerHTML = this.x;
-        }
-        render(){
-            return this.html`
-                &lt;button onclick=&quot;${this.dostuff}&quot;&gt;Call dostuff()&lt;/button&gt;  
-                &lt;p id=&quot;here&quot;&gt;&lt;/p&gt;
-                &lt;button onclick=&quot;${this.increase}&quot;&gt;Increase&lt;/button&gt;
-                &lt;p id=&quot;increase&quot;&gt;0&lt;/p&gt;
-            `;
-        }
+import Component from &quot;/static/projects/note/js/hsm.js&quot;;
+class MyComponent extends Component {
+    foo(){
+        this.querySelector(&quot;#here&quot;).innerHTML = &quot;test&quot;;
     }
-    customElements.define(&quot;my-component&quot;, MyComponent);
+    x = 0
+    increase(){
+        this.x = this.x + 1;
+        this.querySelector(&quot;#increase&quot;).innerHTML = this.x;
+    }
+    getstyle(){
+        return this.css`
+            button {
+                font-family: 'Courier New', Courier, monospace;
+                border-radius: 5px;
+                padding: 3px 10px 3px 10px;
+                margin: 5px;
+                background: yellow;
+                border: none;
+            }
+        `
+    }
+    render(){
+        return this.html`
+            &lt;button onclick=&quot;${this.foo}&quot;&gt;Call foo()&lt;/button&gt;  
+            &lt;p id=&quot;here&quot;&gt;&lt;/p&gt;
+            &lt;button onclick=&quot;${this.increase}&quot;&gt;Increase&lt;/button&gt;
+            &lt;p id=&quot;increase&quot;&gt;0&lt;/p&gt;
+        `;
+    }
+}
+customElements.define(&quot;my-component&quot;, MyComponent);
 </code></pre>
-<h4>HTML</h4>
-<pre><code>
-    &lt;my-component&gt;&lt;/my-component&gt;
-</code></pre>
+<p>Then use  <code>&lt;my-component&gt;&lt;/my-component&gt;</code></p>
 <h4>Demo</h4>
 <!--Of course this breaks my site-->
 <my-component></my-component>
+
 {% endblock content %}

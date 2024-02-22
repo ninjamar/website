@@ -1,43 +1,17 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock title %}
-
-{% block static %}
-<style>
-    .icon-wrapper i {
-        width: 3em;
-        height: 3em;
-    }
-    .icon-wrapper {
-        user-select: none;
-    }
-    .icon-wrapper a {
-        text-decoration: none;
-    }
-    .bar {
-        margin: 5px;
-        font-size: 3em;
-        font-family: 'Courier New', Courier, monospace;
-    }
-</style>
-{% endblock static %}
-
+{% extends "base.html"%}
+{% block title %}home{% endblock title %}
+{% block header %}ninjamar.dev{% endblock header %}
 {% block content %}
-<h1>ninjamar.dev</h1>
-<span class="bar">Coding is fun</span>
+    <h2>ninjamar.dev</h2>
 
-<div class="icon-wrapper">
-    <a href="https://github.com/ninjamar">
-        <i class="ci ci-github"></i>
-    </a>
-</div>
-
-<div class="icon-wrapper">
-    <i class="ci ci-python"></i>
-    <i class="ci ci-django"></i>
-    <i class="ci ci-js"></i>
-    <i class="ci ci-html"></i>
-    <i class="ci ci-css"></i>
-    <i class="ci ci-cpp"></i>
-    <i class="ci ci-vscode"></i>
-</div>
+    <p>I'm ninjamar. I enjoy programming. Somethings that I've programmed are this website (<a href="https://github.com/ninjamar/ninjamar.github.io">ninjamar/ninjamar.github.io</a>), a programming language (<a href="https://github.com/ninjamar/nm">ninjamar/nm</a>), and a social application (<a href="https://github.com/ninjamar/ninjasocial">ninjamar/ninjasocial</a>)
+    </p>
+    <p>
+        I've recently redesigned this website
+    </p>
+    <div class="button-collection">
+        <div class="button inverse-bg">
+            <a class="inverse" href="https://github.com/ninjamar">GitHub</a>
+        </div>
+    </div>
 {% endblock content %}

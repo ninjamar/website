@@ -1,20 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Projects{% endblock title %}
 {% block content %}
-<h1>Projects</h1>
-{% for group in projects %}
-    <div class="row">
-        {% for project in group %}
-        <a href="{{ project.url }}" style="text-decoration: none;">
-            <div class="card">
-                <div class="card-contents">
-                    <h3 class="center">{{ project.title }}</h3>
-                    <img class="img-pretty" src="{{ project.image_url }}" style="width: auto; max-height: 200px;">
-                    <p class="center">{{ project.description }}</p>
-                </div>
-            </div>
-        </a>
+    <h2>Projects</h2>
+    <ul>
+        {% for project in projects %}
+            <li>
+            <a href="{{ project.url }}">
+                {{ project.description }}
+            </a>
+            </li>
         {% endfor %}
-    </div>
-{% endfor %}
+    </ul>
 {% endblock content %}

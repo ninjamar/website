@@ -19,7 +19,7 @@ def main(is_dev=True):
                 data[Path(path).stem] = json.load(f)
 
     # Post-process data
-    data["projects"] = chunkify(data["projects"], 2)
+    # data["projects"] = chunkify(data["projects"], 2)
 
     site = Site.make_site(outpath="./dist", env_globals=data)
     site.render(use_reloader=is_dev)

@@ -1,20 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Blog{% endblock title %}
-{% block static %}
-<style>
-    .blog li a {
-        font-size: 1.5em;
-        text-decoration: none;
-        color: var(--text-color);
-    }
-    .blog {
-        align-self: first baseline;
-    }
-</style>
-{% endblock static %}
+{% block title %}blog{% endblock title %}
 {% block content %}
-<h1>Blog</h1>
-<ul class="blog">
-    <li><a href="/blog/hsm.html">29/11/2023 HSM: A JavaScript Framework</a></li>
+<h2>blog</h2>
+<ul>
+    <li>29/11/2023 | <a href="/blog/hsm.html">HSM: A JavaScript Framework</a></li>
 </ul>
 {% endblock content %}

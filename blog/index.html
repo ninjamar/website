@@ -3,46 +3,109 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width. inital-scale=1.0">
-        <title>Blog - ninjamar.dev</title>
+        <title>blog - ninjamar.dev</title>
         <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+        <style>
+            /* Colors */
+            :root {
+                --light-text-color: #333333;
+                --light-background-color: #f2f2f2;
+                --light-secondary-color: #C9C9C9;
+            }
 
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/dheereshagrwal/colored-icons@latest/src/app/ci.min.css">
-        <link rel="stylesheet" href="/static/css/page.css">
+            /* Core styling */
+            html, body {
+                height: 100%;
+            }
+            * {
+                font-family: 'Courier New', Courier, monospace;
+            }
 
-        <script>/* Adapted from https://stackoverflow.com/a/26230865/21322342 */document.addEventListener("DOMContentLoaded",(e=>Array.from(document.querySelectorAll("pre>code")).forEach((e=>{let t,n=e.textContent.split("\n");""===n[0]&&n.shift();let r=null!==(t=/^[\s\t]+/.exec(n[0]))?t[0]:null;r&&(n=n.map((function(e){return(e=e.replace(r,"")).replace(/\t/g,"    ")})),e.textContent=n.join("\n").trim())}))));</script>
-        <!-- I haven't found a way to escape html in code elements-->
+            body {
+                margin: auto;
+                width: 75%;
+                background: var(--light-background-color);
+            }
+            .inverse {
+                color: var(--light-background-color);
+            }
+            .inverse-bg {
+                background: var(--light-text-color);
+            }
+
+            /* Change text color - not sure which elements have default text color */
+            *:not(a) {
+                color: var(--light-text-color);
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                text-align: center;
+                font-weight: normal;
+            }
+            /* Upper and bottom part of documents have different alignments */
+            .center, .title {
+                text-align: center;
+            }
+            .left {
+                text-align: left;
+            }
+
+            /* Navigation */
+            .navbar {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                font-size: 1.5em;
+            }
+            .navbar * {
+                text-decoration: none;
+                color: black;
+            }
+
+            /* Everything else */
+            .content p {
+                text-indent: 4ch;
+            }
+            .content p * {
+                display: inline;
+            }
+
+            .button-collection {
+                display: flex;
+                justify-content: space-evenly;
+                flex-wrap: wrap;
+            }
+            .button {
+                border-radius: 5px;
+                padding: 3px 10px 3px 10px;
+                margin: 5px;
+            }
+            .button * {
+                text-decoration: none;
+                /* color: var(--light-text-color); */ 
+            }
+        </style>
         
-<style>
-    .blog li a {
-        font-size: 1.5em;
-        text-decoration: none;
-        color: var(--text-color);
-    }
-    .blog {
-        align-self: first baseline;
-    }
-</style>
-
     </head>
     <body>
-        <nav class="navbar">
-            <div class="navbar-contents">
-                <span>ninjamar.dev</span>
+        <div class="center">
+            <nav class="navbar">
                 <a href="/">home</a>
                 <a href="/projects/">projects</a>
                 <a href="/blog/">blog</a>
-            </div>
-        </nav>
-        
-<h1>Blog</h1>
-<ul class="blog">
-    <li><a href="/blog/hsm.html">29/11/2023 HSM: A JavaScript Framework</a></li>
+            </nav>
+        </div>
+        <div class="left">
+            <div class="content">
+                
+<h2>blog</h2>
+<ul>
+    <li>29/11/2023 | <a href="/blog/hsm.html">HSM: A JavaScript Framework</a></li>
 </ul>
 
-        <footer class="footer">
-            <hr>
-            <span>© Copyright 2024, ninjamar. All rights reserved</span>
-        </footer>
+            </div>
+            <footer class="footer">
+                <span>© Copyright 2024, ninjamar. All rights reserved</span>
+            </footer>
+        </div>
     </body>
 </html>

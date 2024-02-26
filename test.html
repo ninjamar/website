@@ -21,6 +21,7 @@
                 font-family: 'Courier New', Courier, monospace;
             }
 
+            /* Default colors*/
             body {
                 margin: auto;
                 width: 75%;
@@ -32,16 +33,17 @@
             .inverse-bg {
                 background: var(--light-text-color);
             }
-
             /* Change text color - not sure which elements have default text color */
             *:not(a) {
                 color: var(--light-text-color);
             }
 
+            /* Default header styling*/
             h1, h2, h3, h4, h5, h6 {
                 text-align: center;
                 font-weight: normal;
             }
+
             /* Upper and bottom part of documents have different alignments */
             .center, .title {
                 text-align: center;
@@ -61,7 +63,7 @@
                 color: black;
             }
 
-            /* Everything else */
+            /* Content */
             .content p {
                 text-indent: 4ch;
             }
@@ -69,6 +71,7 @@
                 display: inline;
             }
 
+            /* Row of buttons */
             .button-collection {
                 display: flex;
                 justify-content: space-evenly;
@@ -80,9 +83,30 @@
                 margin: 5px;
             }
             .button * {
-                text-decoration: none;
-                /* color: var(--light-text-color); */ 
+                text-decoration: none; /* Text color is set by default, otherwise use inverse*/
             }
+            
+            /* Footer */
+            .footer {
+                margin: 1em 0px;
+            }
+
+            /* 
+                Mobile 
+                https://stackoverflow.com/a/7354648/21322342
+            */
+            @media (min-width: 450px) and (max-width: 1200px ){ /* Phones */
+                .navbar * {
+                    font-size: 3em;
+                }
+                h1, h2, h3, h4, h5, h6 {
+                    font-size: 3em;
+                }
+                .content {
+                    font-size: 2em;
+                }
+            }
+
         </style>
         
     </head>

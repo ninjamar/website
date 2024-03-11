@@ -21,9 +21,12 @@ jobs:
       - name: Install
         run: python3 -m pip install staticjinja
       
-      - name: Static
-        run: python3 build.py static
+      - name: Ensure output
+        run: mkdir -p dist
         
+      - name: Copy static
+        run: cp -r static dist
+
       - name: Build
         run: python3 build.py templates production
 

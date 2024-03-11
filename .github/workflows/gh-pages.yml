@@ -23,9 +23,9 @@ jobs:
       
       - name: Ensure output
         run: mkdir -p dist
-        
+
       - name: Copy static
-        run: cp -r static dist
+        run: python3 build.py static
 
       - name: Build
         run: python3 build.py templates production

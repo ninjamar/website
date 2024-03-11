@@ -29,6 +29,7 @@ def templates(is_dev=True):
 
 def copy():
     os.system("cp -r static dist")
+    os.system("mv dist/static/favicon.ico dist")
 
 if __name__ == "__main__":
     print("Executing build script")

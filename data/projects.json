@@ -1,15 +1,22 @@
 [
     {
-        "title": "Note taking app",
+        "title": "A note taking app",
         "description": "An app to take notes",
         "url": "/projects/note.html",
         "image_url": "/static/projects/index/img/note.png"
     },
+    
     {
         "title": "ninjamar.dev",
         "description": "This website",
         "url": "https://github.com/ninjamar/ninjamar.github.io",
         "image_url": "/static/projects/index/img/ninjamar.github.io.png"
+    },
+    {
+        "title": "Pinboard",
+        "description": "A pinboard",
+        "url": "/projects/pinboard.html",
+        "image_url": "/static/projects/index/img/note.png"
     },
     {
         "title": "ninjasocial",

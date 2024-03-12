@@ -2,46 +2,7 @@
 
 
 var templates = {};
-/*
-// we run eventlistener of element inside template, therfore nothing happens as we assume main
-function isInTemplate($elem){
-    let $curr = $elem;
-    while ($curr){
-        if ($curr.tagName == "TEMPLATE" && $curr.getAttribute("data-template-name")){
-            return true;
-        }
-        $curr = $curr.parentElement;
-    }
-    return false;
-}
-function monkeyPatchEventListener(){
-    // Replace Node event listener with custom
-    // Custom should trigger the change for all child elements of template
-    Element.prototype._addEventListener = Element.prototype.addEventListener;
-    Element.prototype._removeEventListener = Element.prototype.removeEventListener;
 
-    Element.prototype.addEventListener = function(a, b, c){
-        this._addEventListener(a, b, c);
-        if (isInTemplate(this)){
-            console.log("is in template");
-            for ($elem of getAllTemplateInstances()){
-                console.log("Adding add event listener for child");
-                // In order to optimize for speed, don't use the monkeypatched version
-                $elem._addEventListener(a, b, c);
-            }
-        }
-    }
-    Element.prototype.removeEventListener = function(a, b, c){
-        this._removeEventListener(a, b, c);
-        if (isInTemplate(this)){
-            for ($elem of getAllTemplateInstances()){
-                console.log("adding remove event listener for child");
-                $elem._removeEventListener(a, b, c);
-            }
-        }
-    }
-}
-*/
 function createTemplate(template){
     return function (data){
         // The target elements
@@ -82,15 +43,6 @@ function ensureTemplates(){
     }
 }
 
-// Usage: Element.addEventListener("click", eventHandler(".selector", (event) => console.log('clicked')))
-function eventHandler(qs, fn){
-    return function(event){
-        console.log("event")
-        if (event.target == this.querySelector(qs)){
-            fn();
-        }
-    }
-}
 
 // Create a new note
 function newNote(event){
@@ -128,10 +80,4 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     document.getElementById("new-note-submit").addEventListener("click", newNote);
     document.getElementById("new-note-submit").addEventListener("click", updateSave);
-    /*
-    for (let $elem of getAllTemplates()){
-        $elem.addEventListener("click", eventHandler(".note-card-delete", (e) => {console.log("click handler", this)}));
-        //$elem.content.querySelector(".note-card-delete").addEventListener("click", (event) => [$elem.remove(), updateSave()]);
-        $elem.addEventListener("keyup", updateSave);
-    }*/
 });

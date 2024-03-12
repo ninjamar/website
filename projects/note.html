@@ -7,8 +7,8 @@
         <meta name="description" content="A note taking app">
         <title>Note</title>
 
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.2.4/nunjucks.min.js"></script>
-        <script type="module" src="/static/projects/note/note.js"></script>
+        <!--<script defer src="https://cdnjs.cloudflare.com/ajax/libs/nunjucks/3.2.4/nunjucks.min.js"></script>-->
+        <script src="/static/projects/note/note.js"></script>
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Sen:wght@400..800&display=swap');
             @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
@@ -94,18 +94,20 @@
     <body>
         <div id="templates">
             <template class="note-card" data-template-name="note">
+                <!-- Use HTML events instead of addEventListener since HTML events copy easily -->
                 <div class="note-card-header">
                     <span class="note-card-title" data-template="title"></span>
                     <div class="note-card-toolbar">
-                        <span onclick="this.parentElement.parentElement.parentElement.remove()">X</span>
+                        <span class="note-card-delete">X</span>
                     </div>
                 </div>
-                <p class="note-card-body" contenteditable="true" onkeyup="updateStorage();" data-template="body"></p>
+                <p class="note-card-body" contenteditable="true" data-template="body"></p>
             </template>
         </div>
         <div id="app">
             <h1 style="text-align: center; margin: 0px;">Note</h1>
             <div id="notes"></div>
+
             <div id="new-note">
                 <div id="new-note-body" contenteditable="true" placeholder="Type here..."></div>
             </div>

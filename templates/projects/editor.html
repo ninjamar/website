@@ -8,7 +8,9 @@
         <title>Text editor</title>
 
         <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+        <script src="https://unpkg.com/dataclass@2.1.1/dataclass.js"></script>
         <script>document.addEventListener("DOMContentLoaded", ()=>lucide.createIcons());</script>
+        
         <script src="/static/projects/editor/editor.js"></script>
         <style>
             * {
@@ -53,17 +55,17 @@
         <div id="context-menu" class="hidden">
             <!--<b onclick="applyStyle('B')">B</b>
             <i onclick="applyStyle('I')">I</i>-->
-            <i onclick="applyStyle('B')" data-lucide="bold"></i>
-            <i onclick="applyStyle('I')" data-lucide="italic"></i>
-            <i onclick="applyStyle('S')" data-lucide="strikethrough"></i>
-            <i onclick="applyStyle('U')" data-lucide="underline"></i>
+            <i onclick="applyStyle('text-decoration', 'bold')" data-lucide="bold"></i>
+            <i onclick="applyStyle('font-style', 'italic')" data-lucide="italic"></i>
+            <i onclick="applyStyle('text-decoration', 'strikethrough')" data-lucide="strikethrough"></i>
+            <i onclick="applyStyle('text-decoration', 'underline')" data-lucide="underline"></i>
 
-            <i onclick="applyStyle('H1')" data-lucide="heading-1"></i>
-            <i onclick="applyStyle('H2')" data-lucide="heading-2"></i>
-            <i onclick="applyStyle('H3')" data-lucide="heading-3"></i>
-            <i onclick="applyStyle('H4')" data-lucide="heading-4"></i>
-            <i onclick="applyStyle('H5')" data-lucide="heading-5"></i>
-            <i onclick="applyStyle('H6')" data-lucide="heading-6"></i>
+            <i onclick="applyStyle('font-size', '2em')" data-lucide="heading-1"></i>
+            <i onclick="applyStyle('font-size', '1.5em')" data-lucide="heading-2"></i>
+            <i onclick="applyStyle('font-size', '1.3em')" data-lucide="heading-3"></i>
+            <i onclick="applyStyle('font-size', '1em')" data-lucide="heading-4"></i>
+            <i onclick="applyStyle('font-size', '0.8em')" data-lucide="heading-5"></i>
+            <i onclick="applyStyle('font-size', '0.7em')" data-lucide="heading-6"></i>
 
             <!--<i onclick="applyStyle('P')" data-lucide="pilcrow"></i>-->
 

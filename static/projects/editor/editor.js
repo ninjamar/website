@@ -16,8 +16,16 @@
 
 /* 
     TODO: Allow options
+    Don't use lucide icons
 */
-function applyStyle(style){     
+const arrequal = (array1, array2) => array1.length === array2.length && array1.every((value, index) => value === array2[index]);
+const has = (array, value) => array.some(x=>arrequal(x, value));
+
+
+function applyStyle(rule, value){
+
+    let is_tag = arguments.length == 1;
+
     let range = window.getSelection().getRangeAt(0);   
     let contents = range.extractContents();
     let newContents;
@@ -25,32 +33,52 @@ function applyStyle(style){
     if (contents.firstElementChild){
         let arr = [];
         let current_element = contents.children[0];
+        let name;
         while (current_element){
-            arr.push(current_element.tagName);
+            name = current_element.style[0];
+            arr.push([name, current_element.style[name]]); // name, style
             current_element = current_element.firstElementChild;
         }
 
-        if (arr.includes(style)){
-            arr = arr.filter(x => x != style);
+        // Make unique of: current style - eg remove all with style
+
+        // arr = arr.filter(x => x[0] != rule && !arrequal(x, [rule, value]));
+        // If the array has our rule
+        //  Remove it
+        // else
+        //  Add our rule
+
+        if (has(arr, [rule, value])){
+            arr = arr.filter(x => !arrequal(x, [rule, value]));
         } else {
-            arr.push(style);
+            arr.push([rule, value]);
         }
+        console.log(arr);
 
         // If multiple children
         if (arr.length >= 1){
-            newContents = document.createElement(arr[0]);
-            let curr = newContents;
-            for (let name of arr.slice(1)){
-                curr = curr.appendChild(document.createElement(name));
+            newContents = document.createElement("SPAN");
+            if (arr[0]){
+                newContents.style[arr[0][0]] = arr[0][1];
             }
-            curr.appendChild(document.createTextNode(contents.textContent));
 
+            let curr = newContents;
+            let elem;
+            for (let pair of arr.slice(1)){
+                elem = document.createElement("SPAN");
+                curr.style[pair[0]] = pair[1];
+                curr = curr.appendChild(elem);
+            }
+
+            curr.appendChild(document.createTextNode(contents.textContent));
         } else {
             newContents = document.createTextNode(contents.textContent);
         }
 
     } else {
-        newContents = document.createElement(style);
+        // This works
+        newContents = document.createElement("SPAN");
+        newContents.style[rule] = value;
         newContents.textContent = contents.textContent;
     }
     
@@ -71,7 +99,7 @@ function edit(menu, element){
             repositionMenu(cords);
         }
     });
-    elements.addEventListener("mousedown", e => {
+    element.addEventListener("mousedown", e => {
         if (is_menu_shown && document.elementFromPoint(e.clientX, e.clientY) != menu){
             is_menu_shown = false;
             menu.classList.add("hidden");

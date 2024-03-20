@@ -71,7 +71,7 @@ function edit(menu, element){
             repositionMenu(cords);
         }
     });
-    elements.addEventListener("mousedown", e => {
+    element.addEventListener("mousedown", e => {
         if (is_menu_shown && document.elementFromPoint(e.clientX, e.clientY) != menu){
             is_menu_shown = false;
             menu.classList.add("hidden");

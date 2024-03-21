@@ -138,17 +138,23 @@ function edit(menu, element){
 
     let repositionMenu = (cords) => (menu.style.top = `calc(${cords.top}px - 2em)`) && (menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
 
-    element.addEventListener("mouseup", e => {
+    document.addEventListener("mouseup", e => {
         let selection = window.getSelection();
         if (selection != ""){
-            menu.classList.remove("hidden");
-            is_menu_shown = true;
-            let cords = selection.getRangeAt(0).getBoundingClientRect();
-            repositionMenu(cords);
+
+            let range = selection.getRangeAt(0);
+            // Make sure that the range is inside the element, this is cleaner than having the event listener on document
+            if (element.contains(range.commonAncestorContainer)){
+                menu.classList.remove("hidden");
+                is_menu_shown = true;
+                let cords = range.getBoundingClientRect();
+                repositionMenu(cords);
+            }
         }
     });
-    element.addEventListener("mousedown", e => {
-        if (is_menu_shown && document.elementFromPoint(e.clientX, e.clientY) != menu){
+    document.addEventListener("mousedown", e => {
+        // Only close the menu if it is shown and we aren't hovering over the menu
+        if (is_menu_shown && !menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
             is_menu_shown = false;
             menu.classList.add("hidden");
         }

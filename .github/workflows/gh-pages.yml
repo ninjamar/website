@@ -28,7 +28,7 @@ jobs:
         run: python3 build.py static
 
       - name: Build
-        run: python3 build.py templates production
+        run: python3 build.py template
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

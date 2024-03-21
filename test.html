@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, inital-scale=1.0">
+        <title>test - ninjamar.dev</title>
+
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+        <style>
+            /* Colors */
+            :root {
+                --light-text-color: #333333;
+                --light-background-color: #f2f2f2;
+                --light-secondary-color: #C9C9C9;
+            }
+
+            /* Core styling */
+            html, body {
+                height: 100%;
+            }
+            * {
+                font-family: 'Courier New', Courier, monospace;
+            }
+
+            /* Default colors*/
+            body {
+                margin: auto;
+                width: 75%;
+                background: var(--light-background-color);
+            }
+            .inverse {
+                color: var(--light-background-color);
+            }
+            .inverse-bg {
+                background: var(--light-text-color);
+            }
+            /* Change text color - not sure which elements have default text color */
+            *:not(a) {
+                color: var(--light-text-color);
+            }
+
+            /* Default header styling*/
+            h1, h2, h3, h4, h5, h6 {
+                text-align: center;
+                font-weight: normal;
+            }
+            .title {
+                font-size: 1.5em;
+            }
+            /* Upper and bottom part of documents have different alignments */
+            .center {
+                text-align: center;
+            }
+            .left {
+                text-align: left;
+            }
+
+            /* Navigation */
+            .navbar {
+                margin-top: 20px;
+                margin-bottom: 20px;
+                font-size: 1.5em;
+            }
+            .navbar * {
+                text-decoration: none;
+                color: black;
+            }
+
+            /* Content */
+            .content p {
+                text-indent: 4ch;
+            }
+            .content p * {
+                display: inline;
+            }
+
+            /* Row of buttons */
+            .button-collection {
+                display: flex;
+                justify-content: space-evenly;
+                flex-wrap: wrap;
+            }
+            .button {
+                border-radius: 5px;
+                padding: 3px 10px 3px 10px;
+                margin: 5px;
+            }
+            .button * {
+                text-decoration: none; /* Text color is set by default, otherwise use inverse*/
+            }
+            
+            /* Footer */
+            .footer {
+                margin: 1em 0px;
+            }
+
+            /* 
+                Mobile 
+                https://stackoverflow.com/a/7354648/21322342
+            */
+            @media (min-width: 450px) and (max-width: 730px ){ /* Phones */
+                .navbar * {
+                    font-size: 3em;
+                }
+                h1, h2, h3, h4, h5, h6 {
+                    font-size: 3em;
+                }
+                .content {
+                    font-size: 2em;
+                }
+            }
+
+        </style>
+        
+    </head>
+    <body>
+        <div class="center">
+            <nav class="navbar">
+                <a href="/">home</a>
+                <a href="/projects/">projects</a>
+                <a href="/blog/">blog</a>
+            </nav>
+        </div>
+        <div class="left">
+            <div class="content">
+                
+    <h1 class="title">Test</h1>
+    <div class="button-collection">
+        
+            <div class="button" style="background: aliceblue">
+                <a href="#">aliceblue</a>
+            </div>
+        
+            <div class="button" style="background: antiquewhite">
+                <a href="#">antiquewhite</a>
+            </div>
+        
+            <div class="button" style="background: aqua">
+                <a href="#">aqua</a>
+            </div>
+        
+            <div class="button" style="background: aquamarine">
+                <a href="#">aquamarine</a>
+            </div>
+        
+            <div class="button" style="background: azure">
+                <a href="#">azure</a>
+            </div>
+        
+            <div class="button" style="background: beige">
+                <a href="#">beige</a>
+            </div>
+        
+            <div class="button" style="background: bisque">
+                <a href="#">bisque</a>
+            </div>
+        
+            <div class="button" style="background: black">
+                <a href="#">black</a>
+            </div>
+        
+            <div class="button" style="background: blanchedalmond">
+                <a href="#">blanchedalmond</a>
+            </div>
+        
+            <div class="button" style="background: blue">
+                <a href="#">blue</a>
+            </div>
+        
+            <div class="button" style="background: blueviolet">
+                <a href="#">blueviolet</a>
+            </div>
+        
+            <div class="button" style="background: brown">
+                <a href="#">brown</a>
+            </div>
+        
+            <div class="button" style="background: burlywood">
+                <a href="#">burlywood</a>
+            </div>
+        
+            <div class="button" style="background: cadetblue">
+                <a href="#">cadetblue</a>
+            </div>
+        
+            <div class="button" style="background: chartreuse">
+                <a href="#">chartreuse</a>
+            </div>
+        
+            <div class="button" style="background: chocolate">
+                <a href="#">chocolate</a>
+            </div>
+        
+            <div class="button" style="background: coral">
+                <a href="#">coral</a>
+            </div>
+        
+            <div class="button" style="background: cornflowerblue">
+                <a href="#">cornflowerblue</a>
+            </div>
+        
+            <div class="button" style="background: cornsilk">
+                <a href="#">cornsilk</a>
+            </div>
+        
+            <div class="button" style="background: crimson">
+                <a href="#">crimson</a>
+            </div>
+        
+            <div class="button" style="background: cyan">
+                <a href="#">cyan</a>
+            </div>
+        
+            <div class="button" style="background: darkblue">
+                <a href="#">darkblue</a>
+            </div>
+        
+            <div class="button" style="background: darkcyan">
+                <a href="#">darkcyan</a>
+            </div>
+        
+            <div class="button" style="background: darkgoldenrod">
+                <a href="#">darkgoldenrod</a>
+            </div>
+        
+            <div class="button" style="background: darkgray">
+                <a href="#">darkgray</a>
+            </div>
+        
+            <div class="button" style="background: darkgreen">
+                <a href="#">darkgreen</a>
+            </div>
+        
+            <div class="button" style="background: darkgrey">
+                <a href="#">darkgrey</a>
+            </div>
+        
+            <div class="button" style="background: darkkhaki">
+                <a href="#">darkkhaki</a>
+            </div>
+        
+            <div class="button" style="background: darkmagenta">
+                <a href="#">darkmagenta</a>
+            </div>
+        
+            <div class="button" style="background: darkolivegreen">
+                <a href="#">darkolivegreen</a>
+            </div>
+        
+            <div class="button" style="background: darkorange">
+                <a href="#">darkorange</a>
+            </div>
+        
+            <div class="button" style="background: darkorchid">
+                <a href="#">darkorchid</a>
+            </div>
+        
+            <div class="button" style="background: darkred">
+                <a href="#">darkred</a>
+            </div>
+        
+            <div class="button" style="background: darksalmon">
+                <a href="#">darksalmon</a>
+            </div>
+        
+            <div class="button" style="background: darkseagreen">
+                <a href="#">darkseagreen</a>
+            </div>
+        
+            <div class="button" style="background: darkslateblue">
+                <a href="#">darkslateblue</a>
+            </div>
+        
+            <div class="button" style="background: darkslategray">
+                <a href="#">darkslategray</a>
+            </div>
+        
+            <div class="button" style="background: darkslategrey">
+                <a href="#">darkslategrey</a>
+            </div>
+        
+            <div class="button" style="background: darkturquoise">
+                <a href="#">darkturquoise</a>
+            </div>
+        
+            <div class="button" style="background: darkviolet">
+                <a href="#">darkviolet</a>
+            </div>
+        
+            <div class="button" style="background: deeppink">
+                <a href="#">deeppink</a>
+            </div>
+        
+            <div class="button" style="background: deepskyblue">
+                <a href="#">deepskyblue</a>
+            </div>
+        
+            <div class="button" style="background: dimgray">
+                <a href="#">dimgray</a>
+            </div>
+        
+            <div class="button" style="background: dimgrey">
+                <a href="#">dimgrey</a>
+            </div>
+        
+            <div class="button" style="background: dodgerblue">
+                <a href="#">dodgerblue</a>
+            </div>
+        
+            <div class="button" style="background: firebrick">
+                <a href="#">firebrick</a>
+            </div>
+        
+            <div class="button" style="background: floralwhite">
+                <a href="#">floralwhite</a>
+            </div>
+        
+            <div class="button" style="background: forestgreen">
+                <a href="#">forestgreen</a>
+            </div>
+        
+            <div class="button" style="background: fuchsia">
+                <a href="#">fuchsia</a>
+            </div>
+        
+            <div class="button" style="background: gainsboro">
+                <a href="#">gainsboro</a>
+            </div>
+        
+            <div class="button" style="background: ghostwhite">
+                <a href="#">ghostwhite</a>
+            </div>
+        
+            <div class="button" style="background: goldenrod">
+                <a href="#">goldenrod</a>
+            </div>
+        
+            <div class="button" style="background: gold">
+                <a href="#">gold</a>
+            </div>
+        
+            <div class="button" style="background: gray">
+                <a href="#">gray</a>
+            </div>
+        
+            <div class="button" style="background: green">
+                <a href="#">green</a>
+            </div>
+        
+            <div class="button" style="background: greenyellow">
+                <a href="#">greenyellow</a>
+            </div>
+        
+            <div class="button" style="background: grey">
+                <a href="#">grey</a>
+            </div>
+        
+            <div class="button" style="background: honeydew">
+                <a href="#">honeydew</a>
+            </div>
+        
+            <div class="button" style="background: hotpink">
+                <a href="#">hotpink</a>
+            </div>
+        
+            <div class="button" style="background: indianred">
+                <a href="#">indianred</a>
+            </div>
+        
+            <div class="button" style="background: indigo">
+                <a href="#">indigo</a>
+            </div>
+        
+            <div class="button" style="background: ivory">
+                <a href="#">ivory</a>
+            </div>
+        
+            <div class="button" style="background: khaki">
+                <a href="#">khaki</a>
+            </div>
+        
+            <div class="button" style="background: lavenderblush">
+                <a href="#">lavenderblush</a>
+            </div>
+        
+            <div class="button" style="background: lavender">
+                <a href="#">lavender</a>
+            </div>
+        
+            <div class="button" style="background: lawngreen">
+                <a href="#">lawngreen</a>
+            </div>
+        
+            <div class="button" style="background: lemonchiffon">
+                <a href="#">lemonchiffon</a>
+            </div>
+        
+            <div class="button" style="background: lightblue">
+                <a href="#">lightblue</a>
+            </div>
+        
+            <div class="button" style="background: lightcoral">
+                <a href="#">lightcoral</a>
+            </div>
+        
+            <div class="button" style="background: lightcyan">
+                <a href="#">lightcyan</a>
+            </div>
+        
+            <div class="button" style="background: lightgoldenrodyellow">
+                <a href="#">lightgoldenrodyellow</a>
+            </div>
+        
+            <div class="button" style="background: lightgray">
+                <a href="#">lightgray</a>
+            </div>
+        
+            <div class="button" style="background: lightgreen">
+                <a href="#">lightgreen</a>
+            </div>
+        
+            <div class="button" style="background: lightgrey">
+                <a href="#">lightgrey</a>
+            </div>
+        
+            <div class="button" style="background: lightpink">
+                <a href="#">lightpink</a>
+            </div>
+        
+            <div class="button" style="background: lightsalmon">
+                <a href="#">lightsalmon</a>
+            </div>
+        
+            <div class="button" style="background: lightseagreen">
+                <a href="#">lightseagreen</a>
+            </div>
+        
+            <div class="button" style="background: lightskyblue">
+                <a href="#">lightskyblue</a>
+            </div>
+        
+            <div class="button" style="background: lightslategray">
+                <a href="#">lightslategray</a>
+            </div>
+        
+            <div class="button" style="background: lightslategrey">
+                <a href="#">lightslategrey</a>
+            </div>
+        
+            <div class="button" style="background: lightsteelblue">
+                <a href="#">lightsteelblue</a>
+            </div>
+        
+            <div class="button" style="background: lightyellow">
+                <a href="#">lightyellow</a>
+            </div>
+        
+            <div class="button" style="background: lime">
+                <a href="#">lime</a>
+            </div>
+        
+            <div class="button" style="background: limegreen">
+                <a href="#">limegreen</a>
+            </div>
+        
+            <div class="button" style="background: linen">
+                <a href="#">linen</a>
+            </div>
+        
+            <div class="button" style="background: magenta">
+                <a href="#">magenta</a>
+            </div>
+        
+            <div class="button" style="background: maroon">
+                <a href="#">maroon</a>
+            </div>
+        
+            <div class="button" style="background: mediumaquamarine">
+                <a href="#">mediumaquamarine</a>
+            </div>
+        
+            <div class="button" style="background: mediumblue">
+                <a href="#">mediumblue</a>
+            </div>
+        
+            <div class="button" style="background: mediumorchid">
+                <a href="#">mediumorchid</a>
+            </div>
+        
+            <div class="button" style="background: mediumpurple">
+                <a href="#">mediumpurple</a>
+            </div>
+        
+            <div class="button" style="background: mediumseagreen">
+                <a href="#">mediumseagreen</a>
+            </div>
+        
+            <div class="button" style="background: mediumslateblue">
+                <a href="#">mediumslateblue</a>
+            </div>
+        
+            <div class="button" style="background: mediumspringgreen">
+                <a href="#">mediumspringgreen</a>
+            </div>
+        
+            <div class="button" style="background: mediumturquoise">
+                <a href="#">mediumturquoise</a>
+            </div>
+        
+            <div class="button" style="background: mediumvioletred">
+                <a href="#">mediumvioletred</a>
+            </div>
+        
+            <div class="button" style="background: midnightblue">
+                <a href="#">midnightblue</a>
+            </div>
+        
+            <div class="button" style="background: mintcream">
+                <a href="#">mintcream</a>
+            </div>
+        
+            <div class="button" style="background: mistyrose">
+                <a href="#">mistyrose</a>
+            </div>
+        
+            <div class="button" style="background: moccasin">
+                <a href="#">moccasin</a>
+            </div>
+        
+            <div class="button" style="background: navajowhite">
+                <a href="#">navajowhite</a>
+            </div>
+        
+            <div class="button" style="background: navy">
+                <a href="#">navy</a>
+            </div>
+        
+            <div class="button" style="background: oldlace">
+                <a href="#">oldlace</a>
+            </div>
+        
+            <div class="button" style="background: olive">
+                <a href="#">olive</a>
+            </div>
+        
+            <div class="button" style="background: olivedrab">
+                <a href="#">olivedrab</a>
+            </div>
+        
+            <div class="button" style="background: orange">
+                <a href="#">orange</a>
+            </div>
+        
+            <div class="button" style="background: orangered">
+                <a href="#">orangered</a>
+            </div>
+        
+            <div class="button" style="background: orchid">
+                <a href="#">orchid</a>
+            </div>
+        
+            <div class="button" style="background: palegoldenrod">
+                <a href="#">palegoldenrod</a>
+            </div>
+        
+            <div class="button" style="background: palegreen">
+                <a href="#">palegreen</a>
+            </div>
+        
+            <div class="button" style="background: paleturquoise">
+                <a href="#">paleturquoise</a>
+            </div>
+        
+            <div class="button" style="background: palevioletred">
+                <a href="#">palevioletred</a>
+            </div>
+        
+            <div class="button" style="background: papayawhip">
+                <a href="#">papayawhip</a>
+            </div>
+        
+            <div class="button" style="background: peachpuff">
+                <a href="#">peachpuff</a>
+            </div>
+        
+            <div class="button" style="background: peru">
+                <a href="#">peru</a>
+            </div>
+        
+            <div class="button" style="background: pink">
+                <a href="#">pink</a>
+            </div>
+        
+            <div class="button" style="background: plum">
+                <a href="#">plum</a>
+            </div>
+        
+            <div class="button" style="background: powderblue">
+                <a href="#">powderblue</a>
+            </div>
+        
+            <div class="button" style="background: purple">
+                <a href="#">purple</a>
+            </div>
+        
+            <div class="button" style="background: rebeccapurple">
+                <a href="#">rebeccapurple</a>
+            </div>
+        
+            <div class="button" style="background: red">
+                <a href="#">red</a>
+            </div>
+        
+            <div class="button" style="background: rosybrown">
+                <a href="#">rosybrown</a>
+            </div>
+        
+            <div class="button" style="background: royalblue">
+                <a href="#">royalblue</a>
+            </div>
+        
+            <div class="button" style="background: saddlebrown">
+                <a href="#">saddlebrown</a>
+            </div>
+        
+            <div class="button" style="background: salmon">
+                <a href="#">salmon</a>
+            </div>
+        
+            <div class="button" style="background: sandybrown">
+                <a href="#">sandybrown</a>
+            </div>
+        
+            <div class="button" style="background: seagreen">
+                <a href="#">seagreen</a>
+            </div>
+        
+            <div class="button" style="background: seashell">
+                <a href="#">seashell</a>
+            </div>
+        
+            <div class="button" style="background: sienna">
+                <a href="#">sienna</a>
+            </div>
+        
+            <div class="button" style="background: silver">
+                <a href="#">silver</a>
+            </div>
+        
+            <div class="button" style="background: skyblue">
+                <a href="#">skyblue</a>
+            </div>
+        
+            <div class="button" style="background: slateblue">
+                <a href="#">slateblue</a>
+            </div>
+        
+            <div class="button" style="background: slategray">
+                <a href="#">slategray</a>
+            </div>
+        
+            <div class="button" style="background: slategrey">
+                <a href="#">slategrey</a>
+            </div>
+        
+            <div class="button" style="background: snow">
+                <a href="#">snow</a>
+            </div>
+        
+            <div class="button" style="background: springgreen">
+                <a href="#">springgreen</a>
+            </div>
+        
+            <div class="button" style="background: steelblue">
+                <a href="#">steelblue</a>
+            </div>
+        
+            <div class="button" style="background: tan">
+                <a href="#">tan</a>
+            </div>
+        
+            <div class="button" style="background: teal">
+                <a href="#">teal</a>
+            </div>
+        
+            <div class="button" style="background: thistle">
+                <a href="#">thistle</a>
+            </div>
+        
+            <div class="button" style="background: tomato">
+                <a href="#">tomato</a>
+            </div>
+        
+            <div class="button" style="background: turquoise">
+                <a href="#">turquoise</a>
+            </div>
+        
+            <div class="button" style="background: violet">
+                <a href="#">violet</a>
+            </div>
+        
+            <div class="button" style="background: wheat">
+                <a href="#">wheat</a>
+            </div>
+        
+            <div class="button" style="background: white">
+                <a href="#">white</a>
+            </div>
+        
+            <div class="button" style="background: whitesmoke">
+                <a href="#">whitesmoke</a>
+            </div>
+        
+            <div class="button" style="background: yellow">
+                <a href="#">yellow</a>
+            </div>
+        
+            <div class="button" style="background: yellowgreen">
+                <a href="#">yellowgreen</a>
+            </div>
+        
+    </div>
+
+            </div>
+            <footer class="footer">
+                <span>© Copyright 2024, ninjamar. All rights reserved</span>
+            </footer>
+        </div>
+    </body>
+</html>

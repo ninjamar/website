@@ -1,5 +1,99 @@
 "use strict";
 
+/* 
+    Text Editor
+    Copyright (c) 2023 ninjamar
+
+    TODO: Allow properties
+    TODO: Allow links
+    TODO: Don't use lucide icons
+    TODO: Make the selection menu pretty
+    TODO: Filter based on uniqueness (only on header tag)
+    TODO: Organize this file
+*/
+
+// https://stackoverflow.com/a/16788517/21322342
+function objectEquals(e,n){"use strict";if(null==e||null==n)return e===n;if(e.constructor!==n.constructor)return!1;if(e instanceof Function)return e===n;if(e instanceof RegExp)return e===n;if(e===n||e.valueOf()===n.valueOf())return!0;if(Array.isArray(e)&&e.length!==n.length)return!1;if(e instanceof Date)return!1;if(!(e instanceof Object))return!1;if(!(n instanceof Object))return!1;var r=Object.keys(e);return Object.keys(n).every((function(e){return-1!==r.indexOf(e)}))&&r.every((function(r){return objectEquals(e[r],n[r])}))}
+
+// Support a tag in future (using props)
+function createOption({tagName = null, props = {}, name = null, value = null} = {}){
+    return {
+        tagName: tagName,
+        props : props,
+        css: {
+            name: name,
+            value: value
+        },
+    };
+}
+function getComputedOption(opt, text){
+    let e;
+    if (opt.tagName){ // If style
+        e = document.createElement(opt.tagName);
+    } else {
+        e = document.createElement("SPAN");
+        e.style[opt.css.name] = opt.css.value;
+    }
+    if (text){
+        e.textContent = text;
+    }
+    return e;
+}
+
+// TODO: This fails for strikethrugh
+function createOptionsFromChild(child){
+
+    let ret = [];
+    let curr = child;
+
+    while (curr){
+        ret.push(curr)
+        curr = curr.firstElementChild;
+    }
+    ret = ret.map(x => {
+        // Properties would have to be changed here
+        if (x.style.length > 0){
+            return createOption({ name: x.style[0], value: x.style[x.style[0]]});
+        }
+        return createOption({tagName: x.tagName});
+    });
+    return ret;
+}
+
+// TODO: Comparison is totally broken (for strikethrough)
+function toggleOption(options_of_children, opt){
+
+    // Get a copy of the array
+    if (options_of_children.some(x => objectEquals(x, opt))){
+        options_of_children = options_of_children.filter(x => !objectEquals(x, opt));
+    } else {
+        options_of_children.push(opt);
+    }
+    return options_of_children;
+
+    // if the option is inside options_of_children
+    //  remove it
+    // else
+    //  add it
+}
+
+function computeAll(arr, text){
+    if (arr.length > 0){
+        let ret = getComputedOption(arr[0]);
+        let curr = ret;
+        let elem;
+
+        for (let option of arr.slice(1)){ // We have already computed the first item
+            elem = getComputedOption(option);
+            curr = curr.appendChild(elem);    
+        }
+        curr.appendChild(document.createTextNode(text));
+        return ret;
+
+    }
+    return getComputedOption(createOption({tagName: "SPAN"}), text);
+}
+
 // Replacement for document exec command
 /* 
     if contents.firstElementChild
@@ -13,73 +107,27 @@
     else
         Create a new element with only style
 */
-
-/* 
-    TODO: Allow options
-    Don't use lucide icons
-*/
-const arrequal = (array1, array2) => array1.length === array2.length && array1.every((value, index) => value === array2[index]);
-const has = (array, value) => array.some(x=>arrequal(x, value));
-
-
-function applyStyle(rule, value){
-
-    let is_tag = arguments.length == 1;
-
+function applyStyle(){
+    let opt;
+    if (arguments.length == 1){
+        opt = createOption({tagName: arguments[0]})
+    } else if (arguments.length == 2){
+        opt = createOption({ name: arguments[0], value: arguments[1] })
+    } else {
+        throw new Error("Need 1 or 2 arguments");
+    }
+    
     let range = window.getSelection().getRangeAt(0);   
     let contents = range.extractContents();
     let newContents;
-
+    
     if (contents.firstElementChild){
-        let arr = [];
-        let current_element = contents.children[0];
-        let name;
-        while (current_element){
-            name = current_element.style[0];
-            arr.push([name, current_element.style[name]]); // name, style
-            current_element = current_element.firstElementChild;
-        }
-
-        // Make unique of: current style - eg remove all with style
-
-        // arr = arr.filter(x => x[0] != rule && !arrequal(x, [rule, value]));
-        // If the array has our rule
-        //  Remove it
-        // else
-        //  Add our rule
-
-        if (has(arr, [rule, value])){
-            arr = arr.filter(x => !arrequal(x, [rule, value]));
-        } else {
-            arr.push([rule, value]);
-        }
-        console.log(arr);
-
-        // If multiple children
-        if (arr.length >= 1){
-            newContents = document.createElement("SPAN");
-            if (arr[0]){
-                newContents.style[arr[0][0]] = arr[0][1];
-            }
-
-            let curr = newContents;
-            let elem;
-            for (let pair of arr.slice(1)){
-                elem = document.createElement("SPAN");
-                curr.style[pair[0]] = pair[1];
-                curr = curr.appendChild(elem);
-            }
-
-            curr.appendChild(document.createTextNode(contents.textContent));
-        } else {
-            newContents = document.createTextNode(contents.textContent);
-        }
+        let options_of_children = createOptionsFromChild(contents.children[0]);
+        let filtered_children = toggleOption(options_of_children, opt);
+        newContents = computeAll(filtered_children, contents.textContent);
 
     } else {
-        // This works
-        newContents = document.createElement("SPAN");
-        newContents.style[rule] = value;
-        newContents.textContent = contents.textContent;
+        newContents = getComputedOption(opt, contents.textContent);
     }
     
     range.insertNode(newContents);

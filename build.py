@@ -4,7 +4,7 @@ import sys
 from staticjinja import Site
 from pathlib import Path
 
-#  watchman-make -p 'templates/**' --run 'python3 build.py templates'
+#  watchman-make -p 'templates/**' --run 'python3 build.py template'
 #  watchman-make -p 'static/**' --run 'python3 build.py static'
 
 
@@ -12,7 +12,7 @@ def chunkify(arr, n):
     return [arr[i : i + n] for i in range(0, len(arr), n)]
 
 
-def templates(is_dev=True):
+def template(is_dev=True):
     # Load the data directory into env
     data = {}
     for file in os.listdir("data"):
@@ -27,8 +27,8 @@ def templates(is_dev=True):
     site = Site.make_site(outpath="./dist", env_globals=data)
     site.render(use_reloader=is_dev)
 
-def copy():
-    os.system("cp -r static dist")
+def static():
+    os.system("cp -r static dist") # should probably 
     os.system("mv dist/static/favicon.ico dist")
 
 if __name__ == "__main__":
@@ -36,9 +36,9 @@ if __name__ == "__main__":
 
     # os.chdir("..")
 
-    if "templates" in sys.argv:
+    if "template" in sys.argv:
         print("Templating")
-        templates(True if "dev" in sys.argv else False)
+        template(True if "dev" in sys.argv else False)
     else:
         print("Copying static")
-        copy()
+        static()

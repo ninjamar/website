@@ -2,7 +2,7 @@
 
 /* 
     Text Editor
-    Copyright (c) 2023 ninjamar
+    Copyright (c) 2024 ninjamar
 
     [ ] TODO: Allow properties
     [x] TODO: Turn into module

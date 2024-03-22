@@ -1,0 +1,65 @@
+
+:root {
+    --editor: 1; /* Check if css file is loaded */
+    --editor-first-white-color: #f2f2f2;
+    --editor-second-white-color: #C9C9C9;
+    --editor-third-white-color: #8a8a8a;
+    --editor-first-black-color: #333333;
+}
+
+/* Context menu main  */
+#editor-context-menu {
+    position: absolute;
+    user-select: none;
+    transform: translateX(-50%);
+}
+
+/* Context menu list (seems to to be shapeless which is why I don't style background here )*/
+#editor-context-menu > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style every item in the list */
+#editor-context-menu > ul > li {
+    float: left;
+    background: var(--editor-second-white-color);
+}
+
+/* Add hover effect (TODO: Maybe add color indicator )*/
+#editor-context-menu > ul > li:hover {
+    background: var(--editor-third-white-color);
+}
+
+/* Round the borders of the first and last menu item*/
+#editor-context-menu > ul > li:first-child {
+    border-radius: 6px 0px 0px 6px;
+}
+#editor-context-menu > ul > li:last-child {
+    border-radius: 0px 6px 6px 0px;
+}
+
+/* Add divider between menu elements */
+#editor-context-menu > ul > li:not(:last-child)::after {
+    content: "";
+
+    background: var(--editor-first-black-color);
+    height: 100%;
+    width: 2px; 
+
+    display: inline-block;
+    position: absolute;
+}
+
+/* Style button and remove defaults (except padding) */
+#editor-context-menu > ul > li > button {
+    background: none;
+    color: inherit;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+
+    padding: 6px;
+}

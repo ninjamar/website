@@ -5,71 +5,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <meta name="description" content="Text editor">
-        <title>Text editor</title>
-
-        <!-- Need lucide for icons (TODO: Replace using text)-->
-        <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-        <!-- Lucide intialization -->
-        <script>document.addEventListener("DOMContentLoaded", ()=>lucide.createIcons());</script>
+        <title>WYSIWYG Editor</title>
+        
         <script src="/static/projects/editor/editor.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                Editor(document.querySelector("#editor"));
+            });
+        </script>
         <style>
-            * {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-                font-size: 100.5%;
-                line-height: 1.25em;
+            :root {
+                --first-white-color: #f2f2f2;
+                --second-white-color: #C9C9C9;
+                --third-white-color: #8a8a8a;
+                --first-black-color: #333333;
+            }
+            html, body {
+                height: 100%;
             }
             body {
-                width: 75%;
+                width: 50%;
                 margin: auto;
+                background: var(--first-white-color);
             }
+
+            * {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+                line-height: 1.25em;
+                color: var(--first-black-color);
+            }
+
+            /* Set default font sizings for headers*/
+            h1{font-size:2.5em}h2{font-size:2em}h3{font-size:1.75em}h4{font-size:1.5em}h5{font-size:1.25em}h6{font-size:1em}p{font-size:1em}
+
+            
             #editor {
                 outline: none;
                 margin-top: 100px;
             }
-
-            #context-menu {
-
-                position: absolute;
-                user-select: none;
-                background: gray;
-                width: fit-content;
-
-                padding: 4px 7px 4px 7px;
-                border-radius: 10px;
-                
-                line-height: 1em;
-                transform: translateX(-50%);
-
-            }
-
-            #context-menu svg {
-                height: 1em;
-                width: auto;
-            }
-            .hidden {
-                display: none;
-            }
         </style>
     </head>
     <body>
-        <!-- Context menu for selection -->
-        <div id="context-menu" class="hidden">
-            <!-- 
-                There are two ways to call apply style, with a tag name (and props), or a css rule.
-                The css rule cannot be shorthand.
-            -->
-            <i onclick="applyStyle('B')" data-lucide="bold"></i>
-            <i onclick="applyStyle('font-style', 'italic')" data-lucide="italic"></i>
-            <i onclick="applyStyle('text-decoration-line', 'line-through')" data-lucide="strikethrough"></i>
-            <i onclick="applyStyle('text-decoration-line', 'underline')" data-lucide="underline"></i>
-
-            <i onclick="applyStyle('font-size', '2em')" data-lucide="heading-1"></i>
-            <i onclick="applyStyle('font-size', '1.5em')" data-lucide="heading-2"></i>
-            <i onclick="applyStyle('font-size', '1.3em')" data-lucide="heading-3"></i>
-            <i onclick="applyStyle('font-size', '1em')" data-lucide="heading-4"></i>
-            <i onclick="applyStyle('font-size', '0.8em')" data-lucide="heading-5"></i>
-            <i onclick="applyStyle('font-size', '0.7em')" data-lucide="heading-6"></i>
-        </div>
         <div id="editor" contenteditable="true">
             This div is editable
             <br>

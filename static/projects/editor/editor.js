@@ -104,18 +104,18 @@ window.Editor = (function(window){
     }
     
     // Compute an option
-    function getComputedOption(opt, text){
-        let e;
-        if (opt.tagName){ // If style
-            e = document.createElement(opt.tagName);
+    function getComputedOption(option, text){
+        let element;
+        if (option.tagName){ // If style
+            element = document.createElement(option.tagName);
         } else {
-            e = document.createElement("SPAN");
-            e.style[opt.css.name] = opt.css.value;
+            element = document.createElement("SPAN");
+            element.style[option.css.name] = option.css.value;
         }
         if (text){
-            e.textContent = text;
+            element.textContent = text;
         }
-        return e;
+        return element;
     }
 
     // Generate a list of options from an element
@@ -131,6 +131,8 @@ window.Editor = (function(window){
         ret = ret.map(x => {
             // Properties would have to be changed here
             if (x.style.length > 0){
+                // TODO: Won't work for when there are more than one styles
+                // Get the first style, then get the value for it
                 return createOption({ name: x.style[0], value: x.style[x.style[0]]});
             }
             return createOption({tagName: x.tagName});
@@ -139,17 +141,17 @@ window.Editor = (function(window){
     }
 
     // Toggle an option
-    function toggleOption(options_of_children, opt){
+    function toggleOption(childOptions, currOption){
 
         // Get a copy of the array
-        if (options_of_children.some(x => objectEquals(x, opt))){
-            options_of_children = options_of_children.filter(x => !objectEquals(x, opt));
+        if (childOptions.some(x => objectEquals(x, currOption))){
+            childOptions = childOptions.filter(x => !objectEquals(x, currOption));
         } else {
-            options_of_children.push(opt);
+            childOptions.push(currOption);
         }
-        return options_of_children;
+        return childOptions;
 
-        // if the option is inside options_of_children
+        // if the option is inside childOptions
         //  remove it
         // else
         //  add it
@@ -190,11 +192,11 @@ window.Editor = (function(window){
 
     // Toggle a style on an element
     function toggleStyle(){
-        let opt;
+        let currOption;
         if (arguments.length == 1){
-            opt = createOption({tagName: arguments[0]})
+            currOption = createOption({tagName: arguments[0]})
         } else if (arguments.length == 2){
-            opt = createOption({ name: arguments[0], value: arguments[1] })
+            currOption = createOption({ name: arguments[0], value: arguments[1] })
         } else {
             throw new Error("Need 1 or 2 arguments");
         }
@@ -204,12 +206,12 @@ window.Editor = (function(window){
         let newContents;
         
         if (contents.firstElementChild){
-            let options_of_children = createOptionsFromChild(contents.children[0]);
-            let filtered_children = toggleOption(options_of_children, opt);
-            newContents = computeAll(filtered_children, contents.textContent);
+            let childOptions = createOptionsFromChild(contents.children[0]);
+            let filteredChildren = toggleOption(childOptions, currOption);
+            newContents = computeAll(filteredChildren, contents.textContent);
 
         } else {
-            newContents = getComputedOption(opt, contents.textContent);
+            newContents = getComputedOption(currOption, contents.textContent);
         }
         
         range.insertNode(newContents);

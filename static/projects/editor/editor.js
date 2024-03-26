@@ -5,6 +5,7 @@
     Copyright (c) 2024 ninjamar
 
     [ ] TODO: Allow properties
+    [ ] TODO: Support links using properties
     [x] TODO: Turn into module
     [ ] TODO: Allow links
     [x] TODO: Don't use lucide icons
@@ -15,10 +16,10 @@
     [ ] TODO: Context menu moves after using header
     [ ] TODO: Briefly show menu to allow icons to preload
     [ ] TODO: Big and small text
-
 */
 
 window.Editor = (function(window){
+    // Set options for the context menu
     let menuOptions = {
         html: `
             <div id="editor-context-menu">
@@ -51,6 +52,7 @@ window.Editor = (function(window){
                 </ul>
             </div>
         `,
+        // Set event listenrs based on the name attribute
         listeners: {
             "bold": (() => toggleStyle("B")),
             "italic": (() => toggleStyle("font-style", "italic")),
@@ -59,12 +61,37 @@ window.Editor = (function(window){
             "header-2": (() => toggleStyle("H2"))
         }
     };
+    let currentScript = document.currentScript;
     let menu; // We set menu during initialization
 
-    // https://stackoverflow.com/a/16788517/21322342
-    function objectEquals(e,n){"use strict";if(null==e||null==n)return e===n;if(e.constructor!==n.constructor)return!1;if(e instanceof Function)return e===n;if(e instanceof RegExp)return e===n;if(e===n||e.valueOf()===n.valueOf())return!0;if(Array.isArray(e)&&e.length!==n.length)return!1;if(e instanceof Date)return!1;if(!(e instanceof Object))return!1;if(!(n instanceof Object))return!1;var r=Object.keys(e);return Object.keys(n).every((function(e){return-1!==r.indexOf(e)}))&&r.every((function(r){return objectEquals(e[r],n[r])}))}
+    // Taken form https://stackoverflow.com/a/16788517/21322342
+    function objectEquals(x, y) {
+        'use strict';
+    
+        if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
+        // after this just checking type of one would be enough
+        if (x.constructor !== y.constructor) { return false; }
+        // if they are functions, they should exactly refer to same one (because of closures)
+        if (x instanceof Function) { return x === y; }
+        // if they are regexps, they should exactly refer to same one (it is hard to better equality check on current ES)
+        if (x instanceof RegExp) { return x === y; }
+        if (x === y || x.valueOf() === y.valueOf()) { return true; }
+        if (Array.isArray(x) && x.length !== y.length) { return false; }
+    
+        // if they are dates, they must had equal valueOf
+        if (x instanceof Date) { return false; }
+    
+        // if they are strictly equal, they both need to be object at least
+        if (!(x instanceof Object)) { return false; }
+        if (!(y instanceof Object)) { return false; }
+    
+        // recursive object equality check
+        var p = Object.keys(x);
+        return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
+            p.every(function (i) { return objectEquals(x[i], y[i]); });
+    }
 
-    // Support a tag in future (using props)
+    // Create options for each element
     function createOption({tagName = null, props = {}, name = null, value = null} = {}){
         return {
             tagName: tagName,
@@ -75,6 +102,8 @@ window.Editor = (function(window){
             },
         };
     }
+    
+    // Compute an option
     function getComputedOption(opt, text){
         let e;
         if (opt.tagName){ // If style
@@ -89,7 +118,7 @@ window.Editor = (function(window){
         return e;
     }
 
-    // TODO: This fails for strikethrugh
+    // Generate a list of options from an element
     function createOptionsFromChild(child){
 
         let ret = [];
@@ -109,7 +138,7 @@ window.Editor = (function(window){
         return ret;
     }
 
-    // TODO: Comparison is totally broken (for strikethrough)
+    // Toggle an option
     function toggleOption(options_of_children, opt){
 
         // Get a copy of the array
@@ -126,7 +155,9 @@ window.Editor = (function(window){
         //  add it
     }
 
+    // Recursively compute every option from an array
     function computeAll(arr, text){
+        // [a, b, c] -> a.b.c
         if (arr.length > 0){
             let ret = getComputedOption(arr[0]);
             let curr = ret;
@@ -156,6 +187,8 @@ window.Editor = (function(window){
         else
             Create a new element with only style
     */
+
+    // Toggle a style on an element
     function toggleStyle(){
         let opt;
         if (arguments.length == 1){
@@ -182,6 +215,7 @@ window.Editor = (function(window){
         range.insertNode(newContents);
     }
 
+    // Add context menu triggers to an element
     function edit(element){
         let is_menu_shown = false;
 
@@ -220,11 +254,11 @@ window.Editor = (function(window){
 
     }
     
+    // Initialize external libraries
     // Load icon library
     // Make sure css is loaded
     // Inject context menu onto page
     // Add onclick to element
-    let currentScript = document.currentScript;
     function initialize(){
         // File constants
         let ICON_URL = new URL("https://unpkg.com/@phosphor-icons/web").href;

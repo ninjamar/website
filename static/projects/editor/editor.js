@@ -12,12 +12,14 @@
     [x] TODO: Make the selection menu pretty
     [ ] TODO: Filter based on uniqueness (only on header tag)
     [x] TODO: Clean up file
-    [ ] TODO: Handle comment nodes?
+    [x] TODO: Handle comment nodes?
     [ ] TODO: Context menu moves after using header
     [ ] TODO: Briefly show menu to allow icons to preload
     [ ] TODO: Big and small text
     [ ] TODO: Document this code
     [ ] TODO: Spin this code into it's own repo and use git submodules
+    [ ] TODO: Multiline selection doesn't work
+    [ ] TODO: Handle tab key
 */
 
 /**
@@ -69,7 +71,7 @@ window.Editor = (function(window){
     let currentScript = document.currentScript;
     let menu; // We set menu during initialization
 
-    // Taken form https://stackoverflow.com/a/16788517/21322342
+    // Taken from https://stackoverflow.com/a/16788517/21322342
 
     /**
      * Check object equality
@@ -257,9 +259,9 @@ window.Editor = (function(window){
         let range = window.getSelection().getRangeAt(0);   
         let contents = range.extractContents();
         let newContents;
-        
+
         if (contents.firstElementChild){
-            let childOptions = createOptionsFromChild(contents.children[0]);
+            let childOptions = createOptionsFromChild(contents.firstElementChild);
             let filteredChildren = toggleOption(childOptions, currOption);
             newContents = computeAll(filteredChildren, contents.textContent);
 

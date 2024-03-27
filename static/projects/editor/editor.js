@@ -12,15 +12,21 @@
     [x] TODO: Make the selection menu pretty
     [ ] TODO: Filter based on uniqueness (only on header tag)
     [x] TODO: Clean up file
-    [ ] TODO: Handle comment nodes?
+    [x] TODO: Handle comment nodes?
     [ ] TODO: Context menu moves after using header
     [ ] TODO: Briefly show menu to allow icons to preload
     [ ] TODO: Big and small text
     [ ] TODO: Document this code
     [ ] TODO: Spin this code into it's own repo and use git submodules
+    [ ] TODO: Multiline selection doesn't work
+    [x] TODO: Handle tab key
+    [ ] TODO: Handle tab deletion
+    [x] TODO: Configuration for editor
 */
 
-
+/**
+ * The editor
+ */
 window.Editor = (function(window){
     // Set options for the context menu
     let menuOptions = {
@@ -67,7 +73,7 @@ window.Editor = (function(window){
     let currentScript = document.currentScript;
     let menu; // We set menu during initialization
 
-    // Taken form https://stackoverflow.com/a/16788517/21322342
+    // Taken from https://stackoverflow.com/a/16788517/21322342
 
     /**
      * Check object equality
@@ -255,9 +261,9 @@ window.Editor = (function(window){
         let range = window.getSelection().getRangeAt(0);   
         let contents = range.extractContents();
         let newContents;
-        
+
         if (contents.firstElementChild){
-            let childOptions = createOptionsFromChild(contents.children[0]);
+            let childOptions = createOptionsFromChild(contents.firstElementChild);
             let filteredChildren = toggleOption(childOptions, currOption);
             newContents = computeAll(filteredChildren, contents.textContent);
 
@@ -273,7 +279,7 @@ window.Editor = (function(window){
      *
      * @param {HTMLElement} element - The element to make editable
      */
-    function edit(element){
+    function edit(element, {useTab = true} = {}){
         let is_menu_shown = false;
 
         let repositionMenu = (cords) => (menu.style.top = `calc(${cords.top}px - 2.5em)`) && (menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
@@ -281,11 +287,9 @@ window.Editor = (function(window){
         document.addEventListener("mouseup", e => {
             let selection = window.getSelection();
             if (selection != ""){
-
                 let range = selection.getRangeAt(0);
                 // Make sure that the range is inside the element, this is cleaner than having the event listener on document
                 if (element.contains(range.commonAncestorContainer)){
-                    // menu.classList.remove("editor-hidden");
                     menu.style.visibility = "visible";
 
                     is_menu_shown = true;
@@ -298,7 +302,6 @@ window.Editor = (function(window){
             // Only close the menu if it is shown and we aren't hovering over the menu
             if (is_menu_shown && !menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
                 is_menu_shown = false;
-                // menu.classList.add("editor-hidden");
                 menu.style.visibility = "hidden";
             }
         });
@@ -308,7 +311,27 @@ window.Editor = (function(window){
                 repositionMenu(selection.getRangeAt(0).getBoundingClientRect());
             }
         });
+        
+        
+        if (useTab){
+            element.addEventListener("keydown", e => {
+                // https://stackoverflow.com/a/32128448/21322342
+                if (e.key == "Tab") { // tab key
+                    e.preventDefault();
 
+                    let sel = window.getSelection();
+                    let range = sel.getRangeAt(0);
+
+                    let tabNode = document.createTextNode("\u00a0\u00a0\u00a0\u00a0");
+                    range.insertNode(tabNode);
+            
+                    range.setStartAfter(tabNode);
+                    range.setEndAfter(tabNode); 
+                    sel.removeRange(range);
+                    sel.addRange(range);
+                }
+            });
+        }    
     }
     
     /**

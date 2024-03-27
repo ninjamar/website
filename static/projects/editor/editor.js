@@ -16,7 +16,10 @@
     [ ] TODO: Context menu moves after using header
     [ ] TODO: Briefly show menu to allow icons to preload
     [ ] TODO: Big and small text
+    [ ] TODO: Document this code
+    [ ] TODO: Spin this code into it's own repo and use git submodules
 */
+
 
 window.Editor = (function(window){
     // Set options for the context menu
@@ -65,6 +68,14 @@ window.Editor = (function(window){
     let menu; // We set menu during initialization
 
     // Taken form https://stackoverflow.com/a/16788517/21322342
+
+    /**
+     * Check object equality
+     *
+     * @param {object} x
+     * @param {object} y
+     * @return {boolean}
+     */
     function objectEquals(x, y) {
         'use strict';
     
@@ -91,8 +102,15 @@ window.Editor = (function(window){
             p.every(function (i) { return objectEquals(x[i], y[i]); });
     }
 
-    // Create options for each element
-    function createOption({tagName = null, props = {}, name = null, value = null} = {}){
+    /**
+     * Create options from default parameters
+     * 
+     * @typedef {object} Option
+     * 
+     * @param {object} [{tagName = null, props = {}, name = null, value = null}={}] - The default parameters
+     * @return {Option} The created object
+     */
+    function Option({tagName = null, props = {}, name = null, value = null} = {}){
         return {
             tagName: tagName,
             props : props,
@@ -103,8 +121,14 @@ window.Editor = (function(window){
         };
     }
     
-    // Compute an option
-    function getComputedOption(option, text){
+    /**
+     * Turn an option into an html element
+     *
+     * @param {Option} option - The option to compute
+     * @param {string} [text] - Optional text
+     * @return {HTMLElement} The computed element
+     */
+    function computeOption(option, text){
         let element;
         if (option.tagName){ // If style
             element = document.createElement(option.tagName);
@@ -118,7 +142,12 @@ window.Editor = (function(window){
         return element;
     }
 
-    // Generate a list of options from an element
+    /**
+     * Generate a list of options from an element
+     *
+     * @param {HTMLElement} child - An element to generate options from
+     * @return {Array.<Option>} A list of options
+     */
     function createOptionsFromChild(child){
 
         let ret = [];
@@ -133,14 +162,20 @@ window.Editor = (function(window){
             if (x.style.length > 0){
                 // TODO: Won't work for when there are more than one styles
                 // Get the first style, then get the value for it
-                return createOption({ name: x.style[0], value: x.style[x.style[0]]});
+                return Option({ name: x.style[0], value: x.style[x.style[0]]});
             }
-            return createOption({tagName: x.tagName});
+            return Option({tagName: x.tagName});
         });
         return ret;
     }
 
-    // Toggle an option
+    /**
+     * Toggle an option
+     *
+     * @param {Array.<Option>} childOptions - An array of options
+     * @param {Option} currOption - The option to toggle
+     * @return {Array.<Option>}
+     */
     function toggleOption(childOptions, currOption){
 
         // Get a copy of the array
@@ -157,23 +192,29 @@ window.Editor = (function(window){
         //  add it
     }
 
-    // Recursively compute every option from an array
-    function computeAll(arr, text){
+    /**
+     * Recursively compute every option from an array
+     *
+     * @param {Array.<Option>} options - A list of options
+     * @param {string} text - Text of element
+     * @return {HTMLElement} 
+     */
+    function computeAll(options, text){
         // [a, b, c] -> a.b.c
-        if (arr.length > 0){
-            let ret = getComputedOption(arr[0]);
+        if (options.length > 0){
+            let ret = computeOption(options[0]);
             let curr = ret;
             let elem;
 
-            for (let option of arr.slice(1)){ // We have already computed the first item
-                elem = getComputedOption(option);
+            for (let option of options.slice(1)){ // We have already computed the first item
+                elem = computeOption(option);
                 curr = curr.appendChild(elem);    
             }
             curr.appendChild(document.createTextNode(text));
             return ret;
 
         }
-        return getComputedOption(createOption({tagName: "SPAN"}), text);
+        return computeOption(Option({tagName: "SPAN"}), text);
     }
 
     // Replacement for document exec command
@@ -190,13 +231,23 @@ window.Editor = (function(window){
             Create a new element with only style
     */
 
-    // Toggle a style on an element
+    /**
+     * Toggle a style on an element
+     * 
+     * This function can be called with either 1 or 2 arguments
+     * TODO: Use object destructuring here
+     *
+     * @param {string} [tagName] - The tag to toggle
+     * 
+     * @param {string} [rule] - The rule to toggle
+     * @param {string} [value] - The value for the rule
+     */
     function toggleStyle(){
         let currOption;
         if (arguments.length == 1){
-            currOption = createOption({tagName: arguments[0]})
+            currOption = Option({tagName: arguments[0]})
         } else if (arguments.length == 2){
-            currOption = createOption({ name: arguments[0], value: arguments[1] })
+            currOption = Option({ name: arguments[0], value: arguments[1] })
         } else {
             throw new Error("Need 1 or 2 arguments");
         }
@@ -211,13 +262,17 @@ window.Editor = (function(window){
             newContents = computeAll(filteredChildren, contents.textContent);
 
         } else {
-            newContents = getComputedOption(currOption, contents.textContent);
+            newContents = computeOption(currOption, contents.textContent);
         }
         
         range.insertNode(newContents);
     }
 
-    // Add context menu triggers to an element
+    /**
+     * Add context menu triggers to an element
+     *
+     * @param {HTMLElement} element - The element to make editable
+     */
     function edit(element){
         let is_menu_shown = false;
 
@@ -256,24 +311,25 @@ window.Editor = (function(window){
 
     }
     
-    // Initialize external libraries
-    // Load icon library
-    // Make sure css is loaded
-    // Inject context menu onto page
-    // Add onclick to element
+    /**
+     * Initialize external libraries
+     */
     function initialize(){
+        // TODO: Should these be at the top of the file?
         // File constants
         let ICON_URL = new URL("https://unpkg.com/@phosphor-icons/web").href;
         let CSS_URL = new URL("./editor.css", currentScript.src).href;
 
         // Check if icon library has been loaded
         if (!document.querySelector(`script[src='${ICON_URL}']`)){
+            // Load icon library
             let script = document.createElement("script");
             script.src = ICON_URL;
             document.head.appendChild(script);
         }
         // Check if css has been loaded
         if (window.getComputedStyle(document.body).getPropertyValue("--editor") != "1"){
+            // Load CSS library
             let link = document.createElement("link");
             link.rel = "stylesheet";
             link.href = CSS_URL;
@@ -281,6 +337,7 @@ window.Editor = (function(window){
         }
         // Check if context menu has been loaded
         if (!document.querySelector("#editor-context-menu")){
+            // Load context menu
             let div = document.createElement("div");
             div.innerHTML = menuOptions.html;
             // Hide the element to prevent DOM flashes

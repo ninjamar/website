@@ -20,7 +20,9 @@
     [ ] TODO: Spin this code into it's own repo and use git submodules
 */
 
-
+/**
+ * The editor
+ */
 window.Editor = (function(window){
     // Set options for the context menu
     let menuOptions = {

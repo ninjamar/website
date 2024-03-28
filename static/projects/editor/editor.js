@@ -22,140 +22,94 @@
     [x] TODO: Handle tab key
     [ ] TODO: Handle tab deletion
     [x] TODO: Configuration for editor
+    [ ] TODO: Turn this into a class
 */
 
+
+// Taken from https://stackoverflow.com/a/16788517/21322342
 /**
- * The editor
+ * Check object equality
+ *
+ * @param {object} x
+ * @param {object} y
+ * @return {boolean}
  */
-window.Editor = (function(window){
-    // Set options for the context menu
-    let menuOptions = {
-        html: `
-            <div id="editor-context-menu">
-                <ul>
-                    <li>
-                        <button name="bold">
-                            <i class="ph ph-text-b"></i>
-                        </button>
-                    </li>
-                    <li>
-                        <button name="italic">
-                            <i class="ph ph-text-italic"></i>
-                        </button>
-                    </li>
-                    <li>
-                        <button name="strikethrough">
-                            <i class="ph ph-text-strikethrough"></i>
-                        </button>
-                    </li>
-                    <li>
-                        <button name="underline">
-                            <i class="ph ph-text-underline"></i>
-                        </button>
-                    </li>
-                    <li>
-                        <button name="header-2">
-                            <i class="ph ph-text-h-two"></i>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        `,
-        // Set event listenrs based on the name attribute
-        listeners: {
-            "bold": (() => toggleStyle("B")),
-            "italic": (() => toggleStyle("font-style", "italic")),
-            "strikethrough": (() => toggleStyle("text-decoration-line", "line-through")),
-            "underline": (() => toggleStyle("text-decoration-line", "underline")),
-            "header-2": (() => toggleStyle("H2"))
-        }
+function objectEquals(x, y) {
+    'use strict';
+
+    if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
+    // after this just checking type of one would be enough
+    if (x.constructor !== y.constructor) { return false; }
+    // if they are functions, they should exactly refer to same one (because of closures)
+    if (x instanceof Function) { return x === y; }
+    // if they are regexps, they should exactly refer to same one (it is hard to better equality check on current ES)
+    if (x instanceof RegExp) { return x === y; }
+    if (x === y || x.valueOf() === y.valueOf()) { return true; }
+    if (Array.isArray(x) && x.length !== y.length) { return false; }
+
+    // if they are dates, they must had equal valueOf
+    if (x instanceof Date) { return false; }
+
+    // if they are strictly equal, they both need to be object at least
+    if (!(x instanceof Object)) { return false; }
+    if (!(y instanceof Object)) { return false; }
+
+    // recursive object equality check
+    var p = Object.keys(x);
+    return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
+        p.every(function (i) { return objectEquals(x[i], y[i]); });
+}
+/**
+ * Create options from default parameters
+ * 
+ * @typedef {object} Option
+ * 
+ * @param {object} [{tagName = null, props = {}, name = null, value = null}={}] - The default parameters
+ * @return {Option} The created object
+ */
+function Option({tagName = null, props = {}, name = null, value = null} = {}){
+    return {
+        tagName: tagName,
+        props : props,
+        css: {
+            name: name,
+            value: value
+        },
     };
-    let currentScript = document.currentScript;
-    let menu; // We set menu during initialization
-
-    // Taken from https://stackoverflow.com/a/16788517/21322342
-
-    /**
-     * Check object equality
-     *
-     * @param {object} x
-     * @param {object} y
-     * @return {boolean}
-     */
-    function objectEquals(x, y) {
-        'use strict';
-    
-        if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
-        // after this just checking type of one would be enough
-        if (x.constructor !== y.constructor) { return false; }
-        // if they are functions, they should exactly refer to same one (because of closures)
-        if (x instanceof Function) { return x === y; }
-        // if they are regexps, they should exactly refer to same one (it is hard to better equality check on current ES)
-        if (x instanceof RegExp) { return x === y; }
-        if (x === y || x.valueOf() === y.valueOf()) { return true; }
-        if (Array.isArray(x) && x.length !== y.length) { return false; }
-    
-        // if they are dates, they must had equal valueOf
-        if (x instanceof Date) { return false; }
-    
-        // if they are strictly equal, they both need to be object at least
-        if (!(x instanceof Object)) { return false; }
-        if (!(y instanceof Object)) { return false; }
-    
-        // recursive object equality check
-        var p = Object.keys(x);
-        return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
-            p.every(function (i) { return objectEquals(x[i], y[i]); });
+}
+/**
+ * Turn an option into an html element
+ *
+ * @param {Option} option - The option to compute
+ * @param {string} [text] - Optional text
+ * @return {HTMLElement} The computed element
+ */
+function computeOption(option, text){
+    let element;
+    if (option.tagName){ // If style
+        element = document.createElement(option.tagName);
+    } else {
+        element = document.createElement("SPAN");
+        element.style[option.css.name] = option.css.value;
     }
-
-    /**
-     * Create options from default parameters
-     * 
-     * @typedef {object} Option
-     * 
-     * @param {object} [{tagName = null, props = {}, name = null, value = null}={}] - The default parameters
-     * @return {Option} The created object
-     */
-    function Option({tagName = null, props = {}, name = null, value = null} = {}){
-        return {
-            tagName: tagName,
-            props : props,
-            css: {
-                name: name,
-                value: value
-            },
-        };
+    if (text){
+        element.textContent = text;
     }
-    
-    /**
-     * Turn an option into an html element
-     *
-     * @param {Option} option - The option to compute
-     * @param {string} [text] - Optional text
-     * @return {HTMLElement} The computed element
-     */
-    function computeOption(option, text){
-        let element;
-        if (option.tagName){ // If style
-            element = document.createElement(option.tagName);
-        } else {
-            element = document.createElement("SPAN");
-            element.style[option.css.name] = option.css.value;
-        }
-        if (text){
-            element.textContent = text;
-        }
-        return element;
-    }
+    return element;
+}
 
+export class EditorBackend {
+
+    constructor(){
+
+    }
     /**
      * Generate a list of options from an element
      *
      * @param {HTMLElement} child - An element to generate options from
      * @return {Array.<Option>} A list of options
      */
-    function createOptionsFromChild(child){
-
+    createOptionsFromChild(child){
         let ret = [];
         let curr = child;
 
@@ -174,7 +128,6 @@ window.Editor = (function(window){
         });
         return ret;
     }
-
     /**
      * Toggle an option
      *
@@ -182,7 +135,7 @@ window.Editor = (function(window){
      * @param {Option} currOption - The option to toggle
      * @return {Array.<Option>}
      */
-    function toggleOption(childOptions, currOption){
+    toggleOption(childOptions, currOption){
 
         // Get a copy of the array
         if (childOptions.some(x => objectEquals(x, currOption))){
@@ -197,7 +150,6 @@ window.Editor = (function(window){
         // else
         //  add it
     }
-
     /**
      * Recursively compute every option from an array
      *
@@ -205,7 +157,7 @@ window.Editor = (function(window){
      * @param {string} text - Text of element
      * @return {HTMLElement} 
      */
-    function computeAll(options, text){
+    computeAll(options, text){
         // [a, b, c] -> a.b.c
         if (options.length > 0){
             let ret = computeOption(options[0]);
@@ -222,7 +174,6 @@ window.Editor = (function(window){
         }
         return computeOption(Option({tagName: "SPAN"}), text);
     }
-
     // Replacement for document exec command
     /* 
         if contents.firstElementChild
@@ -248,7 +199,7 @@ window.Editor = (function(window){
      * @param {string} [rule] - The rule to toggle
      * @param {string} [value] - The value for the rule
      */
-    function toggleStyle(){
+    toggleStyle(){
         let currOption;
         if (arguments.length == 1){
             currOption = Option({tagName: arguments[0]})
@@ -263,9 +214,9 @@ window.Editor = (function(window){
         let newContents;
 
         if (contents.firstElementChild){
-            let childOptions = createOptionsFromChild(contents.firstElementChild);
-            let filteredChildren = toggleOption(childOptions, currOption);
-            newContents = computeAll(filteredChildren, contents.textContent);
+            let childOptions = this.createOptionsFromChild(contents.firstElementChild);
+            let filteredChildren = this.toggleOption(childOptions, currOption);
+            newContents = this.computeAll(filteredChildren, contents.textContent);
 
         } else {
             newContents = computeOption(currOption, contents.textContent);
@@ -273,26 +224,118 @@ window.Editor = (function(window){
         
         range.insertNode(newContents);
     }
+}
+let MENU_HTML = `<div id="editor-context-menu">
+                    <ul>
+                        <li>
+                            <button name="bold">
+                                <i class="ph ph-text-b"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button name="italic">
+                                <i class="ph ph-text-italic"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button name="strikethrough">
+                                <i class="ph ph-text-strikethrough"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button name="underline">
+                                <i class="ph ph-text-underline"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button name="header-2">
+                                <i class="ph ph-text-h-two"></i>
+                            </button>
+                        </li>
+                    </ul>
+                    </div>`;
 
+let ICON_URL = new URL("https://unpkg.com/@phosphor-icons/web").href;
+let CSS_URL = new URL("./editor.css", import.meta.url).href;
+
+/**
+ * Initialize external libraries
+ */
+function initializeDependencies(){
+    // Check if icon library has been loaded
+    if (!document.querySelector(`script[src='${ICON_URL}']`)){
+        // Load icon library
+        let script = document.createElement("script");
+        script.src = ICON_URL;
+        document.head.appendChild(script);
+    }
+    // Check if css has been loaded
+    if (window.getComputedStyle(document.body).getPropertyValue("--editor") != "1"){
+        // Load CSS library
+        let link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = CSS_URL;
+        document.head.appendChild(link);
+    }
+}
+if (document.readyState == "interactive"){
+    initializeDependencies()
+} else {
+    document.addEventListener("DOMContentLoaded", initializeDependencies);
+}
+
+export default class Editor {
+    constructor(element, options){
+        this.element = element;
+
+        this.backend = new EditorBackend();
+
+        this.menuOptions = {};
+        this.menuOptions.html = MENU_HTML;
+        this.menuOptions.listeners = {
+            "bold": (() => this.backend.toggleStyle("B")),
+            "italic": (() => this.backend.toggleStyle("font-style", "italic")),
+            "strikethrough": (() => this.backend.toggleStyle("text-decoration-line", "line-through")),
+            "underline": (() =>this.backend.toggleStyle("text-decoration-line", "underline")),
+            "header-2": (() => this.backend.toggleStyle("H2"))
+        };
+
+        this.isMenuShown = false;
+        this.menu = null;
+
+        // Check if context menu has been loaded
+        if (!document.querySelector("#editor-context-menu")){
+            // Load context menu
+            let div = document.createElement("div");
+            div.innerHTML = this.menuOptions.html;
+            // Hide the element to prevent DOM flashes
+            div.firstElementChild.style.visibility = "hidden";
+            // Menu is all the way from the top
+            this.menu = document.body.appendChild(div.firstElementChild);
+        }
+        // Add event listenrs to context menu
+        for (let type of Object.keys(this.menuOptions.listeners)){
+            document.querySelector(`#editor-context-menu > ul > li > button[name='${type}']`).addEventListener("click", this.menuOptions.listeners[type]);
+        }
+        this.initialize(options);
+    }
     /**
      * Add context menu triggers to an element
      *
-     * @param {HTMLElement} element - The element to make editable
+     * TODO: Fix jsdoc
      */
-    function edit(element, {useTab = true} = {}){
-        let is_menu_shown = false;
-
-        let repositionMenu = (cords) => (menu.style.top = `calc(${cords.top}px - 2.5em)`) && (menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
+    initialize({useTab = true, dedent = true} = {}){
+        let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
 
         document.addEventListener("mouseup", e => {
             let selection = window.getSelection();
             if (selection != ""){
                 let range = selection.getRangeAt(0);
                 // Make sure that the range is inside the element, this is cleaner than having the event listener on document
-                if (element.contains(range.commonAncestorContainer)){
-                    menu.style.visibility = "visible";
+                if (this.element.contains(range.commonAncestorContainer)){
+                    this.menu.style.visibility = "visible";
+                    this.isMenuShown = true;
 
-                    is_menu_shown = true;
                     let cords = range.getBoundingClientRect();
                     repositionMenu(cords);
                 }
@@ -300,9 +343,9 @@ window.Editor = (function(window){
         });
         document.addEventListener("mousedown", e => {
             // Only close the menu if it is shown and we aren't hovering over the menu
-            if (is_menu_shown && !menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
-                is_menu_shown = false;
-                menu.style.visibility = "hidden";
+            if (this.isMenuShown && !this.menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
+                this.isMenuShown = false;
+                this.menu.style.visibility = "hidden";
             }
         });
         window.addEventListener("resize", () => {
@@ -311,70 +354,31 @@ window.Editor = (function(window){
                 repositionMenu(selection.getRangeAt(0).getBoundingClientRect());
             }
         });
-        
-        
+
+        if (dedent){
+            this.element.innerHTML = this.element.innerHTML.replaceAll("\n            ", "\n"); // TODO: Fix - wrong number of indentation
+        }
+
         if (useTab){
-            element.addEventListener("keydown", e => {
+            this.element.addEventListener("keydown", e => {
                 // https://stackoverflow.com/a/32128448/21322342
-                if (e.key == "Tab") { // tab key
+                if (e.key == "Tab"){
                     e.preventDefault();
 
                     let sel = window.getSelection();
                     let range = sel.getRangeAt(0);
 
-                    let tabNode = document.createTextNode("\u00a0\u00a0\u00a0\u00a0");
+                    let tabNode = document.createTextNode("\t");
                     range.insertNode(tabNode);
             
                     range.setStartAfter(tabNode);
                     range.setEndAfter(tabNode); 
                     sel.removeRange(range);
                     sel.addRange(range);
+
                 }
             });
-        }    
-    }
-    
-    /**
-     * Initialize external libraries
-     */
-    function initialize(){
-        // TODO: Should these be at the top of the file?
-        // File constants
-        let ICON_URL = new URL("https://unpkg.com/@phosphor-icons/web").href;
-        let CSS_URL = new URL("./editor.css", currentScript.src).href;
-
-        // Check if icon library has been loaded
-        if (!document.querySelector(`script[src='${ICON_URL}']`)){
-            // Load icon library
-            let script = document.createElement("script");
-            script.src = ICON_URL;
-            document.head.appendChild(script);
-        }
-        // Check if css has been loaded
-        if (window.getComputedStyle(document.body).getPropertyValue("--editor") != "1"){
-            // Load CSS library
-            let link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.href = CSS_URL;
-            document.head.appendChild(link);
-        }
-        // Check if context menu has been loaded
-        if (!document.querySelector("#editor-context-menu")){
-            // Load context menu
-            let div = document.createElement("div");
-            div.innerHTML = menuOptions.html;
-            // Hide the element to prevent DOM flashes
-            div.firstElementChild.style.visibility = "hidden";
-            // Menu is all the way from the top
-            menu = document.body.appendChild(div.firstElementChild);
-        }
-        // Add event listenrs to context menu
-        for (let type of Object.keys(menuOptions.listeners)){
-            document.querySelector(`#editor-context-menu > ul > li > button[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
         }
     }
 
-    document.addEventListener("DOMContentLoaded", initialize);
-
-    return edit;
-})(window);
+}

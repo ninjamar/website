@@ -1,0 +1,10 @@
+{
+    "to": "projects",
+    "exclude": [
+        ".git",
+        "README.md",
+        "LICENSE",
+        ".zbuild",
+        ".gitignore"
+    ]
+}

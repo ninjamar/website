@@ -1,8 +1,7 @@
-"use strict";
-
 /* 
     Text Editor
     Copyright (c) 2024 ninjamar
+    https://github.com/ninjamar/editor
 
     [ ] TODO: Allow properties
     [ ] TODO: Support links using properties
@@ -291,7 +290,7 @@ function toggleStyle(){
     range.insertNode(newContents);
 }
 
-export default class Editor {
+class Editor {
     constructor(element, {useTab = true} = {}){
         this.element = element;
         this.useTab = useTab;
@@ -374,3 +373,5 @@ export default class Editor {
         }
     }
 }
+
+export { toggleStyle, Editor };

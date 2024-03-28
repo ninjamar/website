@@ -1,0 +1,3 @@
+[submodule "projects/editor"]
+	path = projects/editor
+	url = https://github.com/ninjamar/editor.git

@@ -21,14 +21,8 @@ jobs:
       - name: Install
         run: python3 -m pip install staticjinja
       
-      - name: Ensure output
-        run: mkdir -p dist
-
-      - name: Copy static
-        run: python3 build.py static
-
       - name: Build
-        run: python3 build.py template
+        run: python3 build.py production
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

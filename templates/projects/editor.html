@@ -13,7 +13,9 @@
             import Editor from "/static/projects/editor/editor.js";
 
             document.addEventListener("DOMContentLoaded", () => {
-                window.e = new Editor(document.querySelector("#editor"), {useTab: true, dedent: true});
+                let editorElement = document.querySelector("#editor");
+                editorElement.innerHTML = editorElement.innerHTML.replaceAll("\n            ", "\n"); // TODO: Fix - wrong number of indentation
+                let editor = new Editor(editorElement, {useTab: true});
             });
         </script>
         <style>

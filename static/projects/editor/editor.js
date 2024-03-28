@@ -292,8 +292,10 @@ function toggleStyle(){
 }
 
 export default class Editor {
-    constructor(element, options){
+    constructor(element, {useTab = true} = {}){
         this.element = element;
+        this.useTab = useTab;
+        
         this.isMenuShown = false;
 
         this.menu = document.querySelector("#editor-context-menu") || null;
@@ -309,17 +311,17 @@ export default class Editor {
         }
         // Add event listeners to context menu
         for (let type of Object.keys(menuOptions.listeners)){
-            document.querySelector(`#editor-context-menu.button[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
+            document.querySelector(`#editor-context-menu button[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
         }
         // Initialize the context menu
-        this._initialize(options);
+        this._initialize();
     }
     /**
      * Add context menu triggers to an element
      *
      * TODO: Fix jsdoc
      */
-    _initialize({useTab = true, dedent = true} = {}){
+    _initialize(){
         let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
 
         document.addEventListener("mouseup", e => {
@@ -350,11 +352,7 @@ export default class Editor {
             }
         });
 
-        if (dedent){
-            this.element.innerHTML = this.element.innerHTML.replaceAll("\n            ", "\n"); // TODO: Fix - wrong number of indentation
-        }
-
-        if (useTab){
+        if (this.useTab){
             this.element.addEventListener("keydown", e => {
                 // https://stackoverflow.com/a/32128448/21322342
                 if (e.key == "Tab"){

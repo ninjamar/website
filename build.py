@@ -56,6 +56,7 @@ if __name__ == "__main__":
         static()
 
         print("Updating submodules")
+        os.system("git submodule update --init --recursive")
         os.system("git submodule update --remote --merge")
         print("Submodules updated")
 

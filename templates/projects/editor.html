@@ -13,10 +13,7 @@
             import Editor from "/static/projects/editor/editor.js";
 
             document.addEventListener("DOMContentLoaded", () => {
-                let editorElement = document.querySelector("#editor");
-                // editorElement.innerHTML = editorElement.innerHTML.replaceAll("\n            ", "\n")
-
-                window.e = new Editor(editorElement, {useTab: true, dedent: true});
+                window.e = new Editor(document.querySelector("#editor"), {useTab: true, dedent: true});
             });
         </script>
         <style>

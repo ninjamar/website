@@ -14,19 +14,88 @@
     [x] TODO: Clean up file
     [x] TODO: Handle comment nodes?
     [ ] TODO: Context menu moves after using header
-    [ ] TODO: Briefly show menu to allow icons to preload
+    [x] TODO: Preload menu
     [ ] TODO: Big and small text
     [ ] TODO: Document this code
     [ ] TODO: Spin this code into it's own repo and use git submodules
     [ ] TODO: Multiline selection doesn't work
     [x] TODO: Handle tab key
-    [ ] TODO: Handle tab deletion
+    [x] TODO: Handle tab deletion
     [x] TODO: Configuration for editor
-    [ ] TODO: Turn this into a class
+    [x] TODO: Turn this into a class
 */
 
+let menuOptions = {
+    html: `
+        <div id="editor-context-menu">
+            <ul>
+                <li>
+                    <button name="bold">
+                        <i class="ph ph-text-b"></i>
+                    </button>
+                </li>
+                <li>
+                    <button name="italic">
+                        <i class="ph ph-text-italic"></i>
+                    </button>
+                </li>
+                <li>
+                    <button name="strikethrough">
+                        <i class="ph ph-text-strikethrough"></i>
+                    </button>
+                </li>
+                <li>
+                    <button name="underline">
+                        <i class="ph ph-text-underline"></i>
+                    </button>
+                </li>
+                <li>
+                    <button name="header-2">
+                        <i class="ph ph-text-h-two"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    `,
+    // Set event listeners based on the name attribute
+    listeners: {
+        "bold": (() => toggleStyle("B")),
+        "italic": (() => toggleStyle("font-style", "italic")),
+        "strikethrough": (() => toggleStyle("text-decoration-line", "line-through")),
+        "underline": (() => toggleStyle("text-decoration-line", "underline")),
+        "header-2": (() => toggleStyle("H2"))
+    }
+};
+let ICON_URL = new URL("https://unpkg.com/@phosphor-icons/web").href;
+let CSS_URL = new URL("./editor.css", import.meta.url).href;
 
-// Taken from https://stackoverflow.com/a/16788517/21322342
+
+/**
+ * Initialize external libraries
+ */
+function initializeDependencies(){
+    // Check if icon library has been loaded
+    if (!document.querySelector(`script[src='${ICON_URL}']`)){
+        // Load icon library
+        let script = document.createElement("script");
+        script.src = ICON_URL;
+        document.head.appendChild(script);
+    }
+    // Check if css has been loaded
+    if (window.getComputedStyle(document.body).getPropertyValue("--editor") != "1"){
+        // Load CSS library
+        let link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = CSS_URL;
+        document.head.appendChild(link);
+    }
+}
+if (document.readyState == "interactive"){
+    initializeDependencies()
+} else {
+    document.addEventListener("DOMContentLoaded", initializeDependencies);
+}
+
 /**
  * Check object equality
  *
@@ -35,7 +104,7 @@
  * @return {boolean}
  */
 function objectEquals(x, y) {
-    'use strict';
+    // Taken from https://stackoverflow.com/a/16788517/21322342
 
     if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
     // after this just checking type of one would be enough
@@ -59,6 +128,7 @@ function objectEquals(x, y) {
     return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
         p.every(function (i) { return objectEquals(x[i], y[i]); });
 }
+// TODO: Use a dataclass for this
 /**
  * Create options from default parameters
  * 
@@ -170,19 +240,6 @@ function computeAll(options, text){
     return computeOption(Option({tagName: "SPAN"}), text);
 }
 
-// Replacement for document exec command
-/* 
-    if contents.firstElementChild
-
-        For every child of contents.children[0]
-            add element name to array
-
-        If the current style isn't in this array, add it
-        If current style is in this array, remove it
-        Create a new element from this array
-    else
-        Create a new element with only style
-*/
 /**
  * Toggle a style on an element
  * 
@@ -195,6 +252,20 @@ function computeAll(options, text){
  * @param {string} [value] - The value for the rule
  */
 function toggleStyle(){
+    /* 
+        Replacement for document exec command
+        if contents.firstElementChild
+
+            For every child of contents.children[0]
+                add element name to array
+
+            If the current style isn't in this array, add it
+            If current style is in this array, remove it
+            Create a new element from this array
+        else
+            Create a new element with only style
+    */
+
     let currOption;
     if (arguments.length == 1){
         currOption = Option({tagName: arguments[0]})
@@ -220,84 +291,9 @@ function toggleStyle(){
     range.insertNode(newContents);
 }
 
-let menuOptions = {
-    html: `
-        <div id="editor-context-menu">
-            <ul>
-                <li>
-                    <button name="bold">
-                        <i class="ph ph-text-b"></i>
-                    </button>
-                </li>
-                <li>
-                    <button name="italic">
-                        <i class="ph ph-text-italic"></i>
-                    </button>
-                </li>
-                <li>
-                    <button name="strikethrough">
-                        <i class="ph ph-text-strikethrough"></i>
-                    </button>
-                </li>
-                <li>
-                    <button name="underline">
-                        <i class="ph ph-text-underline"></i>
-                    </button>
-                </li>
-                <li>
-                    <button name="header-2">
-                        <i class="ph ph-text-h-two"></i>
-                    </button>
-                </li>
-            </ul>
-        </div>
-    `,
-    // Set event listeners based on the name attribute
-    listeners: {
-        "bold": (() => toggleStyle("B")),
-        "italic": (() => toggleStyle("font-style", "italic")),
-        "strikethrough": (() => toggleStyle("text-decoration-line", "line-through")),
-        "underline": (() => toggleStyle("text-decoration-line", "underline")),
-        "header-2": (() => toggleStyle("H2"))
-    }
-};
-
-let ICON_URL = new URL("https://unpkg.com/@phosphor-icons/web").href;
-let CSS_URL = new URL("./editor.css", import.meta.url).href;
-
-/**
- * Initialize external libraries
- */
-function initializeDependencies(){
-    // Check if icon library has been loaded
-    if (!document.querySelector(`script[src='${ICON_URL}']`)){
-        // Load icon library
-        let script = document.createElement("script");
-        script.src = ICON_URL;
-        document.head.appendChild(script);
-    }
-    // Check if css has been loaded
-    if (window.getComputedStyle(document.body).getPropertyValue("--editor") != "1"){
-        // Load CSS library
-        let link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = CSS_URL;
-        document.head.appendChild(link);
-    }
-}
-if (document.readyState == "interactive"){
-    initializeDependencies()
-} else {
-    document.addEventListener("DOMContentLoaded", initializeDependencies);
-}
-
 export default class Editor {
-    
     constructor(element, options){
-
         this.element = element;
-        this.menuOptions = menuOptions;
-
         this.isMenuShown = false;
 
         this.menu = document.querySelector("#editor-context-menu") || null;
@@ -305,26 +301,25 @@ export default class Editor {
         if (!document.querySelector("#editor-context-menu")){
             // Load context menu
             let div = document.createElement("div");
-            div.innerHTML = this.menuOptions.html;
+            div.innerHTML = menuOptions.html;
             // Hide the element to prevent DOM flashes
             div.firstElementChild.style.visibility = "hidden";
             // Menu is all the way from the top
             this.menu = document.body.appendChild(div.firstElementChild);
         }
-
         // Add event listeners to context menu
-        for (let type of Object.keys(this.menuOptions.listeners)){
-            document.querySelector(`#editor-context-menu > ul > li > button[name='${type}']`).addEventListener("click", this.menuOptions.listeners[type]);
+        for (let type of Object.keys(menuOptions.listeners)){
+            document.querySelector(`#editor-context-menu.button[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
         }
         // Initialize the context menu
-        this.initialize(options);
+        this._initialize(options);
     }
     /**
      * Add context menu triggers to an element
      *
      * TODO: Fix jsdoc
      */
-    initialize({useTab = true, dedent = true} = {}){
+    _initialize({useTab = true, dedent = true} = {}){
         let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
 
         document.addEventListener("mouseup", e => {

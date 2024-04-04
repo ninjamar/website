@@ -1,4 +1,4 @@
-import { Editor } from "./editor.js";
+import { Editor } from "./editor/editor.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     let editorElement = document.querySelector("#editor");

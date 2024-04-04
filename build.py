@@ -17,7 +17,7 @@ def unpack_submodules():
     modules = [x for x in subprocess.run("grep path .gitmodules | sed 's/.*= //'", shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8").split("\n") if x]
     for path in modules:
         # for every submodule copy it into OUTPUT_PREFIX, excluding exclude key in json
-        with open(path + "/.zbuild") as f:
+        with open(path + "/.build") as f:
             data = json.load(f)
             os.system(RSYNC_COMMAND.format(' '.join([f'--exclude=\'{e}\'' for e in data['exclude']]), path, OUTPUT_PREFIX + "/" + data["to"]))
 

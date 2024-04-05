@@ -82,7 +82,18 @@ if (document.readyState == "interactive"){
     document.addEventListener("DOMContentLoaded", initializeDependencies);
 }
 
-class Editor {
+/**
+ * The Editor
+ *
+ * @class Editor
+ */
+export class Editor {
+    /**
+     * Creates an instance of Editor.
+     * @param {HTMLElement} element - The element to put the editor on
+     * @param {Object} [{useTab = true}={}] - Options
+     * @memberof Editor
+     */
     constructor(element, {useTab = true} = {}){
         this.element = element;
         this.element.classList.add("editor"); // Add the editor class for identification
@@ -109,6 +120,7 @@ class Editor {
         // Initialize the context menu
         this._initialize();
     }
+
     /**
      * Add context menu triggers to an element
      *
@@ -116,7 +128,7 @@ class Editor {
      */
     _initialize(){
         let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
-
+        
         document.addEventListener("mouseup", e => {
             let selection = window.getSelection();
             if (selection != ""){
@@ -144,7 +156,6 @@ class Editor {
                 repositionMenu(selection.getRangeAt(0).getBoundingClientRect());
             }
         });
-
         if (this.useTab){
             this.element.addEventListener("keydown", e => {
                 // https://stackoverflow.com/a/32128448/21322342
@@ -166,6 +177,12 @@ class Editor {
             });
         }
     }
+    
+    save(){
+        return btoa(this.element.innerHTML);
+    }
+    load(data){
+        this.element.innerHTML = atob(data);
+        return true;
+    }
 }
-
-export { toggleStyle, Editor };

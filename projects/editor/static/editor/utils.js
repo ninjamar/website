@@ -1,13 +1,12 @@
 /**
  * Check object equality
+ * Taken from  https://stackoverflow.com/a/16788517/21322342
  *
  * @param {object} x
  * @param {object} y
  * @return {boolean}
  */
 export function objectEquals(x, y) {
-    // Taken from https://stackoverflow.com/a/16788517/21322342
-
     if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
     // after this just checking type of one would be enough
     if (x.constructor !== y.constructor) { return false; }
@@ -29,4 +28,15 @@ export function objectEquals(x, y) {
     var p = Object.keys(x);
     return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
         p.every(function (i) { return objectEquals(x[i], y[i]); });
+}
+
+/**
+ * Turn an element's attributes to an object
+ * Taken from https://stackoverflow.com/a/74215190/21322342
+ *
+ * @param {NamedNodeMap} attrs - The attributes
+ * @returns {Object} The object
+ */
+export function attributesToDict(attrs){
+    return Array.from(attrs).reduce((acc, x) => ({ ...acc, [x.name]: x.value}), {});
 }

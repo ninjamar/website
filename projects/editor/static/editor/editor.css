@@ -1,10 +1,8 @@
-
 :root {
     --editor: 1; /* Check if css file is loaded */
-    --editor-first-white-color: #f2f2f2;
-    --editor-second-white-color: #C9C9C9;
-    --editor-third-white-color: #8a8a8a;
-    --editor-first-black-color: #333333;
+    --editor-context-menu-item-background: #DEE2E6;
+    --editor-context-menu-item-hover: #CED4DA;
+    --editor-context-menu-divider: #343A40;
 }
 
 /* Context menu main  */
@@ -24,12 +22,12 @@
 /* Style every item in the list */
 #editor-context-menu > ul > li {
     float: left;
-    background: var(--editor-second-white-color);
+    background: var(--editor-context-menu-item-background)
 }
 
 /* Add hover effect (TODO: Maybe add color indicator )*/
 #editor-context-menu > ul > li:hover {
-    background: var(--editor-third-white-color);
+    background: var(--editor-context-menu-item-hover)
 }
 
 /* Round the borders of the first and last menu item*/
@@ -44,7 +42,7 @@
 #editor-context-menu > ul > li:not(:last-child)::after {
     content: "";
 
-    background: var(--editor-first-black-color);
+    background: var(--editor-context-menu-divider);
     height: 100%;
     width: 2px; 
 

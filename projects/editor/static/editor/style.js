@@ -1,4 +1,4 @@
-import { objectEquals } from "./utils.js";
+import { objectEquals, attributesToDict } from "./utils.js";
 
 /**
  * A class representing options for an element
@@ -49,7 +49,7 @@ class ElementOptions {
 }
 
 /**
- * Like ElementOptions, but just for when we need to use a singular style
+ * Like ElementOptions, but just for when we need to use a singular style (for convenience)
  *
  * @class StyledElementOptions
  * @extends {ElementOptions}
@@ -83,13 +83,8 @@ function createOptionsFromChild(child){
         curr = curr.firstElementChild;
     }
     ret = ret.map(elem => {
-        // Properties would have to be changed here
-        if (elem.style.length > 0){
-            // TODO: Won't work for when there are more than one styles
-            // Get the first style, then get the value for it
-            return new StyledElementOptions(elem.style[0], elem.style[elem.style[0]]); // TODO: only handles singular styles
-        }
-        return new ElementOptions(elem.tagName);
+        // Styles are inside of attributes
+        return new ElementOptions(elem.tagName, attributesToDict(elem.attributes));
     });
     return ret;
 }
@@ -117,7 +112,7 @@ function toggleOption(childOptions, currOption){
  *
  * @param {Array.<ElementOptions|StyledElementOptions>} options - A list of options
  * @param {string} text - Text of element
- * @return {HTMLElement} 
+ * @return {HTMLElement|Text} 
  */
 function computeAll(options, text){
     // [a, b, c] -> a.b.c
@@ -132,7 +127,8 @@ function computeAll(options, text){
         return ret;
 
     }
-    return new ElementOptions("SPAN").compute(text);
+    // If there aren't any options, then return a text node
+    return document.createTextNode(text); // 
 }
 
 /**
@@ -150,7 +146,7 @@ function findGreatestParent(range){
 
     let text = range.cloneContents().textContent;
     // If the parent of the ancestor has the same text
-    if (text == ancestor.parentElement.textContent){
+    if (ancestor.parentElement.textContent == text){
         let curr = ancestor.parentElement;
 
         // recusrively check, then return parent in a document fragment
@@ -169,17 +165,20 @@ function findGreatestParent(range){
 /**
  * Toggle a style on an element
  * 
- * This function can be called with either 1 or 2 arguments
+ * This function can be called with in the form of (tagName, attributes) or (rule, value) 
  * TODO: Use object destructuring here
  *
  * @param {string} [tagName] - The tag to toggle
+ * @param {string} [attributes] - The attributes for the tag
  * 
  * @param {string} [rule] - The rule to toggle
  * @param {string} [value] - The value for the rule
  */
-export function toggleStyle(){
+export function toggleStyle(first, second){
     /* 
         Replacement for document exec command
+        Get selection
+        Find greatest parent element
         if contents.firstElementChild
 
             For every child of contents.children[0]
@@ -191,25 +190,26 @@ export function toggleStyle(){
         else
             Create a new element with only style
     */
-
-    let currOption;
-    if (arguments.length == 1){
-        currOption = new ElementOptions(arguments[0]);
-    } else if (arguments.length == 2){
-        currOption = new StyledElementOptions(arguments[0], arguments[1]);
-    } else {
-        throw new Error("Need 1 or 2 arguments");
-    }
     
+    let currOption;
+    if (typeof second == 'object'){ // toggleStyle("b", {})
+        currOption = new ElementOptions(first, second);
+    } else { // toggleStyle("font-size", "1.5em")
+        currOption = new StyledElementOptions(first, second);
+    }
+
     let range = window.getSelection().getRangeAt(0);
     let contents = findGreatestParent(range); // Find the greatest element, see #9
 
     let newContents;
-
+    console.log("contents", contents);
     if (contents.firstElementChild){
         let childOptions = createOptionsFromChild(contents.firstElementChild);
+        console.log("child options", childOptions);
         let filteredChildren = toggleOption(childOptions, currOption);
+        console.log("filtered children", filteredChildren);
         newContents = computeAll(filteredChildren, contents.textContent);
+        console.log("new contents", newContents);
     } else {
         newContents = currOption.compute(contents.textContent);
     }

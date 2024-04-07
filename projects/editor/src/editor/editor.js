@@ -3,8 +3,9 @@
     Copyright (c) 2024 ninjamar
     https://github.com/ninjamar/editor
 */
-import { toggleStyle } from "./style.js";
+import { toggleStyle, styleAction, ElementOptions } from "./style.js";
 
+// Set options for the context menu
 let menuOptions = {
     html: `
         <div id="editor-context-menu">
@@ -44,17 +45,39 @@ let menuOptions = {
     `,
     // Set event listeners based on the name attribute
     listeners: {
-        "bold": (() => toggleStyle("B", {})),
-        "italic": (() => toggleStyle("font-style", "italic")),
-        "strikethrough": (() => toggleStyle("text-decoration-line", "line-through")),
-        "underline": (() => toggleStyle("text-decoration-line", "underline")),
-        "header-2": (() => toggleStyle("H2", {})),
-        "link": (() => toggleStyle("A", {"href": prompt("URL?")}))
+        "bold": (() => toggleStyle("E-BOLD")),
+        "italic": (() => toggleStyle("E-ITALIC")),
+        "strikethrough": (() => toggleStyle("E-STRIKETHROUGH")),
+        "underline": (() => toggleStyle("E-UNDERLINE")),
+        "header-2": (() => toggleStyle("H2")),
+        "link": (() => {
+            /*
+                A tags have special behavior
+                When an A tag gets added, it has a required href
+                When the A tag gets toggled, it should remove all A tags, regardless of href
+                Also, only prompt for url if the A tag is going to be added
+            */
+            styleAction(
+                null, // Placeholder option, doesn't get used
+                window.getSelection().getRangeAt(0), // Selection
+                (childOptions, currOption) => { // Callback when there are existing styles
+                    if (childOptions.some(x => x.tagName == "A")){ // If any of the existing styles are A tags
+                        return childOptions.filter(x => x.tagName != "A"); // Then remove all A tags
+                    } else { // Otherwise add A tag
+                        childOptions.push(new ElementOptions("A", {"href": prompt("URL?")}));
+                        return childOptions;
+                    }
+                }, 
+                (option, contents) => { // Callback when there isn't any existing styling
+                    return new ElementOptions("A", {"href": prompt("URL?")}).compute(contents.textContent);
+                }
+            );
+        })
     }
 };
+
 let ICON_URL = new URL("https://unpkg.com/@phosphor-icons/web").href;
 let CSS_URL = new URL("./editor.css", import.meta.url).href;
-
 
 /**
  * Initialize external libraries
@@ -76,6 +99,8 @@ function initializeDependencies(){
         document.head.appendChild(link);
     }
 }
+
+// Initialize dependencies once DOM has been loaded
 if (document.readyState == "interactive"){
     initializeDependencies()
 } else {
@@ -99,7 +124,6 @@ export class Editor {
         this.element.classList.add("editor"); // Add the editor class for identification
 
         this.useTab = useTab;
-        
         this.isMenuShown = false;
 
         this.menu = document.querySelector("#editor-context-menu") || null;
@@ -129,6 +153,7 @@ export class Editor {
     _initialize(){
         let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
         
+        // Remving mouse from selection
         document.addEventListener("mouseup", e => {
             let selection = window.getSelection();
             if (selection != ""){
@@ -143,6 +168,7 @@ export class Editor {
                 }
             }
         });
+        // Mouse down for selectiojn
         document.addEventListener("mousedown", e => {
             // Only close the menu if it is shown and we aren't hovering over the menu
             if (this.isMenuShown && !this.menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
@@ -150,12 +176,14 @@ export class Editor {
                 this.menu.style.visibility = "hidden";
             }
         });
+        // Move the menu on resizesss
         window.addEventListener("resize", () => {
             let selection = window.getSelection();
             if (selection != ""){
                 repositionMenu(selection.getRangeAt(0).getBoundingClientRect());
             }
         });
+        // Add handler for tabs
         if (this.useTab){
             this.element.addEventListener("keydown", e => {
                 // https://stackoverflow.com/a/32128448/21322342
@@ -178,6 +206,7 @@ export class Editor {
         }
     }
     
+    // Basic saving and loading
     save(){
         return btoa(this.element.innerHTML);
     }

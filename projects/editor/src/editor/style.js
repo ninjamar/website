@@ -1,11 +1,14 @@
 import { objectEquals, attributesToDict } from "./utils.js";
 
+let NOT_UNIQUE = ["SPAN"];
+
 /**
  * A class representing options for an element
  *
+ * @export
  * @class ElementOptions
  */
-class ElementOptions {
+export class ElementOptions {
     /**
      * Creates an instance of ElementOptions.
      * @param {string} tagName - The tagname of the element
@@ -19,7 +22,6 @@ class ElementOptions {
 
     /**
      * Check equality with this instance and another options
-     * TODO: Allow for less strictness here
      *
      * @param {ElementOptions} b - The object to compare with this
      * @return {boolean} The result of the comparison
@@ -28,6 +30,17 @@ class ElementOptions {
     equals(b){
         return this.tagName == b.tagName &&
             objectEquals(this.attributes, b.attributes);
+    }
+
+    /**
+     * Check if tag of this instance and another option are the same
+     *
+     * @param {ElementOptions} b - The object to compare tags with
+     * @return {boolean} The result of the comparison 
+     * @memberof ElementOptions
+     */
+    softEquals(b){
+        return this.tagName == b.tagName;
     }
 
     /**
@@ -50,72 +63,60 @@ class ElementOptions {
 }
 
 /**
- * Like ElementOptions, but just for when we need to use a singular style (for convenience)
- *
- * @class StyledElementOptions
- * @extends {ElementOptions}
- */
-class StyledElementOptions extends ElementOptions {
-    /**
-     * Creates an instance of StyledElementOptions.
-     * @param {string} name - A CSS rule name
-     * @param {string} value - The value for the CSS rule
-     * @memberof StyledElementOptions
-     */
-    constructor(name, value){
-        super("SPAN", {
-            "style": name + ":" + value + ";"
-        });
-    }
-}
-
-/**
  * Generate a list of options from an element
  *
  * @param {HTMLElement} child - An element to generate options from
- * @return {Array.<ElementOptions|StyledElementOptions} A list of options
+ * @return {Array.<ElementOptions} A list of options
  */
-function createOptionsFromChild(child){
+function createOptionsFromElement(element){
     let ret = [];
-    let curr = child;
+    let curr = element;
 
     while (curr){
         ret.push(curr)
         curr = curr.firstElementChild;
     }
-    ret = ret.map(elem => {
-        // Styles are inside of attributes
-        return new ElementOptions(elem.tagName, attributesToDict(elem.attributes));
-    });
+    ret = ret.map(elem => new ElementOptions(elem.tagName, attributesToDict(elem.attributes)));
     return ret;
 }
+
 /**
  * Toggle an option
  *
- * @param {Array.<ElementOptions|StyledElementOptions>} childOptions - An array of options
- * @param {ElementOptions|StyledElementOptions} currOption - The option to toggle
- * @return {Array.<ElementOptions|StyledElementOptions>}
+ * @param {Array.<ElementOptions>} childOptions - An array of options
+ * @param {ElementOptions} currOption - The option to toggle
+ * @return {Array.<ElementOptions>}
  */
-function toggleOption(childOptions, currOption){
+export function toggleOption(childOptions, option){
     // if currOption is inside child options
     // Array.contains doesn't work for objects
-    if (childOptions.some(x => x.equals(currOption))){
+
+    // TODO: This doesn't need to be here
+    let tag = option.tagName;
+    if (!NOT_UNIQUE.includes(tag)){
+        // Keep all items that don't have the same tag name (exclude elements of the same tag)
+        childOptions = childOptions.filter(x => x.tagName != tag || x.equals(option));
+        // tagName is the same and they aren't equal
+    }
+
+    if (childOptions.some(x => x.equals(option))){
         // Remove all references to the object
-        childOptions = childOptions.filter(x => !x.equals(currOption));
+        childOptions = childOptions.filter(x => !x.equals(option));
     } else {
         // Add the current option to the array
-        childOptions.push(currOption);
+        childOptions.push(option);
     }
     return childOptions;
 }
+
 /**
  * Recursively compute every option from an array
  *
- * @param {Array.<ElementOptions|StyledElementOptions>} options - A list of options
+ * @param {Array.<ElementOptions>} options - A list of options
  * @param {string} text - Text of element
  * @return {HTMLElement|Text} 
  */
-function computeAll(options, text){
+function computeAllOptions(options, text){
     // [a, b, c] -> a.b.c
     if (options.length > 0){
         let ret = options[0].compute();
@@ -133,12 +134,12 @@ function computeAll(options, text){
 }
 
 /**
- * Find the greatest parent element for a range
+ * Extract the greatest parent element for a range
  *
  * @param {Range} range - The range
  * @return {DocumentFragment} The contents from the range
  */
-function findGreatestParent(range){
+function extractGreatestParent(range){
     let ancestor = range.commonAncestorContainer;
     let text = range.cloneContents().textContent;
 
@@ -163,19 +164,35 @@ function findGreatestParent(range){
         return range.extractContents();
     }
 }
+
+/** 
+ * Callback when there is a existing styles
+ * 
+ * @callback existingStylesCallback
+ * @param {Array.<ElementOptions>} childOptions
+ * @param {ElementOptions} currOption
+ * @returns {Array.<ElementOptions>} Modified element options
+*/
+
+/** 
+ * Callback when there aren't any existing styles
+ * 
+ * @callback noExistingStylesCallback
+ * @param {ElementOptions} option
+ * @param {HTMLElement|Text} contents
+ * @returns {HTMLElement} Modified element options
+*/
+
 /**
- * Toggle a style on an element
- * 
- * This function can be called with in the form of (tagName, attributes) or (rule, value) 
- * TODO: Use object destructuring here
+ * Modify a style on a range
  *
- * @param {string} [tagName] - The tag to toggle
- * @param {string} [attributes] - The attributes for the tag
- * 
- * @param {string} [rule] - The rule to toggle
- * @param {string} [value] - The value for the rule
+ * @export
+ * @param {ElementOptions} option - The option to add
+ * @param {Range} range - The range
+ * @param {existingStylesCallback} callback - Callback when there is a existing styles
+ * @param {noExistingStylesCallback} [callback2=((o, c) => o.compute(c.textContent))] - callback
  */
-export function toggleStyle(first, second){
+export function styleAction(option, range, callback, callback2 = ((o, c) => o.compute(c.textContent))){
     /* 
         Replacement for document exec command
         Get selection
@@ -192,27 +209,69 @@ export function toggleStyle(first, second){
             Create a new element with only style
     */
     
-    let currOption;
-    if (typeof second == 'object'){ // toggleStyle("b", {})
-        currOption = new ElementOptions(first, second);
-    } else { // toggleStyle("font-size", "1.5em")
-        currOption = new StyledElementOptions(first, second);
-    }
-
-    let range = window.getSelection().getRangeAt(0);
-    let contents = findGreatestParent(range); // Find the greatest element, see #9
-
+    let contents = extractGreatestParent(range); // Find the greatest element, see #9
+    
     let newContents;
-    console.log("contents", contents);
     if (contents.firstElementChild){
-        let childOptions = createOptionsFromChild(contents.firstElementChild);
-        console.log("child options", childOptions);
-        let filteredChildren = toggleOption(childOptions, currOption);
-        console.log("filtered children", filteredChildren);
-        newContents = computeAll(filteredChildren, contents.textContent);
-        console.log("new contents", newContents);
+        let childOptions = createOptionsFromElement(contents.firstElementChild);
+        // let filteredChildren = toggleOption(childOptions, option);
+        let filteredChildren = callback(childOptions, option);
+        newContents = computeAllOptions(filteredChildren, contents.textContent);
     } else {
-        newContents = currOption.compute(contents.textContent);
+        // newContents = option.compute(contents.textContent);
+        newContents = callback2(option, contents);
     }
     range.insertNode(newContents);
+}
+
+/**
+ * Toggle a style on the current selection
+ *
+ * @export
+ * @param {string} tag - Tagname to toggle
+ * @param {Object} [attributes={}] - The attributes for the element
+ * @returns {*}
+ */
+export function toggleStyle(tag, attributes = {}){
+    return styleAction(new ElementOptions(tag, attributes), window.getSelection().getRangeAt(0), toggleOption);
+}
+
+/**
+ * Toggle a style on the current selection (without replacing it)
+ *
+ * @export
+ * @param {string} tag - Tagname to toggle
+ * @param {Object} [attributes={}] - The attributes for the element
+ * @returns {*}
+ */
+export function toggleStyleNoReplace(tag, attributes = {}){
+    return styleAction(new ElementOptions(tag, attributes), window.getSelection().getRangeAt(0), (childOptions, currOption) => {
+        if (childOptions.some(x => x.tagName == tag)){
+            return childOptions.filter(x => x.tagName != tag);
+        } else {
+            return toggleOption(childOptions, currOption);
+        }
+    });
+}
+
+/**
+ * Remove a style on the current selections
+ *
+ * @export
+ * @param {string} tag - Tagname to remove
+ * @param {Object} [attributes={}] - The attributes for the element
+ * @returns {*}
+ */
+export function removeStyle(tag, attributes = {}){
+    return styleAction(new ElementOptions(tag, attributes), window.getSelection().getRangeAt(0), (childOptions, currOption) => childOptions.filter(x => !x.equals(currOption)));
+}
+
+
+/**
+ * Remove all styles on the current selection
+ *
+ * @export
+ */
+export function removeAllStyles(){
+    return styleAction(new ElementOptions("div", {}), window.getSelection().getRangeAt(0), (childOptions, currOption) => []);
 }

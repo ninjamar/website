@@ -2,6 +2,7 @@
  * Check object equality
  * Taken from  https://stackoverflow.com/a/16788517/21322342
  *
+ * @export
  * @param {object} x
  * @param {object} y
  * @return {boolean}
@@ -34,6 +35,7 @@ export function objectEquals(x, y) {
  * Turn an element's attributes to an object
  * Taken from https://stackoverflow.com/a/74215190/21322342
  *
+ * @export
  * @param {NamedNodeMap} attrs - The attributes
  * @returns {Object} The object
  */

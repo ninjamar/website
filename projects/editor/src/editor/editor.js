@@ -70,7 +70,7 @@ let menuOptions = {
                         }
                         return childOptions;
                     }
-                }, 
+                },
                 (option, contents) => { // Callback when there isn't any existing styling
                     let url = prompt("URL?");
                     if (url){ // Make sure prompt hasn't been cancelled
@@ -123,74 +123,30 @@ if (document.readyState == "interactive"){
 export class Editor {
     /**
      * Creates an instance of Editor.
+     *
+     * @constructor
      * @param {HTMLElement} element - The element to put the editor on
-     * @param {Object} [{useTab = true}={}] - Options
-     * @memberof Editor
+     * @param {*} [param0={}] - Options
+     * @param {*} [param0.useTab=true] - Whether tabs should be handled
+     * @param {*} [param0.useContextMenu=true] - Is there a context menu?
+     * @param {*} [param0.contextMenu="built-in"] - Contetxt menu options
      */
-    constructor(element, {useTab = true} = {}){
+    constructor(element, {useTab = true, useContextMenu = true, contextMenu = "built-in"} = {}){
         this.element = element;
         this.element.classList.add("editor"); // Add the editor class for identification
 
         this.useTab = useTab;
         this.isMenuShown = false;
+        this.useContextMenu = useContextMenu;
 
-        this.menu = document.querySelector("#editor-context-menu") || null;
-        // Check if context menu has been loaded
-        if (!document.querySelector("#editor-context-menu")){
-            // Load context menu
-            let div = document.createElement("div");
-            div.innerHTML = menuOptions.html;
-            // Hide the element to prevent DOM flashes
-            div.firstElementChild.style.visibility = "hidden";
-            // Menu is all the way from the top
-            this.menu = document.body.appendChild(div.firstElementChild);
-        }
-        // Add event listeners to context menu
-        for (let type of Object.keys(menuOptions.listeners)){
-            document.querySelector(`#editor-context-menu button[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
-        }
         // Initialize the context menu
-        this._initialize();
+        if (this.useContextMenu){
+            this.initializeContextMenu(contextMenu);
+        }
+        this.initialize();
     }
 
-    /**
-     * Add context menu triggers to an element
-     *
-     * TODO: Fix jsdoc
-     */
-    _initialize(){
-        let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
-        
-        // Remving mouse from selection
-        document.addEventListener("mouseup", e => {
-            let selection = window.getSelection();
-            if (selection != ""){
-                let range = selection.getRangeAt(0);
-                // Make sure that the range is inside the element, this is cleaner than having the event listener on document
-                if (this.element.contains(range.commonAncestorContainer)){
-                    this.menu.style.visibility = "visible";
-                    this.isMenuShown = true;
-
-                    let cords = range.getBoundingClientRect();
-                    repositionMenu(cords);
-                }
-            }
-        });
-        // Mouse down for selectiojn
-        document.addEventListener("mousedown", e => {
-            // Only close the menu if it is shown and we aren't hovering over the menu
-            if (this.isMenuShown && !this.menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
-                this.isMenuShown = false;
-                this.menu.style.visibility = "hidden";
-            }
-        });
-        // Move the menu on resizesss
-        window.addEventListener("resize", () => {
-            let selection = window.getSelection();
-            if (selection != ""){
-                repositionMenu(selection.getRangeAt(0).getBoundingClientRect());
-            }
-        });
+    initialize(){
         // Add handler for tabs
         if (this.useTab){
             this.element.addEventListener("keydown", e => {
@@ -209,6 +165,65 @@ export class Editor {
                     sel.removeRange(range);
                     sel.addRange(range);
 
+                }
+            });
+        }
+    }
+    /**
+     * Add context menu triggers to an element
+     *
+     * TODO: Fix jsdoc
+     */
+    initializeContextMenu(contextMenu = "built-in"){
+        if (contextMenu == "built-in"){
+            this.menu = document.querySelector("#editor-context-menu") || null;
+            // Check if context menu has been loaded
+            if (!document.querySelector("#editor-context-menu")){
+                // Load context menu
+                let div = document.createElement("div");
+                div.innerHTML = menuOptions.html;
+                // Hide the element to prevent DOM flashes
+                div.firstElementChild.style.visibility = "hidden";
+                // Menu is all the way from the top
+                this.menu = document.body.appendChild(div.firstElementChild);
+            }
+        } else {
+            this.menu = contextMenu;
+        }
+        // Add event listeners to context menu
+        for (let type of Object.keys(menuOptions.listeners)){
+            this.menu.querySelector(`[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
+        }
+
+        let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
+        
+        // Remving mouse from selection
+        if (contextMenu == "built-in"){
+            document.addEventListener("mouseup", e => {
+                let selection = window.getSelection();
+                if (selection != ""){
+                    let range = selection.getRangeAt(0);
+                    // Make sure that the range is inside the element, this is cleaner than having the event listener on document
+                    if (this.element.contains(range.commonAncestorContainer)){
+                        this.menu.style.visibility = "visible";
+                        this.isMenuShown = true;
+                        repositionMenu(range.getBoundingClientRect());
+                    }
+                }
+            });
+            // Mouse down for selectiojn
+            document.addEventListener("mousedown", e => {
+                // Only close the menu if it is shown and we aren't hovering over the menu
+                if (this.isMenuShown && !this.menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
+                    this.isMenuShown = false;
+                    this.menu.style.visibility = "hidden";
+                }
+            });
+            // Move the menu on resizesss
+            window.addEventListener("resize", () => {
+                let selection = window.getSelection();
+                if (selection != ""){
+                    repositionMenu(selection.getRangeAt(0).getBoundingClientRect());
                 }
             });
         }

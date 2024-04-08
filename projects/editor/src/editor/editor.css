@@ -1,7 +1,7 @@
 :root {
     --editor: 1; /* Check if css file is loaded */
     --editor-context-menu-item-background: #DEE2E6;
-    --editor-context-menu-item-hover: #CED4DA;
+    --editor-context-menu-item-action: #CED4DA;
     --editor-context-menu-divider: #343A40;
 }
 
@@ -19,6 +19,11 @@ e-underline {
     text-decoration: underline;
 }
 
+/* Mini */
+.editor {
+    white-space: pre-wrap;
+}
+
 /* Context menu main  */
 #editor-context-menu {
     position: absolute;
@@ -31,28 +36,26 @@ e-underline {
     list-style: none;
     margin: 0;
     padding: 0;
+    border-radius: 6px; /* Round borders */
+    overflow: hidden; /* Background of hover effect causes overflow */
 }
 
 /* Style every item in the list */
 #editor-context-menu > ul > li {
-    float: left;
-    background: var(--editor-context-menu-item-background)
+    float: left; /* Fixes alignment */
+    background: var(--editor-context-menu-item-background);
 }
 
 /* Add hover effect (TODO: Maybe add color indicator )*/
 #editor-context-menu > ul > li:hover {
-    background: var(--editor-context-menu-item-hover)
+    background: var(--editor-context-menu-item-action)
 }
 
-/* Round the borders of the first and last menu item*/
-#editor-context-menu > ul > li:first-child {
-    border-radius: 6px 0px 0px 6px;
+#editor-context-menu > ul > li.clicked {
+    background: var(--editor-context-menu-item-action);
 }
-#editor-context-menu > ul > li:last-child {
-    border-radius: 0px 6px 6px 0px;
-}
-
 /* Add divider between menu elements */
+/*
 #editor-context-menu > ul > li:not(:last-child)::after {
     content: "";
 
@@ -62,7 +65,7 @@ e-underline {
 
     display: inline-block;
     position: absolute;
-}
+}*/
 
 /* Style button and remove defaults (except padding) */
 #editor-context-menu > ul > li > button {

@@ -223,6 +223,7 @@ export function styleAction(option, range, callback, callback2 = ((o, c) => o.co
  * @param {Object} [attributes={}] - The attributes for the element
  * @returns {*}
  */
+
 export function toggleStyle(tag, attributes = {}){
     return styleAction(new ElementOptions(tag, attributes), window.getSelection().getRangeAt(0), toggleOption);
 }

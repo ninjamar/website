@@ -7,8 +7,6 @@ This <e-italic>word</e-italic> is already italic
 `);
 
 document.addEventListener("DOMContentLoaded", () => {
-    let editorElement = document.querySelector("#editor");
-    // editorElement.innerHTML = editorElement.innerHTML.replaceAll("\n            ", "\n"); // TODO: Fix - wrong number of indentation
-    let editor = new Editor(editorElement, {useTab: true});
+    let editor = new Editor(document.querySelector("#editor"), {useTab: true});
     editor.load(contents);
 });

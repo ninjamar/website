@@ -1,37 +1,47 @@
 /* Variables */
 :root {
     /* Default colors */
-    --app-primary-black: #333333;
-    --app-primary-red: #bb4430;
-    --app-primary-white: #F8F9FA;
-    --app-primary-blue: #2892d7;
-    --app-primary-green: #00916e;
+    --primary-black: #333333;
+    --primary-red: #bb4430;
+    --primary-white: #F8F9FA;
+    --primary-blue: #2892d7;
+    --primary-green: #00916e;
 
-    --app-text-black: #333333;
-    --app-text-red: #e4572e;
-    --app-text-purple: #4c2c72;
-    --app-text-blue: #0496ff;
-    --app-text-green: #2ec4b6;
+    --secondary-white: #DEE2E6;
+    --secondary-black: #343A40;
+
+    --third-white: #CED4DA;
+
+    --text-black: #333333;
+    --text-red: #e4572e;
+    --text-purple: #4c2c72;
+    --text-blue: #0496ff;
+    --text-green: #2ec4b6;
+
 }
 
 html, body {
     height: 100%;
 }
 
-/* Margins */
+/* Colors */
 body {
+    background: var(--primary-white);
+    color: var(--text-black)
+}
+
+/* Margins */
+#main {
     width: 50%;
     margin: auto;
-    background: var(--app-primary-white);
-    color: var(--app-text-black)
 }
 
 /* Default colors for links */
 :link {
-    color: var(--app-text-blue);
+    color: var(--text-blue);
 }
 :visited {
-    color: var(--app-text-purple);
+    color: var(--text-purple);
 }
 
 /* Fonts */
@@ -62,12 +72,4 @@ h6 {
 }
 p {
     font-size: 1em;
-}
-
-
-/* Editor specific styling */
-#editor {
-    outline: none;
-    margin-top: 100px;
-    white-space: pre-wrap;
 }

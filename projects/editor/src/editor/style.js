@@ -90,15 +90,6 @@ function createOptionsFromElement(element){
 export function toggleOption(childOptions, option){
     // if currOption is inside child options
     // Array.contains doesn't work for objects
-
-    // TODO: This doesn't need to be here
-    let tag = option.tagName;
-    if (!NOT_UNIQUE.includes(tag)){
-        // Keep all items that don't have the same tag name (exclude elements of the same tag)
-        childOptions = childOptions.filter(x => x.tagName != tag || x.equals(option));
-        // tagName is the same and they aren't equal
-    }
-
     if (childOptions.some(x => x.equals(option))){
         // Remove all references to the object
         childOptions = childOptions.filter(x => !x.equals(option));
@@ -265,7 +256,6 @@ export function toggleStyleNoReplace(tag, attributes = {}){
 export function removeStyle(tag, attributes = {}){
     return styleAction(new ElementOptions(tag, attributes), window.getSelection().getRangeAt(0), (childOptions, currOption) => childOptions.filter(x => !x.equals(currOption)));
 }
-
 
 /**
  * Remove all styles on the current selection

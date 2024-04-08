@@ -64,12 +64,20 @@ let menuOptions = {
                     if (childOptions.some(x => x.tagName == "A")){ // If any of the existing styles are A tags
                         return childOptions.filter(x => x.tagName != "A"); // Then remove all A tags
                     } else { // Otherwise add A tag
-                        childOptions.push(new ElementOptions("A", {"href": prompt("URL?")}));
+                        let url = prompt("URL?");
+                        if (url){ // Make sure prompt hasn't been cancelled
+                            childOptions.push(new ElementOptions("A", {"href": url}));
+                        }
                         return childOptions;
                     }
                 }, 
                 (option, contents) => { // Callback when there isn't any existing styling
-                    return new ElementOptions("A", {"href": prompt("URL?")}).compute(contents.textContent);
+                    let url = prompt("URL?");
+                    if (url){ // Make sure prompt hasn't been cancelled
+                        return new ElementOptions("A", {"href": url}).compute(contents.textContent);
+                    } else {
+                        return document.createTextNode(contents.textContent);
+                    }
                 }
             );
         })

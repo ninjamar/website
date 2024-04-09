@@ -1,7 +1,5 @@
 import { objectEquals, attributesToDict } from "./utils.js";
 
-let NOT_UNIQUE = ["SPAN"];
-
 /**
  * A class representing options for an element
  *
@@ -127,10 +125,11 @@ function computeAllOptions(options, text){
 /**
  * Extract the greatest parent element for a range
  *
+ * @export
  * @param {Range} range - The range
  * @return {DocumentFragment} The contents from the range
  */
-function extractGreatestParent(range){
+export function extractGreatestParent(range){
     let ancestor = range.commonAncestorContainer;
     let text = range.cloneContents().textContent;
 

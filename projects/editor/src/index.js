@@ -3,7 +3,7 @@ import { Editor } from "./editor/editor.js";
 let contents = btoa(`
 This div is editable
 Another line
-This <e-italic>word</e-italic> is already italic
+This <i>word</i> is already italic
 `);
 
 document.addEventListener("DOMContentLoaded", () => {

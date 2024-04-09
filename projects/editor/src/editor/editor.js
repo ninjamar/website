@@ -3,7 +3,7 @@
     Copyright (c) 2024 ninjamar
     https://github.com/ninjamar/editor
 */
-import { toggleStyle, styleAction, ElementOptions } from "./style.js";
+import { toggleStyle, styleAction, ElementOptions, extractGreatestParent } from "./style.js";
 
 // Set options for the context menu
 let menuOptions = {
@@ -45,10 +45,10 @@ let menuOptions = {
     `,
     // Set event listeners based on the name attribute
     listeners: {
-        "bold": (() => toggleStyle("E-BOLD")),
-        "italic": (() => toggleStyle("E-ITALIC")),
-        "strikethrough": (() => toggleStyle("E-STRIKETHROUGH")),
-        "underline": (() => toggleStyle("E-UNDERLINE")),
+        "bold": (() => toggleStyle("B")),
+        "italic": (() => toggleStyle("I")),
+        "strikethrough": (() => toggleStyle("S")),
+        "underline": (() => toggleStyle("U")),
         "header-2": (() => toggleStyle("H2")),
         "link": (() => {
             /*
@@ -131,11 +131,12 @@ export class Editor {
      * @param {*} [param0.useContextMenu=true] - Is there a context menu?
      * @param {*} [param0.contextMenu="built-in"] - Contetxt menu options
      */
-    constructor(element, {useTab = true, useContextMenu = true, contextMenu = "built-in"} = {}){
+    constructor(element, {useTab = true, useContextMenu = true, useCopy = true, contextMenu = "built-in"} = {}){
         this.element = element;
         this.element.classList.add("editor"); // Add the editor class for identification
 
         this.useTab = useTab;
+        this.useCopy = useCopy;
         this.isMenuShown = false;
         this.useContextMenu = useContextMenu;
 
@@ -146,6 +147,10 @@ export class Editor {
         this.initialize();
     }
 
+    
+    /**
+     * Initialize elements
+     */
     initialize(){
         // Add handler for tabs
         if (this.useTab){
@@ -168,11 +173,31 @@ export class Editor {
                 }
             });
         }
+        if (this.useCopy){
+            this.element.addEventListener("copy", (event) => {
+                // Don't automatically copy
+                event.preventDefault();
+                // Get the range
+                let range = window.getSelection().getRangeAt(0);
+                // Extract greatest parent
+                let parent = extractGreatestParent(range);
+                // Create a wrapper, since DocumentFragment doesn't have innerHTML
+                let wrapper = document.createElement("div");
+                // Add a copy of the extracted contents to wrapper
+                wrapper.appendChild(parent.cloneNode(true));
+                // Copy the wrapper's innerHTML
+                event.clipboardData.setData("text/html", wrapper.innerHTML)
+                event.clipboardData.setData("text/plain", wrapper.textContent)
+                // Replace the parent
+                range.insertNode(parent)
+            });
+        }
     }
+
     /**
-     * Add context menu triggers to an element
+     * Initialize context menus
      *
-     * TODO: Fix jsdoc
+     * @param {string} [contextMenu="built-in"] - Custom context menu
      */
     initializeContextMenu(contextMenu = "built-in"){
         if (contextMenu == "built-in"){
@@ -194,10 +219,9 @@ export class Editor {
         for (let type of Object.keys(menuOptions.listeners)){
             this.menu.querySelector(`[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
         }
-
+        // Function to reposition menu
         let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
-        
-        // Remving mouse from selection
+        // Make context menu hover above text
         if (contextMenu == "built-in"){
             document.addEventListener("mouseup", e => {
                 let selection = window.getSelection();
@@ -229,12 +253,21 @@ export class Editor {
         }
     }
     
-    // Basic saving and loading
+    /**
+     * Save the state of the editor
+     *
+     * @returns {string} - The save
+     */
     save(){
         return btoa(this.element.innerHTML);
     }
+    
+    /**
+     * Load a save into the editor
+     *
+     * @param {string} data - The save
+     */
     load(data){
         this.element.innerHTML = atob(data);
-        return true;
     }
 }

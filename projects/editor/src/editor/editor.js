@@ -231,7 +231,7 @@ export class Editor {
                     if (this.element.contains(range.commonAncestorContainer)){
                         this.menu.style.visibility = "visible";
                         this.isMenuShown = true;
-                        repositionMenu(range.getBoundingClientRect());
+                        window.requestAnimationFrame(() => repositionMenu(range.getBoundingClientRect()));
                     }
                 }
             });
@@ -247,7 +247,7 @@ export class Editor {
             window.addEventListener("resize", () => {
                 let selection = window.getSelection();
                 if (selection != ""){
-                    repositionMenu(selection.getRangeAt(0).getBoundingClientRect());
+                    window.requestAnimationFrame(() => repositionMenu(selection.getRangeAt(0).getBoundingClientRect()));
                 }
             });
         }

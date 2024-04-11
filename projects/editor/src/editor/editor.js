@@ -106,7 +106,7 @@ function initializeDependencies(){
 }
 
 // Initialize dependencies once DOM has been loaded
-if (document.readyState == "interactive"){
+if (document.readyState == "interactive" || document.readyState == "complete"){
     initializeDependencies()
 } else {
     document.addEventListener("DOMContentLoaded", initializeDependencies);

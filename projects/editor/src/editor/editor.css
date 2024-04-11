@@ -5,20 +5,6 @@
     --editor-context-menu-divider: #343A40;
 }
 
-/* Custom elements*/
-e-bold {
-    font-weight: bold;
-}
-e-italic {
-    font-style: italic;
-}
-e-strikethrough {
-    text-decoration: line-through;
-}
-e-underline {
-    text-decoration: underline;
-}
-
 /* Mini */
 .editor {
     white-space: pre-wrap;

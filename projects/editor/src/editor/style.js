@@ -58,6 +58,34 @@ export class ElementOptions {
         }
         return element;
     }
+    
+}
+
+
+// Strikethrough and underline doesnt work - inverted
+
+/**
+ * @typedef {Object} Style 
+ * @property {ElementOptions} applied - Applied style
+ * @property {ElementOptions} inverted - Inverted style
+ */
+export const styles = {
+    BOLD: {
+        applied: new ElementOptions("SPAN", {"style": "font-weight: bold;"}),
+        inverted: new ElementOptions("SPAN", {"style": "font-weight: normal;"})
+    },
+    ITALIC: {
+        applied: new ElementOptions("SPAN", {"style": "font-style: italic;"}),
+        inverted: new ElementOptions("SPAN", {"style": "font-style: normal;"})
+    },
+    STRIKETHROUGH: {
+        applied: new ElementOptions("SPAN", {"style": "text-decoration: line-through; text-decoration-skip: object;"}),
+        inverted: new ElementOptions("SPAN", {"style": "display: inline-block"})
+    },
+    HEADER2: {
+        applied: new ElementOptions("H2") // there is no inverted of header 2
+    }
+
 }
 
 /**
@@ -155,6 +183,25 @@ export function extractGreatestParent(range){
     }
 }
 
+
+/**
+ * Get all applied style for an element
+ * TODO: This should probably be called getAllParentElements
+ *
+ * @param {HTMLElement} element - Element to check
+ * @param {HTMLElement} [max=document.body] - Maxomum parent
+ * @returns {Array.<HTMLElement>} - All applied styles
+ */
+function getAllAppliedStyles(element, max = document.body){
+    let curr = element;
+    let styles = [curr];
+    while (curr.parentElement && curr.parentElement != max){
+        curr = curr.parentElement;
+        styles.push(curr);
+    }
+    return styles;
+}
+
 /** 
  * Callback when there is a existing styles
  * 
@@ -174,15 +221,26 @@ export function extractGreatestParent(range){
 */
 
 /**
+ * Callback after AppliedStyles
+ * @callback appliedStylesCallback
+ * @param {Array} - Applied styles
+ * @returns {boolean} - Whether function should return
+ */
+
+/**
  * Modify a style on a range
  *
  * @export
- * @param {ElementOptions} option - The option to add
- * @param {Range} range - The range
- * @param {existingStylesCallback} callback - Callback when there is a existing styles
- * @param {noExistingStylesCallback} [callback2=((o, c) => o.compute(c.textContent))] - callback
+ * @param {ElementOptions} applied - Applied version of style
+ * @param {ElementOptions} inverted - Inverted version of style
+ * @param {Range} range - Range
+ * @param {existingStylesCallback} callback
+ * @param {noExistingStylesCallback} [callback2=((o, c) => o.compute(c.textContent))]
+ * @param {appliedStylesCallback} [callback3=() => false]
+ * @param {boolean} [checkInverse=true]
+ * @returns {*} Nothing
  */
-export function styleAction(option, range, callback, callback2 = ((o, c) => o.compute(c.textContent))){
+export function styleAction(applied, inverted, range, callback, callback2 = ((o, c) => o.compute(c.textContent)), callback3 = () => false, checkInverse = true){
     /* 
         Replacement for document exec command
         Get selection
@@ -198,19 +256,64 @@ export function styleAction(option, range, callback, callback2 = ((o, c) => o.co
         else
             Create a new element with only style
     */
-    
-    let contents = extractGreatestParent(range); // Find the greatest element, see #9
-    
+    // Extract greatest parent
+    let contents = extractGreatestParent(range);
+    // Get all applied styles above text - I can't use contents because extractGreatestParent detaches element from the DOM
+    let appliedStyles = getAllAppliedStyles(range.commonAncestorContainer);
+
+    // Callback to return from appliedStyles - eg style is already applied
+    if (callback3(appliedStyles)){
+        range.insertNode(contents);
+        return;
+    }
+
+    let forceInverse;
+    // option to disable inverse
+    if (checkInverse){
+        // Get all HTMLElements, and turn them into ElementOptions
+        appliedStyles = appliedStyles.filter(x => x instanceof HTMLElement).map(x => new ElementOptions(x.tagName, attributesToDict(x.attributes)));
+        // If the inverted parameter is not null
+        if (inverted){
+            // Filter applied styles to applied and inverted
+            appliedStyles = appliedStyles.filter(x => x.equals(applied) || x.equals(inverted));
+            // Force inverse if appliedStyles has more than one element
+            forceInverse = appliedStyles.length > 0;
+        } else {
+            // No force inverse
+            forceInverse = false;
+        }
+    } else {
+        // Don't force inverse if checkInverse is false
+        forceInverse = false;
+    }
+
     let newContents;
-    if (contents.firstElementChild){
+    // If contents has a firstElementChild or forceInverse
+    if (contents.firstElementChild || forceInverse){
+        // Create Options
         let childOptions = createOptionsFromElement(contents.firstElementChild);
-        // let filteredChildren = toggleOption(childOptions, option);
-        let filteredChildren = callback(childOptions, option);
+        let filteredChildren;
+        // force inverse
+        if (forceInverse){
+            // Since new styles are at the beginning, callback based on first element
+            if (appliedStyles[0].equals(applied)){
+                // applied -> inverted
+                filteredChildren = callback(childOptions, inverted);
+            } else {
+                // inverted -> applied
+                filteredChildren = callback(childOptions, applied);   
+            }
+        } else {
+            // Proceed normally, using callback with applied
+            filteredChildren = callback(childOptions, applied);   
+        }
+        // Compute the options
         newContents = computeAllOptions(filteredChildren, contents.textContent);
     } else {
-        // newContents = option.compute(contents.textContent);
-        newContents = callback2(option, contents);
+        // Compute applied style
+        newContents = callback2(applied, contents);
     }
+    // Insert contents
     range.insertNode(newContents);
 }
 
@@ -218,43 +321,23 @@ export function styleAction(option, range, callback, callback2 = ((o, c) => o.co
  * Toggle a style on the current selection
  *
  * @export
- * @param {string} tag - Tagname to toggle
- * @param {Object} [attributes={}] - The attributes for the element
+ * @param {Style} option - Option to toggle
  * @returns {*}
  */
-
-export function toggleStyle(tag, attributes = {}){
-    return styleAction(new ElementOptions(tag, attributes), window.getSelection().getRangeAt(0), toggleOption);
+export function toggleStyle(option){
+    return styleAction(option.applied, option.inverted, window.getSelection().getRangeAt(0), toggleOption);
 }
 
-/**
- * Toggle a style on the current selection (without replacing it)
- *
- * @export
- * @param {string} tag - Tagname to toggle
- * @param {Object} [attributes={}] - The attributes for the element
- * @returns {*}
- */
-export function toggleStyleNoReplace(tag, attributes = {}){
-    return styleAction(new ElementOptions(tag, attributes), window.getSelection().getRangeAt(0), (childOptions, currOption) => {
-        if (childOptions.some(x => x.tagName == tag)){
-            return childOptions.filter(x => x.tagName != tag);
-        } else {
-            return toggleOption(childOptions, currOption);
-        }
-    });
-}
 
 /**
  * Remove a style on the current selections
  *
  * @export
- * @param {string} tag - Tagname to remove
- * @param {Object} [attributes={}] - The attributes for the element
+ * @param {Style} option - Option to to remove
  * @returns {*}
  */
-export function removeStyle(tag, attributes = {}){
-    return styleAction(new ElementOptions(tag, attributes), window.getSelection().getRangeAt(0), (childOptions, currOption) => childOptions.filter(x => !x.equals(currOption)));
+export function removeStyle(option){
+    return styleAction(option.applied, option.inverted, window.getSelection().getRangeAt(0), (childOptions, currOption) => childOptions.filter(x => !x.equals(currOption)));
 }
 
 /**
@@ -263,5 +346,5 @@ export function removeStyle(tag, attributes = {}){
  * @export
  */
 export function removeAllStyles(){
-    return styleAction(new ElementOptions("div", {}), window.getSelection().getRangeAt(0), (childOptions, currOption) => []);
+    return styleAction(null, null, window.getSelection().getRangeAt(0), (childOptions, currOption) => []);
 }

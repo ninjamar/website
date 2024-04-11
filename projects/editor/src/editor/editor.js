@@ -3,7 +3,7 @@
     Copyright (c) 2024 ninjamar
     https://github.com/ninjamar/editor
 */
-import { toggleStyle, styleAction, ElementOptions, extractGreatestParent } from "./style.js";
+import { toggleStyle, styles,  styleAction, ElementOptions, extractGreatestParent } from "./style.js";
 
 // Set options for the context menu
 let menuOptions = {
@@ -26,11 +26,6 @@ let menuOptions = {
                     </button>
                 </li>
                 <li>
-                    <button name="underline">
-                        <i class="ph ph-text-underline"></i>
-                    </button>
-                </li>
-                <li>
                     <button name="header-2">
                         <i class="ph ph-text-h-two"></i>
                     </button>
@@ -45,11 +40,10 @@ let menuOptions = {
     `,
     // Set event listeners based on the name attribute
     listeners: {
-        "bold": (() => toggleStyle("B")),
-        "italic": (() => toggleStyle("I")),
-        "strikethrough": (() => toggleStyle("S")),
-        "underline": (() => toggleStyle("U")),
-        "header-2": (() => toggleStyle("H2")),
+        "bold": (() => toggleStyle(styles.BOLD)),
+        "italic": (() => toggleStyle(styles.ITALIC)),
+        "strikethrough": (() => toggleStyle(styles.STRIKETHROUGH)),
+        "header-2": (() => toggleStyle(styles.HEADER2)),
         "link": (() => {
             /*
                 A tags have special behavior
@@ -58,6 +52,7 @@ let menuOptions = {
                 Also, only prompt for url if the A tag is going to be added
             */
             styleAction(
+                null,
                 null, // Placeholder option, doesn't get used
                 window.getSelection().getRangeAt(0), // Selection
                 (childOptions, currOption) => { // Callback when there are existing styles
@@ -78,7 +73,9 @@ let menuOptions = {
                     } else {
                         return document.createTextNode(contents.textContent);
                     }
-                }
+                },
+                (appliedStyles) => appliedStyles.some(x => x instanceof HTMLElement && x.tagName == "A"),
+                false
             );
         })
     }

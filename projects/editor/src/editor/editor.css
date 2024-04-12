@@ -8,6 +8,7 @@
 /* Mini */
 .editor {
     white-space: pre-wrap;
+    cursor: text;
 }
 
 /* Context menu main  */

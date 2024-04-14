@@ -9,17 +9,21 @@
         <script type="module" src="./src/index.js"></script>
         <link rel="stylesheet" href="./src/generic.css">
         <style>
+            .center {
+                text-align: center;
+            }
             /* Editor specific styling */
             #editor {
-                outline: none;
-                margin-top: 100px;
+                outline: 1px solid black;
+                /* border: 1px solid black; */
+                padding: 5px;
+                border-radius: 6px;
             }
         </style>
     </head>
     <body>
-        <div id="main">
-            <div id="editor" contenteditable="true"></div>
+        <h1 class="center">Editor</h1>
+        <div id="editor" contenteditable="true"></div>
         <p>This paragraph isn't editable</p>
-        </div>
     </body>
 </html>

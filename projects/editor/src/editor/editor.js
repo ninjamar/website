@@ -3,7 +3,7 @@
     Copyright (c) 2024 ninjamar
     https://github.com/ninjamar/editor
 */
-import { toggleStyle, styles,  styleAction, ElementOptions, extractGreatestParent } from "./style.js";
+import { toggleStyle, styles,  styleAction, ElementOptions, extractGreatestParent, removeStyle } from "./style.js";
 
 // Set options for the context menu
 let menuOptions = {
@@ -33,6 +33,16 @@ let menuOptions = {
                 <li>
                     <button name="link">
                         <i class="ph ph-link"></i>
+                    </button>
+                </li>
+                <li>
+                    <button name="left">
+                        <i class="ph ph-text-align-left"></i>
+                    </button>
+                </li>
+                <li>
+                    <button name="center">
+                        <i class="ph ph-text-align-center"></i>
                     </button>
                 </li>
             </ul>
@@ -77,7 +87,9 @@ let menuOptions = {
                 (appliedStyles) => appliedStyles.some(x => x instanceof HTMLElement && x.tagName == "A"),
                 false
             );
-        })
+        }),
+        "left": () => removeStyle(styles.CENTER), // remvove style center
+        "center": () => toggleStyle(styles.CENTER)
     }
 };
 
@@ -149,12 +161,12 @@ export class Editor {
      * Initialize elements
      */
     initialize(){
-        // Add handler for tabs
+        /*
         if (this.useTab){
-            this.element.addEventListener("keydown", e => {
+            this.element.addEventListener("keydown", event => {
                 // https://stackoverflow.com/a/32128448/21322342
-                if (e.key == "Tab"){
-                    e.preventDefault();
+                if (event.key == "Tab"){
+                    event.preventDefault();
 
                     let sel = window.getSelection();
                     let range = sel.getRangeAt(0);
@@ -169,7 +181,8 @@ export class Editor {
 
                 }
             });
-        }
+        }*/
+
         if (this.useCopy){
             this.element.addEventListener("copy", (event) => {
                 // Don't automatically copy

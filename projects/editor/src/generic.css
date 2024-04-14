@@ -27,12 +27,8 @@ html, body {
 /* Colors */
 body {
     background: var(--primary-white);
-    color: var(--text-black)
-}
-
-/* Margins */
-#main {
-    width: 50%;
+    color: var(--text-black);
+    width: 80%;
     margin: auto;
 }
 

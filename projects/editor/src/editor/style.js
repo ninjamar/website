@@ -84,6 +84,9 @@ export const styles = {
     },
     HEADER2: {
         applied: new ElementOptions("H2") // there is no inverted of header 2
+    },
+    CENTER: {
+        applied: new ElementOptions("SPAN", {"style": "text-align: center; display: block;"})
     }
 
 }
@@ -325,7 +328,12 @@ export function styleAction(applied, inverted, range, callback, callback2 = ((o,
  * @returns {*}
  */
 export function toggleStyle(option){
-    return styleAction(option.applied, option.inverted, window.getSelection().getRangeAt(0), toggleOption);
+    return styleAction(
+        option.applied, 
+        option.inverted, 
+        window.getSelection().getRangeAt(0), 
+        toggleOption,
+    );
 }
 
 
@@ -337,7 +345,13 @@ export function toggleStyle(option){
  * @returns {*}
  */
 export function removeStyle(option){
-    return styleAction(option.applied, option.inverted, window.getSelection().getRangeAt(0), (childOptions, currOption) => childOptions.filter(x => !x.equals(currOption)));
+    return styleAction(
+        option.applied, 
+        option.inverted,
+        window.getSelection().getRangeAt(0), 
+        (childOptions, currOption) => childOptions.filter(x => !x.equals(currOption)),
+        (applied, contents) => document.createTextNode(contents.textContent)
+    );
 }
 
 /**
@@ -346,5 +360,11 @@ export function removeStyle(option){
  * @export
  */
 export function removeAllStyles(){
-    return styleAction(null, null, window.getSelection().getRangeAt(0), (childOptions, currOption) => []);
+    return styleAction(
+        null, 
+        null, 
+        window.getSelection().getRangeAt(0), 
+        (childOptions, currOption) => [],
+        (applied, contents) => document.createTextNode(contents.textContent)
+    );
 }

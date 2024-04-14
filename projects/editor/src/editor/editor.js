@@ -129,7 +129,7 @@ if (document.readyState == "interactive" || document.readyState == "complete"){
  *
  * @class Editor
  */
-export class Editor {
+export default class Editor {
     /**
      * Creates an instance of Editor.
      *

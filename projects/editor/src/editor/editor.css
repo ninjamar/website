@@ -6,7 +6,7 @@
 }
 
 .editor {
-    /* white-space: pre-wrap; */
+    white-space: pre-wrap;
     cursor: text;
 }
 

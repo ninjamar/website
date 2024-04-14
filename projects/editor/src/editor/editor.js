@@ -129,7 +129,7 @@ if (document.readyState == "interactive" || document.readyState == "complete"){
  *
  * @class Editor
  */
-export default class Editor {
+export class Editor {
     /**
      * Creates an instance of Editor.
      *
@@ -137,22 +137,16 @@ export default class Editor {
      * @param {HTMLElement} element - The element to put the editor on
      * @param {*} [param0={}] - Options
      * @param {*} [param0.useTab=true] - Whether tabs should be handled
-     * @param {*} [param0.useContextMenu=true] - Is there a context menu?
-     * @param {*} [param0.contextMenu="built-in"] - Contetxt menu options
      */
-    constructor(element, {useTab = true, useContextMenu = true, useCopy = true, contextMenu = "built-in"} = {}){
+    constructor(element, {useTab = true} = {}){
         this.element = element;
         this.element.classList.add("editor"); // Add the editor class for identification
 
         this.useTab = useTab;
-        this.useCopy = useCopy;
         this.isMenuShown = false;
-        this.useContextMenu = useContextMenu;
 
         // Initialize the context menu
-        if (this.useContextMenu){
-            this.initializeContextMenu(contextMenu);
-        }
+        this.initializeContextMenu();
         this.initialize();
     }
 
@@ -161,7 +155,6 @@ export default class Editor {
      * Initialize elements
      */
     initialize(){
-        /*
         if (this.useTab){
             this.element.addEventListener("keydown", event => {
                 // https://stackoverflow.com/a/32128448/21322342
@@ -181,7 +174,7 @@ export default class Editor {
 
                 }
             });
-        }*/
+        }
 
         if (this.useCopy){
             this.element.addEventListener("copy", (event) => {
@@ -207,77 +200,55 @@ export default class Editor {
     /**
      * Initialize context menus
      *
-     * @param {string} [contextMenu="built-in"] - Custom context menu
      */
-    initializeContextMenu(contextMenu = "built-in"){
-        if (contextMenu == "built-in"){
-            this.menu = document.querySelector("#editor-context-menu") || null;
-            // Check if context menu has been loaded
-            if (!document.querySelector("#editor-context-menu")){
-                // Load context menu
-                let div = document.createElement("div");
-                div.innerHTML = menuOptions.html;
-                // Hide the element to prevent DOM flashes
-                div.firstElementChild.style.visibility = "hidden";
-                // Menu is all the way from the top
-                this.menu = document.body.appendChild(div.firstElementChild);
-            }
-        } else {
-            this.menu = contextMenu;
+    initializeContextMenu(){
+        this.menu = document.querySelector("#editor-context-menu") || null;
+        // Check if context menu has been loaded
+        if (!document.querySelector("#editor-context-menu")){
+            // Load context menu
+            let div = document.createElement("div");
+            div.innerHTML = menuOptions.html;
+            // Hide the element to prevent DOM flashes
+            div.firstElementChild.style.visibility = "hidden";
+            // Menu is all the way from the top
+            this.menu = document.body.appendChild(div.firstElementChild);
         }
         // Add event listeners to context menu
         for (let type of Object.keys(menuOptions.listeners)){
             this.menu.querySelector(`[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
         }
+
         // Function to reposition menu
-        let repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
+        const repositionMenu = (cords) => (this.menu.style.top = `calc(${cords.top}px - 2.3em)`) && (this.menu.style.left = `calc(${cords.left}px + (${cords.width}px * 0.5))`);
         // Make context menu hover above text
-        if (contextMenu == "built-in"){
-            document.addEventListener("mouseup", e => {
-                let selection = window.getSelection();
-                if (selection != ""){
-                    let range = selection.getRangeAt(0);
-                    // Make sure that the range is inside the element, this is cleaner than having the event listener on document
-                    if (this.element.contains(range.commonAncestorContainer)){
-                        this.menu.style.visibility = "visible";
-                        this.isMenuShown = true;
-                        window.requestAnimationFrame(() => repositionMenu(range.getBoundingClientRect()));
-                    }
+        document.addEventListener("mouseup", e => {
+            let selection = window.getSelection();
+            if (selection != ""){
+                let range = selection.getRangeAt(0);
+                // Make sure that the range is inside the element, this is cleaner than having the event listener on document
+                if (this.element.contains(range.commonAncestorContainer)){
+                    this.menu.style.visibility = "visible";
+                    this.isMenuShown = true;
+                    window.requestAnimationFrame(() => repositionMenu(range.getBoundingClientRect()));
                 }
-            });
-            // Mouse down for selectiojn
-            document.addEventListener("mousedown", e => {
-                // Only close the menu if it is shown and we aren't hovering over the menu
-                if (this.isMenuShown && !this.menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
-                    this.isMenuShown = false;
-                    this.menu.style.visibility = "hidden";
-                }
-            });
-            // Move the menu on resizesss
-            window.addEventListener("resize", () => {
-                let selection = window.getSelection();
-                if (selection != ""){
-                    window.requestAnimationFrame(() => repositionMenu(selection.getRangeAt(0).getBoundingClientRect()));
-                }
-            });
-        }
-    }
-    
-    /**
-     * Save the state of the editor
-     *
-     * @returns {string} - The save
-     */
-    save(){
-        return btoa(this.element.innerHTML);
-    }
-    
-    /**
-     * Load a save into the editor
-     *
-     * @param {string} data - The save
-     */
-    load(data){
-        this.element.innerHTML = atob(data);
+            }
+        });
+
+        // Mouse down for selectiojn
+        document.addEventListener("mousedown", e => {
+            // Only close the menu if it is shown and we aren't hovering over the menu
+            if (this.isMenuShown && !this.menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
+                this.isMenuShown = false;
+                this.menu.style.visibility = "hidden";
+            }
+        });
+
+        // Move the menu on resizesss
+        window.addEventListener("resize", () => {
+            let selection = window.getSelection();
+            if (selection != ""){
+                window.requestAnimationFrame(() => repositionMenu(selection.getRangeAt(0).getBoundingClientRect()));
+            }
+        });
     }
 }

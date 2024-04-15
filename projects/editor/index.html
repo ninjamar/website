@@ -7,23 +7,15 @@
         <meta name="description" content="Text editor">
         <title>WYSIWYG Editor</title>
         <script type="module" src="./src/index.js"></script>
-        <link rel="stylesheet" href="./src/generic.css">
-        <style>
-            .center {
-                text-align: center;
-            }
-            /* Editor specific styling */
-            #editor {
-                outline: 1px solid black;
-                /* border: 1px solid black; */
-                padding: 5px;
-                border-radius: 6px;
-            }
-        </style>
+        <link rel="stylesheet" href="./src/index.css">
     </head>
     <body>
         <h1 class="center">Editor</h1>
-        <div id="editor" contenteditable="true"></div>
-        <p>This paragraph isn't editable</p>
+        <div class="flex-columns">
+            <div id="editor" class="flex-column" contenteditable="plaintext-only"></div>
+            <div id="output" class="flex-column">
+                
+            </div>
+        </div>
     </body>
 </html>

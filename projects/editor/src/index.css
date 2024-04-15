@@ -18,18 +18,12 @@
     --text-blue: #0496ff;
     --text-green: #2ec4b6;
 
+    --border-radius: 6px;
+    --padding: 6px;
 }
 
 html, body {
     height: 100%;
-}
-
-/* Colors */
-body {
-    background: var(--primary-white);
-    color: var(--text-black);
-    width: 80%;
-    margin: auto;
 }
 
 /* Default colors for links */
@@ -68,4 +62,41 @@ h6 {
 }
 p {
     font-size: 1em;
+}
+
+/* Colors */
+body {
+    background: var(--primary-white);
+    color: var(--text-black);
+    width: 80%;
+    margin: auto;
+}
+
+.center {
+    text-align: center;
+}
+
+.flex-columns {
+    display: flex;
+}
+.flex-column {
+    width: 100%
+}
+.flex-column:not(:last-child) {
+    margin-right: 6px;
+}
+
+
+#editor, #output {
+    border: 1px solid var(--primary-black);
+    border-radius: var(--border-radius);
+    padding: var(--padding);
+    white-space: pre-wrap;
+
+    outline: none;
+    height: fit-content;
+}
+
+#output {
+    font-family: 'Courier New', Courier, monospace;
 }

@@ -5,11 +5,6 @@
     --editor-context-menu-divider: #343A40;
 }
 
-.editor {
-    white-space: pre-wrap;
-    cursor: text;
-}
-
 /* Context menu main  */
 #editor-context-menu {
     position: absolute;
@@ -40,6 +35,7 @@
 #editor-context-menu > ul > li.clicked {
     background: var(--editor-context-menu-item-action);
 }
+
 /* Add divider between menu elements */
 /*
 #editor-context-menu > ul > li:not(:last-child)::after {

@@ -142,6 +142,10 @@ export class Editor {
         this.element = element;
         this.element.classList.add("editor"); // Add the editor class for identification
 
+        /* Add inline styling */
+        this.element.style.whiteSpace = "pre-wrap";
+        this.element.style.cursor = "text";
+
         this.useTab = useTab;
         this.isMenuShown = false;
 
@@ -156,7 +160,7 @@ export class Editor {
      */
     initialize(){
         if (this.useTab){
-            this.element.addEventListener("keydown", event => {
+            this.element.addEventListener("keydown", (event) => {
                 // https://stackoverflow.com/a/32128448/21322342
                 if (event.key == "Tab"){
                     event.preventDefault();
@@ -171,10 +175,23 @@ export class Editor {
                     range.setEndAfter(tabNode); 
                     sel.removeRange(range);
                     sel.addRange(range);
-
                 }
             });
         }
+        
+        this.element.addEventListener("keydown", (event) => {
+            // https://stackoverflow.com/a/50603191/21322342
+
+            let nodes = Array.from(this.element.childNodes).filter(x => x.data != ""); // Sometimes there are empty nodes
+            if (nodes.length > 0){     
+                if (nodes.at(-1).nodeType != Node.TEXT_NODE){
+                    this.element.appendChild(document.createTextNode("\uFEFF"));
+                }
+                if (nodes.at(0).nodeType != Node.TEXT_NODE){
+                    this.element.prepend(document.createTextNode("\uFEFF"));
+                }
+            }
+        });
 
         if (this.useCopy){
             this.element.addEventListener("copy", (event) => {
@@ -250,5 +267,17 @@ export class Editor {
                 window.requestAnimationFrame(() => repositionMenu(selection.getRangeAt(0).getBoundingClientRect()));
             }
         });
+    }
+
+    
+    /**
+     * Export this.element as a string
+     *
+     * @returns {string}
+     */
+
+    export(){
+        // Inline styles are from constructor
+        return `<div style="white-space: pre-wrap; cursor: text;">${this.element.innerHTML}</div>`
     }
 }

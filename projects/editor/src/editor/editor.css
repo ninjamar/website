@@ -2,6 +2,7 @@
     --editor: 1; /* Check if css file is loaded */
     --editor-context-menu-item-background: #DEE2E6;
     --editor-context-menu-item-action: #CED4DA;
+    --editor-context-menu-item-toggle: #ADB5BD;
     --editor-context-menu-divider: #343A40;
 }
 
@@ -59,4 +60,8 @@
     outline: inherit;
 
     padding: 6px;
+}
+
+.editor-context-menu-active {
+    background: var(--editor-context-menu-item-toggle) !important;
 }

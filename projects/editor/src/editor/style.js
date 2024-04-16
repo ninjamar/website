@@ -57,8 +57,7 @@ export class ElementOptions {
             element.textContent = text;
         }
         return element;
-    }
-    
+    }   
 }
 
 
@@ -97,7 +96,7 @@ export const styles = {
  * @param {HTMLElement} child - An element to generate options from
  * @return {Array.<ElementOptions} A list of options
  */
-function createOptionsFromElement(element){
+export function createOptionsFromElement(element){
     let ret = [];
     let curr = element;
 
@@ -241,7 +240,6 @@ function getAllAppliedStyles(element, max = document.body){
  * @param {noExistingStylesCallback} [callback2=((o, c) => o.compute(c.textContent))]
  * @param {appliedStylesCallback} [callback3=() => false]
  * @param {boolean} [checkInverse=true]
- * @returns {*} Nothing
  */
 export function styleAction(applied, inverted, range, callback, callback2 = ((o, c) => o.compute(c.textContent)), callback3 = () => false, checkInverse = true){
     /* 

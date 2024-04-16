@@ -3,45 +3,45 @@
     Copyright (c) 2024 ninjamar
     https://github.com/ninjamar/editor
 */
-import { toggleStyle, styles,  styleAction, ElementOptions, extractGreatestParent, removeStyle } from "./style.js";
+import { toggleStyle, styles,  styleAction, ElementOptions, createOptionsFromElement, extractGreatestParent, removeStyle } from "./style.js";
 
 // Set options for the context menu
-let menuOptions = {
+const menuOptions = {
     html: `
         <div id="editor-context-menu">
             <ul>
                 <li>
-                    <button name="bold">
+                    <button name="BOLD">
                         <i class="ph ph-text-b"></i>
                     </button>
                 </li>
                 <li>
-                    <button name="italic">
+                    <button name="ITALIC">
                         <i class="ph ph-text-italic"></i>
                     </button>
                 </li>
                 <li>
-                    <button name="strikethrough">
+                    <button name="STRIKETHROUGH">
                         <i class="ph ph-text-strikethrough"></i>
                     </button>
                 </li>
                 <li>
-                    <button name="header-2">
+                    <button name="HEADER2">
                         <i class="ph ph-text-h-two"></i>
                     </button>
                 </li>
                 <li>
-                    <button name="link">
+                    <button name="LINK">
                         <i class="ph ph-link"></i>
                     </button>
                 </li>
                 <li>
-                    <button name="left">
+                    <button name="LEFT">
                         <i class="ph ph-text-align-left"></i>
                     </button>
                 </li>
                 <li>
-                    <button name="center">
+                    <button name="CENTER">
                         <i class="ph ph-text-align-center"></i>
                     </button>
                 </li>
@@ -50,11 +50,11 @@ let menuOptions = {
     `,
     // Set event listeners based on the name attribute
     listeners: {
-        "bold": (() => toggleStyle(styles.BOLD)),
-        "italic": (() => toggleStyle(styles.ITALIC)),
-        "strikethrough": (() => toggleStyle(styles.STRIKETHROUGH)),
-        "header-2": (() => toggleStyle(styles.HEADER2)),
-        "link": (() => {
+        "BOLD": (() => toggleStyle(styles.BOLD)),
+        "ITALIC": (() => toggleStyle(styles.ITALIC)),
+        "STRIKETHROUGH": (() => toggleStyle(styles.STRIKETHROUGH)),
+        "HEADER2": (() => toggleStyle(styles.HEADER2)),
+        "LINK": (() => {
             /*
                 A tags have special behavior
                 When an A tag gets added, it has a required href
@@ -88,8 +88,8 @@ let menuOptions = {
                 false
             );
         }),
-        "left": () => removeStyle(styles.CENTER), // remvove style center
-        "center": () => toggleStyle(styles.CENTER)
+        "LEFT": () => removeStyle(styles.CENTER), // remove style center
+        "CENTER": () => toggleStyle(styles.CENTER)
     }
 };
 
@@ -192,7 +192,7 @@ export class Editor {
                 }
             }
         });
-
+        
         if (this.useCopy){
             this.element.addEventListener("copy", (event) => {
                 // Don't automatically copy
@@ -232,7 +232,12 @@ export class Editor {
         }
         // Add event listeners to context menu
         for (let type of Object.keys(menuOptions.listeners)){
-            this.menu.querySelector(`[name='${type}']`).addEventListener("click", menuOptions.listeners[type]);
+            let item = this.menu.querySelector(`[name='${type}']`);
+            item.addEventListener("click", () => {
+                // Call toggleStyle, then update menu
+                menuOptions.listeners[type]();
+                item.parentElement.classList.toggle("editor-context-menu-active");
+            });
         }
 
         // Function to reposition menu
@@ -243,9 +248,11 @@ export class Editor {
             if (selection != ""){
                 let range = selection.getRangeAt(0);
                 // Make sure that the range is inside the element, this is cleaner than having the event listener on document
-                if (this.element.contains(range.commonAncestorContainer)){
+                // console.log(!this.menu.contains(document.elementFromPoint(e.clientX, e.clientY)))
+                if (this.element.contains(range.commonAncestorContainer) && !this.menu.contains(document.elementFromPoint(e.clientX, e.clientY))){
                     this.menu.style.visibility = "visible";
                     this.isMenuShown = true;
+                    this.loadMenuStyling(range);
                     window.requestAnimationFrame(() => repositionMenu(range.getBoundingClientRect()));
                 }
             }
@@ -271,11 +278,43 @@ export class Editor {
 
     
     /**
+     * Load styling for menu
+     *
+     * @param {Range} range - Range of selection
+     */
+    loadMenuStyling(range){
+        let items = Array.from(this.menu.querySelectorAll("ul > li"));
+        for (let item of items){
+            item.classList.remove("editor-context-menu-active");
+        }
+        let parent = extractGreatestParent(range);
+        if (parent.firstElementChild){
+            let options = createOptionsFromElement(parent.firstElementChild);
+            for (let option of options){
+                // Special handling for A tags
+                if (option.tagName == "A"){
+                    this.menu.querySelector("[name='LINK']").parentElement.classList.add("editor-context-menu-active");
+                } else {
+                    // Iterate over every tag in the menu bar
+                    for (let key of Object.keys(menuOptions.listeners)){
+                        // Check equality with styles[key]
+                        // Use optional chaining
+                        if (styles[key]?.applied.equals(option)){
+                            this.menu.querySelector(`[name='${key}']`).parentElement.classList.add("editor-context-menu-active");
+                        }
+                    }
+                }
+            }
+        }
+        // Add parent back (due to extractGreatestParent)
+        range.insertNode(parent);
+    }
+
+    /**
      * Export this.element as a string
      *
      * @returns {string}
      */
-
     export(){
         // Inline styles are from constructor
         return `<div style="white-space: pre-wrap; cursor: text;">${this.element.innerHTML}</div>`

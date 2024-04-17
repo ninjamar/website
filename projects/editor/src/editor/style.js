@@ -190,11 +190,12 @@ export function extractGreatestParent(range){
  * Get all applied style for an element
  * TODO: This should probably be called getAllParentElements
  *
+ * @export
  * @param {HTMLElement} element - Element to check
  * @param {HTMLElement} [max=document.body] - Maxomum parent
  * @returns {Array.<HTMLElement>} - All applied styles
  */
-function getAllAppliedStyles(element, max = document.body){
+export function getAllAppliedStyles(element, max = document.body){
     let curr = element;
     let styles = [curr];
     while (curr.parentElement && curr.parentElement != max){

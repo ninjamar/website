@@ -3,7 +3,8 @@
     Copyright (c) 2024 ninjamar
     https://github.com/ninjamar/editor
 */
-import { toggleStyle, styles,  styleAction, ElementOptions, createOptionsFromElement, extractGreatestParent, removeStyle } from "./style.js";
+import { toggleStyle, styles,  styleAction, ElementOptions, createOptionsFromElement, getAllAppliedStyles, extractGreatestParent, removeStyle } from "./style.js";
+import { attributesToDict } from "./utils.js";
 
 // Set options for the context menu
 const menuOptions = {
@@ -288,20 +289,23 @@ export class Editor {
             item.classList.remove("editor-context-menu-active");
         }
         let parent = extractGreatestParent(range);
+        let options = getAllAppliedStyles(range.commonAncestorContainer).filter(x => x instanceof HTMLElement).map(x => new ElementOptions(x.tagName, attributesToDict(x.attributes)));;
+        
         if (parent.firstElementChild){
-            let options = createOptionsFromElement(parent.firstElementChild);
-            for (let option of options){
-                // Special handling for A tags
-                if (option.tagName == "A"){
-                    this.menu.querySelector("[name='LINK']").parentElement.classList.add("editor-context-menu-active");
-                } else {
-                    // Iterate over every tag in the menu bar
-                    for (let key of Object.keys(menuOptions.listeners)){
-                        // Check equality with styles[key]
-                        // Use optional chaining
-                        if (styles[key]?.applied.equals(option)){
-                            this.menu.querySelector(`[name='${key}']`).parentElement.classList.add("editor-context-menu-active");
-                        }
+            options = options.concat(createOptionsFromElement(parent.firstElementChild));
+        }
+
+        for (let option of options){
+            // Special handling for A tags
+            if (option.tagName == "A"){
+                this.menu.querySelector("[name='LINK']").parentElement.classList.add("editor-context-menu-active");
+            } else {
+                // Iterate over every tag in the menu bar
+                for (let key of Object.keys(menuOptions.listeners)){
+                    // Check equality with styles[key]
+                    // Use optional chaining
+                    if (styles[key]?.applied.equals(option)){
+                        this.menu.querySelector(`[name='${key}']`).parentElement.classList.add("editor-context-menu-active");
                     }
                 }
             }

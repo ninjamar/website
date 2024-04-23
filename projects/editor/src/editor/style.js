@@ -94,7 +94,7 @@ export const styles = {
  * Generate a list of options from an element
  *
  * @param {HTMLElement} child - An element to generate options from
- * @return {Array.<ElementOptions} A list of options
+ * @return {Array.<ElementOptions>} A list of options
  */
 export function createOptionsFromElement(element){
     let ret = [];

@@ -20,6 +20,7 @@
 
     --border-radius: 6px;
     --padding: 6px;
+    --margin: 6px;
 }
 
 html, body {
@@ -99,4 +100,16 @@ body {
 
 #output {
     font-family: 'Courier New', Courier, monospace;
+}
+
+#copyHTML {
+    width: 100%;
+    margin-top: var(--margin);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--primary-black);
+    background: var(--secondary-white);
+}
+
+#copyHTML:hover {
+    background: var(--third-white);
 }

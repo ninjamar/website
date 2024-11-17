@@ -127,35 +127,31 @@ COLORS = [
 ];
 
 
-/**
- * Self adjusting interval
- * @param {Function} callback - called every interval, takes one parameter, drift > interval
- * @param {Number} interval - interval in milliseconds
- */
-function adjustingInterval(callback, interval){
+function unbackloggedAdjustingInterval(callback, interval){
     // https://stackoverflow.com/a/29972322/
+    let isBacklogged = false;
+
+    let active = [];
     let expected = Date.now() + interval;
     setTimeout(step, interval)
     function step(){
         let drift = Date.now() - expected;
-        callback(drift > interval);
-        expected += interval;
-        setTimeout(step, Math.max(0, interval - drift));
-    }
-}
-
-
-/**
- * Self adjusting interval that pauses when tab is out of focus
- * @param {Function} callback - called every interval, takes one parameter, drift > interval
- * @param {Number} interval - interval in milliseconds
- */
-function pausingAdjustingInterval(callback, interval){
-    return adjustingInterval((bad) => {
-        if (!bad || document.hasFocus()){
-            callback(bad);
+        if (drift > interval && active.length > 0){
+            // When the tab isn't focused, the intervals will be backlogged
+            // We don't want this to happen, so clear all the previous interval
+            active.forEach(timeout => clearTimeout(timeout));
+            active = [];
+            isBacklogged = true;
+        } else {
+            isBacklogged = false;
         }
-    }, interval);
+        if (!isBacklogged){
+            callback();
+        }
+        expected += interval;
+        let id = setTimeout(step, Math.max(0, interval - drift));
+        active.push(id);
+    }
 }
 
 
@@ -561,7 +557,7 @@ function TetrisGameHandler(...args){
     loop();
     */
     game.draw();
-    pausingAdjustingInterval(() => {
+    unbackloggedAdjustingInterval(() => {
         game.receiveEvent("softDrop");
         // window.requestAnimationFrame(game.draw);
     }, 500);

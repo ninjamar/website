@@ -560,5 +560,5 @@ function TetrisGameHandler(...args){
     unbackloggedAdjustingInterval(() => {
         game.receiveEvent("softDrop");
         // window.requestAnimationFrame(game.draw);
-    }, 500);
+    }, 1000);
 }

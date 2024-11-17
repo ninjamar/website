@@ -1,5 +1,10 @@
 [    
     {
+        "title": "2Tetris",
+        "description": "Tetris, except you control two instances at once",
+        "url": "/projects/2tetris/"
+    },
+    {
         "title": "Editor",
         "description": "A WYSIWYG Editor for the web",
         "url": "/projects/editor/"

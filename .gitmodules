@@ -1,3 +1,6 @@
 [submodule "projects/editor"]
 	path = projects/editor
 	url = https://github.com/ninjamar/editor.git
+[submodule "projects/2tetris"]
+	path = projects/2tetris
+	url = https://github.com/ninjamar/2tetris

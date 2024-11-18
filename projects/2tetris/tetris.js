@@ -545,17 +545,7 @@ function TetrisGameHandler(...args){
                 break;
         }
     });
-    /*
-    function loop() {
-        game.draw();
-        new Promise(resolve => setTimeout(resolve, 500)).then(() => {
-            game.receiveEvent("softDrop");
-            window.requestAnimationFrame(loop);
-        })
-    }
-    game.draw();
-    loop();
-    */
+    
     game.draw();
     unbackloggedAdjustingInterval(() => {
         game.receiveEvent("softDrop");

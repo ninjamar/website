@@ -1,0 +1,110 @@
+/* Colors */
+:root {
+    --light-text-color: #333333;
+    --light-background-color: #f2f2f2;
+    --light-secondary-color: #C9C9C9;
+}
+
+/* Core styling */
+html, body {
+    height: 100%;
+}
+
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Default colors*/
+body {
+    margin: auto;
+    width: 75%;
+    background: var(--light-background-color);
+}
+.inverse {
+    color: var(--light-background-color);
+}
+.inverse-bg {
+    background: var(--light-text-color);
+}
+/* Change text color - not sure which elements have default text color */
+*:not(a) {
+    color: var(--light-text-color);
+}
+
+/* Default header styling*/
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+    font-weight: normal;
+}
+.title {
+    font-size: 1.5em;
+}
+/* Upper and bottom part of documents have different alignments */
+.center {
+    text-align: center;
+}
+.left {
+    text-align: left;
+}
+
+/* Navigation */
+.navbar {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+.navbar * {
+    text-decoration: none;
+    color: black;
+}
+
+/* Content */
+.content p {
+    text-indent: 4ch;
+}
+.content p * {
+    display: inline;
+}
+
+/* Row of buttons */
+.button-collection {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.button {
+    border-radius: 5px;
+    padding: 3px 10px 3px 10px;
+    margin: 5px;
+}
+.button * {
+    text-decoration: none; /* Text color is set by default, otherwise use inverse*/
+}
+
+/* Footer */
+.footer {
+    margin: 1em 0px;
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+}
+
+.block {
+    display: block;
+}
+
+/* 
+    Mobile 
+    https://stackoverflow.com/a/7354648/21322342
+*/
+@media (min-width: 450px) and (max-width: 730px ){ /* Phones */
+    .navbar * {
+        font-size: 3em;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 3em;
+    }
+    .content {
+        font-size: 2em;
+    }
+}

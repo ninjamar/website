@@ -545,10 +545,11 @@ function TetrisGameHandler(...args){
                 break;
         }
     });
-    
+
     game.draw();
     unbackloggedAdjustingInterval(() => {
         game.receiveEvent("softDrop");
         // window.requestAnimationFrame(game.draw);
     }, 1000);
 }
+// TODO: Add description + audio

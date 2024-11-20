@@ -37,6 +37,12 @@
             .info {
                 text-align: center;
             }
+
+            .restart {
+                width: fit-content;
+                font-family: unset;
+                margin-top: 5px;
+            }
         </style>
         <script src="./tetris.js"></script>
         <script>
@@ -61,8 +67,8 @@
                     this.isGameRunning = false;
                     $gameOver.style.visibility = "visible";
                 };
+                
                 function incrementScore(x) {
-                    console.log("Setting score")
                     score +=x;
                     $score.textContent = score;
                     if (score > highscore){
@@ -73,9 +79,17 @@
                 };
                 let left = TetrisGameHandler($games[0], gameOverFN, incrementScore);
                 let right = TetrisGameHandler($games[1], gameOverFN, incrementScore);
+                function restart(){
+                    incrementScore(-score);
+                    left.init();
+                    right.init();
+                }
+                return {restart: restart, left: left, right: right};
             }
 
-            document.addEventListener("DOMContentLoaded", loadGame);
+            document.addEventListener("DOMContentLoaded", () => {
+                window.manager = loadGame();
+            });
         </script>
     </head>
     <body>
@@ -92,6 +106,7 @@
                 <br>
                 <span class="highscore">Highscore: <span>0</span></span>
                 <div style="visibility: hidden;">Game Over</div>
+                <button class="restart" onclick="manager.restart(); this.blur();">Restart</button>
             </div>
             <div class="info">
                 <p>Tetris, except you control two games at once.<br>

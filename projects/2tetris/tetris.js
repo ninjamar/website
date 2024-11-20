@@ -228,13 +228,19 @@ class Tetris {
         this.gameOver = gameOverFN.bind(this);
         this.incrementScore = incrementScoreFN.bind(this);
 
-        this.isGameRunning = true;
-
         this.cols = 10;
         this.rows = 20;
 
         this.cellSize = 20;
         this.ctx.scale(this.cellSize, this.cellSize);
+
+        this.init();
+    }
+    /**  
+     * Start/Restart the game
+    */
+    init(){
+        this.isGameRunning = true;
         this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(new Point(0)));
         this.spawnShape();
     }
@@ -551,5 +557,6 @@ function TetrisGameHandler(...args){
         game.receiveEvent("softDrop");
         // window.requestAnimationFrame(game.draw);
     }, 1000);
+    return game;
 }
 // TODO: Add description + audio

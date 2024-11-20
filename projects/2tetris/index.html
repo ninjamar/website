@@ -88,7 +88,11 @@
             }
 
             document.addEventListener("DOMContentLoaded", () => {
-                window.manager = loadGame();
+                let manager = loadGame();
+                document.querySelector(".restart").addEventListener("click", (e) => {
+                    manager.restart();
+                    e.currentTarget.blur();
+                });
             });
         </script>
     </head>
@@ -106,7 +110,7 @@
                 <br>
                 <span class="highscore">Highscore: <span>0</span></span>
                 <div style="visibility: hidden;">Game Over</div>
-                <button class="restart" onclick="manager.restart(); this.blur();">Restart</button>
+                <button class="restart">Restart</button>
             </div>
             <div class="info">
                 <p>Tetris, except you control two games at once.<br>

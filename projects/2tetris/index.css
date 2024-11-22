@@ -1,0 +1,78 @@
+html, body {
+    width: 100%;
+}
+body {
+    margin: 0;
+    overflow-y: hidden;
+}
+
+.game-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.game-message {
+    text-align: center;
+}
+
+.content-wrapper {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.header {
+    justify-content: center;
+    display: flex;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.info {
+    text-align: center;
+}
+
+.restart {
+    width: fit-content;
+    font-family: unset;
+    margin-top: 5px;
+}
+
+.mobile-controls {
+    display: none;
+    margin: 15px auto auto auto;
+    width: 40%;
+}
+
+.mobile-controls > .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.mobile-controls > .row > .directions {
+    display: flex;
+    gap: 10px; /* Directions was display: block, causing a weird space between elements */
+}
+
+.mobile-controls > .drop {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.mobile-controls button {
+    font-family: unset; /* Remove browser defautl font */
+    font-size: 2em;
+}
+
+
+@media (max-width: 730px){ /* Mobile devices */
+    .info > .controls {
+        display: none;
+    }
+    .mobile-controls {
+        display: block;
+    }
+}

@@ -494,7 +494,6 @@ class Tetris {
      * */
     receiveEvent(event) {
         if (!this.isGameRunning) {
-            console.log("Really?");
             return;
         }
         switch (event) {
@@ -528,30 +527,12 @@ class Tetris {
 /** 
  * A controller for Tetris
  * Adds handlers for keybinds
+ * @param {Function} signal - Registers event listeners to call game.recieveEvent. Game is passed as an argument
  * @param {...{}} args - Args to passthrough to Tetris
  * */
-function TetrisGameHandler(...args){
+function TetrisGameHandler(signal, ...args){
     let game = new Tetris(...args);
-    document.addEventListener("keydown", (event) => {
-        switch (event.key) {
-            case "ArrowLeft":
-                game.receiveEvent("left");
-                break;
-            case "ArrowRight":
-                game.receiveEvent("right");
-                break;
-            case "ArrowDown":
-                game.receiveEvent("softDrop");
-                break;
-            case "ArrowUp":
-                game.receiveEvent("rotate");
-                break;
-            case " ":
-                game.receiveEvent("hardDrop");
-                break;
-        }
-    });
-
+    signal(game); // Register handlers
     game.draw();
     unbackloggedAdjustingInterval(() => {
         game.receiveEvent("softDrop");

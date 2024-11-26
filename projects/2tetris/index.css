@@ -67,6 +67,21 @@ body {
     font-size: 2em;
 }
 
+/* Crossplatform button styling so buttons can work on IOS*/
+button {
+    border-radius: 5px;
+    border: 1px solid gray;
+    padding: 3px 10px 3px 10px;
+    margin: 5px;
+    /*background: #e5e5e5;*/
+    background: lightgrey;
+}
+button:hover {
+    background: darkgray;
+}
+button:active {
+    transform: scale(0.98);
+}
 
 @media (max-width: 730px){ /* Mobile devices */
     .info > .controls {

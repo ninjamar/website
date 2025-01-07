@@ -1,12 +1,17 @@
 [    
     {
+        "title": "DNS Server",
+        "description": "A simple forwarding DNS Server written in Python",
+        "url": "https://github.com/ninjamar/dns-server"
+    },
+    {
         "title": "2Tetris",
         "description": "Tetris, except you control two instances at once",
         "url": "/projects/2tetris/"
     },
     {
         "title": "Pen Video Player",
-        "description": "A video player for Scratch that uses pen",
+        "description": "A video player for Scratch that uses the pen extension",
         "url": "https://scratch.mit.edu/projects/602626065/"
     },
     {
@@ -22,7 +27,7 @@
     {
         "title": "ninjamar.dev",
         "description": "This website",
-        "url": "https://github.com/ninjamar/ninjamar.github.io"
+        "url": "https://github.com/ninjamar/website"
     },
     {
         "title": "Pinboard",

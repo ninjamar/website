@@ -1,7 +1,7 @@
 [    
     {
         "title": "DNS Server",
-        "description": "A simple forwarding DNS Server written in Python",
+        "description": "A simple forwarding DNS Server",
         "url": "https://github.com/ninjamar/dns-server"
     },
     {

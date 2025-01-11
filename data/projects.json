@@ -50,11 +50,6 @@
         "url": "https://github.com/ninjamar/nm"
     },
     {
-        "title": "vm",
-        "description": "A virtual machine",
-        "url": "https://github.com/ninjamar/vm"
-    },
-    {
         "title": "containd",
         "description": "Containerization tool written in Python",
         "url": "https://github.com/ninjamar/containd"

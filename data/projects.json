@@ -5,6 +5,11 @@
         "url": "https://github.com/ninjamar/dns-server"
     },
     {
+        "title": "Captcha",
+        "description: "Captcha system",
+        "url": "https://github.com/ninjamar/captcha"
+    },
+    {
         "title": "2Tetris",
         "description": "Tetris, except you control two instances at once",
         "url": "/projects/2tetris/"

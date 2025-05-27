@@ -10,8 +10,9 @@ from pathlib import Path
 OUTPUT_PREFIX = "./dist"
 RSYNC_COMMAND = "rsync -av {0} {1} {2}"
 
-#  watchman-make -p 'templates/**' --run 'python3 build.py template'
-#  watchman-make -p 'static/**' --run 'python3 build.py static'
+# watchman-make -p 'static/**' --run '/opt/homebrew/bin/python3.11 build.py static'
+# watchman-make -p 'templates/**' --run 'python3.11 build.py template'
+# http-server dist
 def unpack_submodules():
     # get all submodules
     modules = [x for x in subprocess.run("grep path .gitmodules | sed 's/.*= //'", shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8").split("\n") if x]

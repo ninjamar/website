@@ -1,10 +1,11 @@
 {% extends "base.html"%}
-{% block title %}test{% endblock title %}
+
+{% block title %}Test{% endblock title %}
+
 {% block content %}
-    <h1 class="title">Test</h1>
-    <div class="button-collection">
+    <div>
         {% for color in colors %}
-            <div class="button" style="background: {{ color }}">
+            <div style="background: {{ color }}">
                 <a href="#">{{ color }}</a>
             </div>
         {% endfor %}

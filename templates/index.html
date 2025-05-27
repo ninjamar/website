@@ -1,22 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}home{% endblock title %}
+{% block title %}Home{% endblock title %}
+
+
 {% block content %}
     <p>I'm Ram, aka ninjamar. I enjoy coding, gaming, soccer, and photography.</p>
     <p>Right now, I'm currently working on writing a DNS server, to provide adblocking functionality when Chrome kills off adblockers.
         <a href="https://github.com/ninjamar/compactdns">Check it out!</a>
     </p>
 
-    <h2>Here are some useful links!</h2>
-    <div class="button-collection">
-        <div class="button inverse-bg">
-            <a class="inverse" href="https://github.com/ninjamar">GitHub</a>
-        </div>
-        <div class="button inverse-bg">
-            <a class="inverse" href="/projects/">My projects</a>
-        </div>
-        <div class="button inverse-bg">
-            <a class="inverse" href="https://www.flickr.com/people/ninjamar/">Flickr (my photos)</a>
-        </div>
-    </div>
+    <h2>Some useful links:</h2>
+    <ul>
+        <li>
+            <a href="https://github.com/ninjamar">GitHub</a>
+        </li>
+        <li>
+            <a href="/projects">My projects</a>
+        </li>
+        <li>
+            <a href="https://www.flickr.com/people/ninjamar/">Flickr (my photos)</a>
+        </li>
+    </ul>
 {% endblock content %}

@@ -1,110 +1,122 @@
-/* Colors */
-:root {
-    --light-text-color: #333333;
-    --light-background-color: #f2f2f2;
-    --light-secondary-color: #C9C9C9;
-}
+@import url("https://rsms.me/inter/inter.css");
 
-/* Core styling */
+
 html, body {
     height: 100%;
+    margin: 0;
+    border: 0;
 }
 
-* {
-    font-family: 'Courier New', Courier, monospace;
-}
-
-/* Default colors*/
 body {
-    margin: auto;
-    width: 75%;
-    background: var(--light-background-color);
-}
-.inverse {
-    color: var(--light-background-color);
-}
-.inverse-bg {
-    background: var(--light-text-color);
-}
-/* Change text color - not sure which elements have default text color */
-*:not(a) {
-    color: var(--light-text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
 }
 
-/* Default header styling*/
-h1, h2, h3, h4, h5, h6 {
+
+:root {
+    font-family: Inter, sans-serif;
+
+    font-weight: 300;
+
+    letter-spacing: -0.018em;
+    -webkit-font-smoothing: antialiased;
+
+    font-feature-settings: "case", "dlig", "tnum", "zero", "ss01", "calt", "ccmp", "locl", "kern";
+
+
+    line-height: 1.5;
+}
+@supports (font-variation-settings: normal) {
+    * { 
+        font-family: InterVariable, sans-serif;
+    }
+}
+
+:root {
+    --header-font-size: 2.3rem;
+    --content-font-size: 1.6rem;
+    --footer-font-size: 1.1rem;
+
+
+    --color-1: #0c0e10;
+    --color-2: #e5e5dd;
+    --color-3: #e64959;
+
+}
+h1, h2, h3, h4 {
+    font-weight: 600;
+}
+/* These are all relative to --content-font-size or --header-font-size */
+h1 {
+    font-size: 1.3em;
+}
+h2 {
+    font-size: 1.2em;
+}
+h3 {
+    font-size: 1.1em;
+}
+h4 {
+    font-size: 1em;
+}
+
+body {
+    background-color: var(--color-1);
+}
+html {
+    font-size: 16px;
+}
+
+
+header {
+    height: 15%;
+    font-size: var(--header-font-size);
+    color: var(--color-3);
+}
+
+a {
+    color: var(--color-3);
+}
+
+nav {
     text-align: center;
-    font-weight: normal;
 }
-.title {
-    font-size: 1.5em;
+
+main {
+    flex-grow: 1;
+    color: var(--color-2);
+    font-size: var(--content-font-size);
 }
-/* Upper and bottom part of documents have different alignments */
+
+
+header, main, footer {
+    margin: 15px;
+}
+
+
 .center {
     text-align: center;
 }
-.left {
-    text-align: left;
+
+.content-wrapper {
+    width: 70%;
+    margin: auto;
+}
+footer {
+    color: var(--color-2);
+    text-align: center;
+    font-size: var(--footer-font-size);
 }
 
-/* Navigation */
-.navbar {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 1.5em;
-}
-.navbar * {
-    text-decoration: none;
-    color: black;
+pre {
+    border: 4px solid var(--color-3);
+    overflow-y: scroll;
+    padding: 10px;
 }
 
-/* Content */
-.content p {
-    text-indent: 4ch;
-}
-.content p * {
-    display: inline;
-}
-
-/* Row of buttons */
-.button-collection {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-.button {
-    border-radius: 5px;
-    padding: 3px 10px 3px 10px;
-    margin: 5px;
-}
-.button * {
-    text-decoration: none; /* Text color is set by default, otherwise use inverse*/
-}
-
-/* Footer */
-.footer {
-    margin: 1em 0px;
-    display: flex;
-    justify-content: space-between;
-    width: 75%;
-}
-
-.block {
-    display: block;
-}
-
-/* 
-    Mobile 
-    https://stackoverflow.com/a/7354648/21322342
-*/
-@media (min-width: 450px) and (max-width: 730px ){ /* Phones */
-    .navbar * {
-        font-size: 3em;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        font-size: 3em;
-    }
-    .content {
-        font-size: 2em;
-    }
+code {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8em;
 }

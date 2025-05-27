@@ -3,7 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, inital-scale=1.0">
-        <title>home - ninjamar.dev</title>
+
+        <title>Home - ninjamar.dev</title>
 
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <script src="/static/js/base.js"></script>
@@ -11,40 +12,47 @@
         
     </head>
     <body>
-        <div class="center">
-            <nav class="navbar">
+        <!-- Back to semantic html -->
+        <header>
+            <nav>
                 <span>ninjamar.dev |</span>
                 <a href="/">home</a>
                 <a href="/projects/">projects</a>
                 <a href="/blog/">blog</a>
             </nav>
-        </div>
-        <div class="left">
-            <div class="content">
-                
+        </header>
+        <main>
+            <div class="content-wrapper">
+                <h1>Home</h1>
+
+                <article id="content">
+                    
     <p>I'm Ram, aka ninjamar. I enjoy coding, gaming, soccer, and photography.</p>
     <p>Right now, I'm currently working on writing a DNS server, to provide adblocking functionality when Chrome kills off adblockers.
         <a href="https://github.com/ninjamar/compactdns">Check it out!</a>
     </p>
 
-    <h2>Here are some useful links!</h2>
-    <div class="button-collection">
-        <div class="button inverse-bg">
-            <a class="inverse" href="https://github.com/ninjamar">GitHub</a>
-        </div>
-        <div class="button inverse-bg">
-            <a class="inverse" href="/projects/">My projects</a>
-        </div>
-        <div class="button inverse-bg">
-            <a class="inverse" href="https://www.flickr.com/people/ninjamar/">Flickr (my photos)</a>
-        </div>
-    </div>
+    <h2>Some useful links:</h2>
+    <ul>
+        <li>
+            <a href="https://github.com/ninjamar">GitHub</a>
+        </li>
+        <li>
+            <a href="/projects">My projects</a>
+        </li>
+        <li>
+            <a href="https://www.flickr.com/people/ninjamar/">Flickr (my photos)</a>
+        </li>
+    </ul>
 
+                </article>
             </div>
-            <footer class="footer">
-                <span>© Copyright 2025, ninjamar. All rights reserved</span>
+        </main>
+        <footer>
+            <!--Could use list here -->
+            <p>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
-            </footer>
-        </div>
+            </p>
+        </footer>
     </body>
 </html>

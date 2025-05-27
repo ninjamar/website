@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, inital-scale=1.0">
+
         <title>HSM: A JavaScript framework - ninjamar.dev</title>
 
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -46,27 +47,29 @@
 
     </head>
     <body>
-        <div class="center">
-            <nav class="navbar">
+        <!-- Back to semantic html -->
+        <header>
+            <nav>
                 <span>ninjamar.dev |</span>
                 <a href="/">home</a>
                 <a href="/projects/">projects</a>
                 <a href="/blog/">blog</a>
             </nav>
-        </div>
-        <div class="left">
-            <div class="content">
-                
+        </header>
+        <main>
+            <div class="content-wrapper">
+                <h1>HSM: A JavaScript framework</h1>
 
-<h1 class="title">HSM: A JavaScript framework</h1>
+                <article id="content">
+                    
+
 <p>
-    HSM is a micro-framework for the web. HSM is an extension of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components">web component api</a>.
+    HSM is a micro-framework for the web, which is an extension of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components">web component api</a>.
     I designed HSM because I wanted to learn more about web technologies such as shadow root. I was inspired to write this after learning about <a href="https://github.com/developit/htm">Hyperscript Tagged Markup</a>. 
     With HSM, I built a <a href="/projects/note.html">note taking app</a>. This app includes the ability to drag notes around and layer them.
 </p>
-<h3>Example</h3>
-<pre><code>
-import Component from &quot;/static/projects/note/js/hsm.js&quot;;
+<h2>Example</h2>
+<pre><code>import Component from &quot;/static/projects/note/js/hsm.js&quot;;
 class MyComponent extends Component {
     foo(){
         this.querySelector(&quot;#here&quot;).innerHTML = &quot;test&quot;;
@@ -105,11 +108,14 @@ customElements.define(&quot;my-component&quot;, MyComponent);
 <my-component></my-component>
 
 
+                </article>
             </div>
-            <footer class="footer">
-                <span>© Copyright 2025, ninjamar. All rights reserved</span>
+        </main>
+        <footer>
+            <!--Could use list here -->
+            <p>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
-            </footer>
-        </div>
+            </p>
+        </footer>
     </body>
 </html>

@@ -3,43 +3,57 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, inital-scale=1.0">
-        <title>home - ninjamar.dev</title>
+
+        <title>Home - ninjamar.dev</title>
 
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <script src="/static/js/base.js"></script>
         <link rel="stylesheet" href="/static/css/root.css">
         
+
+<style>
+    #content > ul{
+        margin-left: 5ch;;
+    }
+</style>
+
+
     </head>
     <body>
-        <div class="center">
-            <nav class="navbar">
+        <!-- Back to semantic html -->
+        <header>
+            <nav>
                 <span>ninjamar.dev |</span>
                 <a href="/">home</a>
                 <a href="/projects/">projects</a>
                 <a href="/blog/">blog</a>
             </nav>
-        </div>
-        <div class="left">
-            <div class="content">
-                
-    <h1 class="title">Privacy Policy</h1>
+        </header>
+        <main>
+            <div class="content-wrapper">
+                <h1>Home</h1>
 
-    <p>This website uses analytics to collect information. The software (which I plan to opensource when I get my GitHub back) collects the following, but is not limited to.</p>
-    <ul style="margin-left: 5ch;"> <!-- Simple solution to counter indentation from the p tag -->
-        <li>An id (sha256 hash of ip address + os + browser + current date)</li>
-        <li>Screen dimentions</li>
+                <article id="content">
+                    
+    <p>This website uses analytics to collect information. The software, <a href="https://github.com/ninjamar/analytics">hosted on my GitHub</a>, collects the following, but is not limited to.</p>
+    <ul> <!-- Simple solution to counter indentation from the p tag -->
+        <li>An id (hash of IP address + OS + browser + current date)</li>
+        <li>Screen Dimensions</li>
         <li>OS</li>
         <li>Browser</li>
-        <li>Total time on page</li>
+        <li>Total Total on Page</li>
         <li>Referrer</li>
     </ul>
-    <p>Other information, such as IP address may be visible in logs.</p>
+    <p>Other information may be visible in logs.</p>
 
+                </article>
             </div>
-            <footer class="footer">
-                <span>© Copyright 2025, ninjamar. All rights reserved</span>
+        </main>
+        <footer>
+            <!--Could use list here -->
+            <p>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
-            </footer>
-        </div>
+            </p>
+        </footer>
     </body>
 </html>

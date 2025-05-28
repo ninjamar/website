@@ -16,3 +16,35 @@
         }
     }
 })()
+
+/* Functions to get, set, and toggle themes*/
+function getTheme(){
+    let pref = localStorage.getItem("theme");
+
+    if (!pref){
+        pref = window.matchMedia("prefers-color-scheme: dark").matches ? "dark" : "light";
+        localStorage.setItem("theme", pref);
+    }
+    return pref;
+}
+function setTheme(theme){
+    if (theme == "dark"){
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+    } else {
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");   
+    }
+}
+function toggleTheme(){
+    let theme = getTheme();
+    let newTheme = theme == "dark" ? "light" : "dark";
+
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Apply the theme on load
+    setTheme(getTheme());
+})

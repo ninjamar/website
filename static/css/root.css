@@ -1,89 +1,116 @@
 @import url("https://rsms.me/inter/inter.css");
 
+/* Root variables */
+:root {
+    --header-font-size: 2.2rem;
+    --content-font-size: 1.5rem;
+    --footer-font-size: 1rem;
 
+    /* Set base colors */
+    --color-dark: #0c0e10;
+    --color-light: #e5e5dd;
+    --color-red: #e64959;
+
+}
+
+/* Dark and light mode color choices */
+.dark {
+    --color-1: var(--color-dark);
+    --color-2: var(--color-light);
+    --color-3: var(--color-red);
+}
+.light {
+    --color-1: var(--color-light);
+    --color-2: var(--color-dark);
+    --color-3: var(--color-red);
+}
+
+/* Base styling */
 html, body {
     height: 100%;
     margin: 0;
     border: 0;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-}
+html {
+    /* Style the font */
+    /* 
+        Clamp VW
+        min + ((max - min) / (max-width - min-width) * 100)
+        = 12 + ((15 - 12) / (1440 - 320) * 100)
+        = 12 + (4 / 1120 * 100)
+        = 12px + 0.35714285714vw
 
+    */
+    font-size: clamp(12px, 0.35714285714vw + 12px, 16px);
 
-:root {
+    /* Fallback font to sans-serif*/
     font-family: Inter, sans-serif;
+    /* TODO: Use this as the fallback */
+    /* font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto; */
 
     font-weight: 300;
 
+    /* Used https://rsms.me/inter/lab/ to figure out preferences*/
     letter-spacing: -0.018em;
     -webkit-font-smoothing: antialiased;
-
     font-feature-settings: "case", "dlig", "tnum", "zero", "ss01", "calt", "ccmp", "locl", "kern";
 
-
+    /* Make content easier to read */
     line-height: 1.5;
 }
+
+/* Show Inter font with configuration */
 @supports (font-variation-settings: normal) {
-    * { 
+    html { 
         font-family: InterVariable, sans-serif;
     }
 }
 
-:root {
-    --header-font-size: 2.3rem;
-    --content-font-size: 1.6rem;
-    --footer-font-size: 1.1rem;
-
-
-    --color-1: #0c0e10;
-    --color-2: #e5e5dd;
-    --color-3: #e64959;
-
-}
-h1, h2, h3, h4 {
-    font-weight: 600;
-}
-/* These are all relative to --content-font-size or --header-font-size */
-h1 {
-    font-size: 1.3em;
-}
-h2 {
-    font-size: 1.2em;
-}
-h3 {
-    font-size: 1.1em;
-}
-h4 {
-    font-size: 1em;
-}
-
 body {
+    /* Use flexbox on body to have nice UI */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+
     background-color: var(--color-1);
 }
-html {
-    font-size: 16px;
-}
+
+/* Header styling */
+h1, h2, h3, h4 { font-weight: 600; }
+/* These are all relative to --content-font-size or --header-font-size */
+h1 { font-size: 1.3em; }
+h2 { font-size: 1.2em; }
+h3 { font-size: 1.1em; }
+h4 { font-size: 1em; }
 
 
+/* */
 header {
     height: 15%;
     font-size: var(--header-font-size);
     color: var(--color-3);
+
+    display: flex;
+    justify-content: center;
+}
+
+/* Header navbar */
+header > nav {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 a {
+    /* Color and underline all links */
     color: var(--color-3);
+    text-decoration: underline;
 }
 
-nav {
-    text-align: center;
-}
-
+/* Have the main content take up all the remaining space*/
 main {
     flex-grow: 1;
     color: var(--color-2);
@@ -91,24 +118,42 @@ main {
 }
 
 
+/* Margin around each one
+TODO: CHeck if can be done on body
+*/
 header, main, footer {
     margin: 15px;
 }
 
+/* Since main is a flexbox, use a content-wrapper to align content*/
+.content-wrapper {
+    /* 
+        (max_percent * min_viewport - min_percent * max_viewport) / (min_viewport - max_viewport)
+        = 62.57vw
+    */
+    
+    width: clamp(70%, 62.57vw, 96%);
+    margin: auto;
+}
 
+/* Make footer go in the center */
+footer {
+    color: var(--color-2);
+    font-size: var(--footer-font-size);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* use align items instead of justify-content because of row mode */
+
+    padding-bottom: 1em;
+}
+
+/* Utility class to center text */
 .center {
     text-align: center;
 }
 
-.content-wrapper {
-    width: 70%;
-    margin: auto;
-}
-footer {
-    color: var(--color-2);
-    text-align: center;
-    font-size: var(--footer-font-size);
-}
+/* TODO: Should this be pre:has(code) or just pre code or just pre */
 
 pre {
     border: 4px solid var(--color-3);
@@ -118,5 +163,10 @@ pre {
 
 code {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 0.8em;
+    font-size: 0.7em;
+}
+
+.a-button {
+    cursor: pointer;
+    user-select: none;
 }

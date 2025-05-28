@@ -1,4 +1,6 @@
 @import url("https://rsms.me/inter/inter.css");
+@import url("https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css");
+
 
 /* Root variables */
 :root {
@@ -202,8 +204,14 @@ pre {
 }
 
 code {
-    font-family: 'Courier New', Courier, monospace;
+    /*font-family: 'Courier New', Courier, monospace;*/
+    font-family: "Fira Code", monospace;
     font-size: 0.7em;
+}
+@supports (font-variation-settings: normal) {
+    code {
+        font-family: "Fira Code VF", monospace;
+    }
 }
 
 .a-button {

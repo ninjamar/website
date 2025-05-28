@@ -33,21 +33,13 @@ html, body {
 }
 
 html {
-    /* Style the font */
-    /* 
-        Clamp VW
-        min + ((max - min) / (max-width - min-width) * 100)
-        = 12 + ((15 - 12) / (1440 - 320) * 100)
-        = 12 + (4 / 1120 * 100)
-        = 12px + 0.35714285714vw
-
-    */
-    font-size: clamp(12px, 0.35714285714vw + 12px, 16px);
+    /* Style the font. See the note about clamp and the calculation below */
+    font-size: clamp(12px, 0.357142857143vw + 10.8571428571px, 16px);
 
     /* Fallback font to sans-serif*/
     font-family: Inter, sans-serif;
     /* TODO: Use this as the fallback */
-    /* font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto; */
+    /*font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto;*/
 
     font-weight: 300;
 
@@ -86,7 +78,7 @@ h3 { font-size: 1.1em; }
 h4 { font-size: 1em; }
 
 
-/* */
+/* Header */
 header {
     height: 15%;
     font-size: var(--header-font-size);
@@ -115,24 +107,72 @@ main {
     flex-grow: 1;
     color: var(--color-2);
     font-size: var(--content-font-size);
+
+    margin: 15px 0 15px 0;
 }
 
 
 /* Margin around each one
 TODO: CHeck if can be done on body
 */
-header, main, footer {
+header, footer {
     margin: 15px;
 }
 
 /* Since main is a flexbox, use a content-wrapper to align content*/
-.content-wrapper {
+.content-sizing {
     /* 
-        (max_percent * min_viewport - min_percent * max_viewport) / (min_viewport - max_viewport)
-        = 62.57vw
-    */
+    Kinda complicated to calculate the proper value to make this design scale
+    responsively.
+
+    Narrow screen --> Wide screen
+        320px = 86vw      1440px = 70vw
     
-    width: clamp(70%, 62.57vw, 96%);
+    Need to make a function that will take in pixels (actually 100vw) and output pixels
+        w(320) = 0.86vw(320px)
+               = 275.2 px
+        w(1440) = 0.7vw(1440)
+                = 1008 px
+    
+    Now, the inputs and outputs of w are pixels.
+    Create a linear equation that goes to these two points
+        m = (1008 - 275.2) / (1440 - 320)
+          = 732.8 / 1120
+        
+        w(p) = m(p - 320) + 275.2
+             = (732.8/1120)(p-320) + 275.2
+             = (732.8/1120)p - (7328/35) + 275.2
+             = 0.654285714286p - 209.371428571 + 275.2
+             = 0.654285714286p + 65.828571429
+
+    However, we want this to be responsive. If 1vw = p/100, then multiply the
+    the slope of the equation by 100 (all constant remains unchanged) to get 100vw.
+        w(p) = 0.654285714286(100)p + 65.828571429 px 
+             = 65.4285714286p + 65.828571429 px
+    
+    100vw is the entire screen. Therefore the equation just simplifies to:
+        65.4285714286 vw + 65.828571429 px
+    
+    NOTE: You can round these values.
+
+    Since this calculation is complicated, I made a generic calculator.
+        https://www.desmos.com/calculator/vpyewvohlp
+
+    The clamp function can also be used with this.
+        eg: clamp(70%, 65.42857vw + 65.82857px, 90%)
+
+        This calculates the prefered value (middle). If it's less than the minimum
+        value (left), then the minimum value is used. If it's greater than the
+        maximum value, the maximum value is used.
+
+    NOTE: For accurate calculations, try to make the target element stretch from
+    end to end of the document, so the total width is 100vw.
+
+    NOTE: This is very helpful because the calculation doesn't use percentages,
+    thus meaning that it can be applied to a lot more elements.
+    */
+    /* Use clamp to make sure the sizes never go out of bound*/
+    width: clamp(70vw, 65.4285714286vw + 65.828571429px, 86vw);
     margin: auto;
 }
 

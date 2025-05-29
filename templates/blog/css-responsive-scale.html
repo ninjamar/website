@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Responsive Scaling with CSS{% endblock title %}
+
+{% block date %}May 29, 2025{% endblock date %}
+
+{% block static %}
+<!--
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+-->
+<style>
+    #calculator-results {
+        text-align: center;
+    }
+</style>
+<script>
+    
+    function calculateValues(){
+        const $result = document.querySelector("#calculator-results");
+        const $eq = document.querySelector("#calculator-equation");
+
+        let v1 = parseFloat(document.querySelector("#viewport1").value);
+        let v2 = parseFloat(document.querySelector("#viewport2").value);
+        let d1 = parseFloat(document.querySelector("#desired1").value);
+        let d2 = parseFloat(document.querySelector("#desired2").value);
+        // w(p) = m(x-v2)+d2
+        // m*-v2 + d2
+        let slope =  ((d2 - d1) / (v2 - v1));
+        let constant = (slope * -v1) + d1;
+
+        $eq.innerText = `${(100 * slope).toFixed(5)}vw + ${constant.toFixed(5)}px`;
+        $result.removeAttribute("hidden");
+    }
+</script>
+{% endblock static %}
+{% block content %}
+<p>Implementing a responsive layout that can scale between mobile and desktop devices is not easy.
+    Some of these methods include <code>flexbox</code> and ...
+</p>
+<h2>
+    What about scaling font size or content width across different viewport sizes?
+</h2>
+<p>You can use a neat little trick. At a given viewport width, we want a certain output size. At another given viewport with, we want another output.
+    In order to figure out the CSS equation, we will use some math.
+</p>
+<p>For example, when the viewport is 320px, we want to have a width of 86vw. When the viewport is 1440px, we want a width of 70vw.</p>
+
+<h2>The Math</h2>
+<p>To make the math work, the input and output values will be pixels. From here on, if a unit is not given, it's in pixels</p>
+<p>
+Set up the equation as a function, \(w(p)\):
+
+
+\[
+w\left(1440\right) = 1008
+\]
+
+Create a line between these two points:
+
+
+\[
+m = \frac{1008 - 275.2}{1440 - 320}
+\]
+
+Substitute into point-slope form:
+
+\[
+w\left(p\right) = m\left(p - 320\right) + 275.2
+\]
+
+\[
+w\left(p\right) = 0.654285714286\,p + 65.8285714286
+\]
+</p>
+<p>
+In order for this equation to be responsive, we need to get rid of \(p\).
+Since \(100vw\) represents the entire screen, we can multiply the \(m\) coefficient by 100,
+to get rid of \(p\). This causes \(m\) to be in \(vw\). The constant term remains unchanged, and is still in pixels.
+
+<br><br>
+The resulting equation:
+\[
+    65.4285714286\,vw + 65.828571429\,px
+\]
+</p>
+<p>You can put this equation into <code>calc</code> in CSS</p>
+<pre><code> .content {
+    width: calc(65.4285714286vw + 65.828571429px);
+    margin: auto;
+}
+</code></pre>
+<h2>See this in action</h2>
+<p>The calculations above are the same formula I used to calculate the width of the main column of this page.
+    If you open resize this page, notice how the width of this column gradually changes from 1008px at a 1440px viewport to
+    275.2px at a 320px viewport.
+</p>
+<h2>An Important Note</h2>
+<p>Make sure that the parent element of which this formula is applied to takes up exactly 100vw. </p>
+<h2>Clamp</h2>
+
+<p>Since we used a linear equation, if the viewport is 201px wide, then the width becomes 197.34px. 
+    If you want to set a minimum and maximum constraint on the equation, then you can use the
+    <code>clamp</code> function.
+    <br><br>
+    Quoting <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp">MDN</a>:
+    <blockquote>
+        The clamp() CSS function clamps a middle value within a range of values between a defined minimum bound and a maximum bound. The function takes three parameters: a minimum value, a preferred value, and a maximum allowed value.
+    </blockquote>
+
+    If we want the minimum width to be 275.2px, and the maximum width 1008px, the following could be used:
+    <pre><code>.content {
+    width: clamp(275.2px, 65.4285714286vw + 65.828571429px, 1008px);
+    margin: auto;
+}</code></pre>
+</p>
+
+<h2>Calculator</h2>
+<form>
+    <div class="row">
+        <label>
+            Viewport Size (px)
+            <input type="number" name="viewport1" id="viewport1" placeholder="1440">
+        </label>
+        <label>
+            Desired Size (px)
+            <input type="number" name="desired1" id="desired1" placeholder="1008">
+        </label>
+    </div>
+    <div class="row">
+        <label>
+            Viewport Size (px)
+            <input type="number" name="viewport2" id="viewport2" placeholder="320">
+        </label>
+        <label>
+            Desired Size (px)
+            <input type="number" name="desired2" id="desired2" placeholder="275.2">
+        </label>
+    </div>
+    <div class="row">
+        <input type="submit" onclick="event.preventDefault(); calculateValues();">
+    </div>
+</form>
+<div id="calculator-results" hidden>
+<p>The generated CSS equation. Wrap it in <code>calc</code> or use <code>clamp</code>!</p>
+<code id="calculator-equation"></code>
+</div>
+
+{% endblock content %}

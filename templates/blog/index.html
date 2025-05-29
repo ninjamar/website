@@ -1,7 +1,34 @@
 {% extends "base.html" %}
 {% block title %}Blog{% endblock title %}
+
+{% set articles = [
+    {
+        "title": "Responsive Scaling with CSS",
+        "href": "/blog/css-responsive-scale.html",
+        "date": "May 29, 2025"
+    },
+    {
+        "title": "HSM: A JavaScript Framework",
+        "href": "/blog/hsm.html",
+        "date": "Nov 29, 2023"
+    }
+] %}
+
+{% macro post_list_contents(n=None, date=False) %}
+    {% set items = articles if n is none else articles[-n:] %}
+    {% for article in items %}
+        <li>
+            <a href="{{ article.href }}">{{ article.title }}</a>
+            <!-- I can't get the date to align, and I don't have a good layout for this, so it will stay gones-->
+            {% if date %} 
+                <span class="date"> &horbar; {{ article.date }}</span>
+            {% endif %}
+        </li>
+    {% endfor %}
+{% endmacro %}
+
 {% block content %}
-    <ul>
-        <li>Nov 29, 2023 | <a href="/blog/hsm.html">HSM: A JavaScript Framework</a></li>
-    </ul>
+<ul class="list-of-links">
+    {{ post_list_contents(date=True) }}
+</ul>
 {% endblock content %}

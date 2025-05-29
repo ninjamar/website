@@ -1,12 +1,84 @@
 {% extends "base.html" %}
 {% block title %}Projects{% endblock title %}
+{% set projects = [    
+        {
+            "title": "DNS Server",
+            "description": "A simple forwarding DNS Server",
+            "url": "https://github.com/ninjamar/dns-server"
+        },
+        {
+            "title": "Captcha",
+            "description": "Captcha system",
+            "url": "https://github.com/ninjamar/captcha"
+        },
+        {
+            "title": "2Tetris",
+            "description": "Tetris, except you control two instances at once",
+            "url": "/projects/2tetris/"
+        },
+        {
+            "title": "Pen Video Player",
+            "description": "A video player for Scratch that uses the pen extension",
+            "url": "https://scratch.mit.edu/projects/602626065/"
+        },
+        {
+            "title": "Cloud List Engine",
+            "description": "A cloud list engine for Scratch",
+            "url": "https://scratch.mit.edu/projects/495545839/"
+        },
+        {
+            "title": "Editor",
+            "description": "A WYSIWYG Editor for the web",
+            "url": "/projects/editor/"
+        },
+        {
+            "title": "ninjamar.dev",
+            "description": "This website",
+            "url": "https://github.com/ninjamar/website"
+        },
+        {
+            "title": "Pinboard",
+            "description": "A pinboard",
+            "url": "/projects/pinboard.html"
+        },
+        {
+            "title": "ninjasocial",
+            "description": "A social application",
+            "url": "https://github.com/ninjamar/ninjasocial"
+        },
+        {
+            "title": "hsm",
+            "description": "JavaScript Framework",
+            "url": "https://github.com/ninjamar/hsm"
+        },
+        {
+            "title": "nm",
+            "description": "A lisp like programming language",
+            "url": "https://github.com/ninjamar/nm"
+        },
+        {
+            "title": "containd",
+            "description": "Containerization tool written in Python",
+            "url": "https://github.com/ninjamar/containd"
+        },
+        {
+            "title": "containd-cpp",
+            "description": "Containerization tool written in CPP",
+            "url": "https://github.com/ninjamar/containd-cpp"
+        },
+        {
+            "title": "A note-taking app",
+            "description": "An app to take notes",
+            "url": "/projects/note.html"
+        }
+    ]
+%}
+
 {% block content %}
     <ul>
         {% for project in projects %}
             <li>
-            <a href="{{ project.url }}">
-                {{ project.description }}
-            </a>
+                <a href="{{ project.url }}">{{ project.description }}</a>
             </li>
         {% endfor %}
     </ul>

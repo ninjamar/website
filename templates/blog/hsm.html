@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block title %}HSM: A JavaScript framework{% endblock title %}
+
+{% block date %}Nov 29, 2023{% endblock date %}
+
 {% block static %}
     <script type="module">
         import Component from "/static/projects/note/js/hsm.js";
@@ -75,8 +78,7 @@ class MyComponent extends Component {
         `;
     }
 }
-customElements.define(&quot;my-component&quot;, MyComponent);
-</code>
+customElements.define(&quot;my-component&quot;, MyComponent);</code>
 </pre>
 <p>Then use  <code>&lt;my-component&gt;&lt;/my-component&gt;</code></p>
 <h4>Demo</h4>

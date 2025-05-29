@@ -1,14 +1,18 @@
 {% extends "base.html" %}
+{% import "blog/index.html" as blog %}
 
 {% block title %}Home{% endblock title %}
-
 
 {% block content %}
     <p>I'm Ram, aka ninjamar. I enjoy coding, gaming, soccer, and photography.</p>
     <p>Right now, I'm currently working on writing a DNS server which will provide adblocking functionality when Chrome kills off adblockers.
         <a href="https://github.com/ninjamar/compactdns">Check it out!</a>
     </p>
-
+    <h2>Recent Blog Posts</h2>
+    <ul class="list-of-links">
+        {{ blog.post_list_contents(3, date=True) }}
+    </ul>
+   
     <h2>Some useful links:</h2>
     <ul>
         <li>
@@ -21,4 +25,5 @@
             <a href="https://www.flickr.com/people/ninjamar/">Flickr (my photos)</a>
         </li>
     </ul>
+
 {% endblock content %}

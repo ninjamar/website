@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, inital-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>HSM: A JavaScript framework - ninjamar.dev</title>
 
@@ -58,7 +58,11 @@
         </header>
         <main>
             <div class="content-sizing">
-                <h1>HSM: A JavaScript framework</h1>
+                <h1>
+                    HSM: A JavaScript framework
+                    <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
+                    <span style="float: right;">Nov 29, 2023</span>
+                </h1>
 
                 <article id="content">
                     
@@ -100,8 +104,7 @@ class MyComponent extends Component {
         `;
     }
 }
-customElements.define(&quot;my-component&quot;, MyComponent);
-</code>
+customElements.define(&quot;my-component&quot;, MyComponent);</code>
 </pre>
 <p>Then use  <code>&lt;my-component&gt;&lt;/my-component&gt;</code></p>
 <h4>Demo</h4>

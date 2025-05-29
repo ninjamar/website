@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Responsive Scaling with CSS - ninjamar.dev</title>
+
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+        <script src="/static/js/base.js"></script>
+        <link rel="stylesheet" href="/static/css/root.css">
+        
+<!--
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+-->
+<style>
+    #calculator-results {
+        text-align: center;
+    }
+</style>
+<script>
+    
+    function calculateValues(){
+        const $result = document.querySelector("#calculator-results");
+        const $eq = document.querySelector("#calculator-equation");
+
+        let v1 = parseFloat(document.querySelector("#viewport1").value);
+        let v2 = parseFloat(document.querySelector("#viewport2").value);
+        let d1 = parseFloat(document.querySelector("#desired1").value);
+        let d2 = parseFloat(document.querySelector("#desired2").value);
+        // w(p) = m(x-v2)+d2
+        // m*-v2 + d2
+        let slope =  ((d2 - d1) / (v2 - v1));
+        let constant = (slope * -v1) + d1;
+
+        $eq.innerText = `${(100 * slope).toFixed(5)}vw + ${constant.toFixed(5)}px`;
+        $result.removeAttribute("hidden");
+    }
+</script>
+
+    </head>
+    <body>
+        <!-- Back to semantic html -->
+        <header>
+            <nav>
+                <span>ninjamar.dev |</span>
+                <a href="/">home</a>
+                <a href="/projects/">projects</a>
+                <a href="/blog/">blog</a>
+            </nav>
+        </header>
+        <main>
+            <div class="content-sizing">
+                <h1>
+                    Responsive Scaling with CSS
+                    <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
+                    <span style="float: right;">May 29, 2025</span>
+                </h1>
+
+                <article id="content">
+                    
+<p>Implementing a responsive layout that can scale between mobile and desktop devices is not easy.
+    Some of these methods include <code>flexbox</code> and ...
+</p>
+<h2>
+    What about scaling font size or content width across different viewport sizes?
+</h2>
+<p>You can use a neat little trick. At a given viewport width, we want a certain output size. At another given viewport with, we want another output.
+    In order to figure out the CSS equation, we will use some math.
+</p>
+<p>For example, when the viewport is 320px, we want to have a width of 86vw. When the viewport is 1440px, we want a width of 70vw.</p>
+
+<h2>The Math</h2>
+<p>To make the math work, the input and output values will be pixels. From here on, if a unit is not given, it's in pixels</p>
+<p>
+Set up the equation as a function, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>w</mi><mo stretchy="false">&#x00028;</mo><mi>p</mi><mo stretchy="false">&#x00029;</mo></mrow></math>:
+
+
+<div class="math-block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>w</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mn>1440</mn><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0003D;</mo><mn>1008</mn></mrow></math></div>
+
+Create a line between these two points:
+
+
+<div class="math-block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>m</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>1008</mn><mo>&#x02212;</mo><mn>275.2</mn></mrow><mrow><mn>1440</mn><mo>&#x02212;</mo><mn>320</mn></mrow></mfrac></mrow></math></div>
+
+Substitute into point-slope form:
+
+<div class="math-block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>w</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mi>p</mi><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0003D;</mo><mi>m</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mi>p</mi><mo>&#x02212;</mo><mn>320</mn><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0002B;</mo><mn>275.2</mn></mrow></math></div>
+
+<div class="math-block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>w</mi><mrow><mo stretchy="true" fence="true" form="prefix">&#x00028;</mo><mi>p</mi><mo stretchy="true" fence="true" form="postfix">&#x00029;</mo></mrow><mo>&#x0003D;</mo><mn>0.654285714286</mn><mspace width="0.167em" /><mi>p</mi><mo>&#x0002B;</mo><mn>65.8285714286</mn></mrow></math></div>
+</p>
+<p>
+In order for this equation to be responsive, we need to get rid of <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>p</mi></mrow></math>.
+Since <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>100</mn><mi>v</mi><mi>w</mi></mrow></math> represents the entire screen, we can multiply the <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>m</mi></mrow></math> coefficient by 100,
+to get rid of <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>p</mi></mrow></math>. This causes <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>m</mi></mrow></math> to be in <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>v</mi><mi>w</mi></mrow></math>. The constant term remains unchanged, and is still in pixels.
+
+<br><br>
+The resulting equation:
+<div class="math-block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>65.4285714286</mn><mspace width="0.167em" /><mi>v</mi><mi>w</mi><mo>&#x0002B;</mo><mn>65.828571429</mn><mspace width="0.167em" /><mi>p</mi><mi>x</mi></mrow></math></div>
+</p>
+<p>You can put this equation into <code>calc</code> in CSS</p>
+<pre><code> .content {
+    width: calc(65.4285714286vw + 65.828571429px);
+    margin: auto;
+}
+</code></pre>
+<h2>See this in action</h2>
+<p>The calculations above are the same formula I used to calculate the width of the main column of this page.
+    If you open resize this page, notice how the width of this column gradually changes from 1008px at a 1440px viewport to
+    275.2px at a 320px viewport.
+</p>
+<h2>An Important Note</h2>
+<p>Make sure that the parent element of which this formula is applied to takes up exactly 100vw. </p>
+<h2>Clamp</h2>
+
+<p>Since we used a linear equation, if the viewport is 201px wide, then the width becomes 197.34px. 
+    If you want to set a minimum and maximum constraint on the equation, then you can use the
+    <code>clamp</code> function.
+    <br><br>
+    Quoting <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clamp">MDN</a>:
+    <blockquote>
+        The clamp() CSS function clamps a middle value within a range of values between a defined minimum bound and a maximum bound. The function takes three parameters: a minimum value, a preferred value, and a maximum allowed value.
+    </blockquote>
+
+    If we want the minimum width to be 275.2px, and the maximum width 1008px, the following could be used:
+    <pre><code>.content {
+    width: clamp(275.2px, 65.4285714286vw + 65.828571429px, 1008px);
+    margin: auto;
+}</code></pre>
+</p>
+
+<h2>Calculator</h2>
+<form>
+    <div class="row">
+        <label>
+            Viewport Size (px)
+            <input type="number" name="viewport1" id="viewport1" placeholder="1440">
+        </label>
+        <label>
+            Desired Size (px)
+            <input type="number" name="desired1" id="desired1" placeholder="1008">
+        </label>
+    </div>
+    <div class="row">
+        <label>
+            Viewport Size (px)
+            <input type="number" name="viewport2" id="viewport2" placeholder="320">
+        </label>
+        <label>
+            Desired Size (px)
+            <input type="number" name="desired2" id="desired2" placeholder="275.2">
+        </label>
+    </div>
+    <div class="row">
+        <input type="submit" onclick="event.preventDefault(); calculateValues();">
+    </div>
+</form>
+<div id="calculator-results" hidden>
+<p>The generated CSS equation. Wrap it in <code>calc</code> or use <code>clamp</code>!</p>
+<code id="calculator-equation"></code>
+</div>
+
+
+                </article>
+            </div>
+        </main>
+        <footer class="content-sizing">
+            <!--Could use list here -->
+            <span>&copy; Copyright 2025, ninjamar. All rights reserved.
+                <a href="/privacy.html">Privacy Policy</a>
+            </span>
+            <a class="a-button" onclick="toggleTheme();">Toggle Theme</a>
+        </footer>
+    </body>
+</html>

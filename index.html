@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, inital-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>Home - ninjamar.dev</title>
 
@@ -23,7 +23,11 @@
         </header>
         <main>
             <div class="content-sizing">
-                <h1>Home</h1>
+                <h1>
+                    Home
+                    <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
+                    <span style="float: right;"></span>
+                </h1>
 
                 <article id="content">
                     
@@ -31,7 +35,30 @@
     <p>Right now, I'm currently working on writing a DNS server which will provide adblocking functionality when Chrome kills off adblockers.
         <a href="https://github.com/ninjamar/compactdns">Check it out!</a>
     </p>
+    <h2>Recent Blog Posts</h2>
+    <ul class="list-of-links">
+        
+    
+    
+        <li>
+            <a href="/blog/css-responsive-scale.html">Responsive Scaling with CSS</a>
+            <!-- I can't get the date to align, and I don't have a good layout for this, so it will stay gones-->
+             
+                <span class="date"> &horbar; May 29, 2025</span>
+            
+        </li>
+    
+        <li>
+            <a href="/blog/hsm.html">HSM: A JavaScript Framework</a>
+            <!-- I can't get the date to align, and I don't have a good layout for this, so it will stay gones-->
+             
+                <span class="date"> &horbar; Nov 29, 2023</span>
+            
+        </li>
+    
 
+    </ul>
+   
     <h2>Some useful links:</h2>
     <ul>
         <li>
@@ -44,6 +71,7 @@
             <a href="https://www.flickr.com/people/ninjamar/">Flickr (my photos)</a>
         </li>
     </ul>
+
 
                 </article>
             </div>

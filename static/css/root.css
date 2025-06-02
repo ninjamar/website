@@ -1,6 +1,11 @@
 @import url("https://rsms.me/inter/inter.css");
 @import url("https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css");
 
+* {box-sizing: border-box;}
+
+p {
+    margin: 1em 0 1em 0;
+}
 /* Root variables */
 :root {
     --header-font-size: 2.2rem;
@@ -84,7 +89,11 @@ h4 { font-size: 1em; }
 
 /* Header */
 header {
-    height: 15%;
+    /* 
+        For some reason, the height gets messed up when switching from home to projects 
+        I fixed this by removing the height for the header.
+    */
+    /*height: 15%*/
     font-size: var(--header-font-size);
     color: var(--color-3);
 
@@ -100,7 +109,15 @@ header > nav {
     flex-wrap: wrap;
 }
 
-a {
+.a-button {
+    /* Remove all button styling */
+    all: unset;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+a, .a-button {
     /* Color and underline all links */
     color: var(--color-3);
     text-decoration: underline;
@@ -220,10 +237,6 @@ code {
     }
 }
 
-.a-button {
-    cursor: pointer;
-    user-select: none;
-}
 
 
 form > .row {
@@ -267,7 +280,7 @@ input[type=submit] {
 
 .math-block math {
     display: inline-block;
-    max-width: 100;
+    margin: 0.5em 0 0.5em 0;
 }
 
 /* TODO: Align divider in blog */

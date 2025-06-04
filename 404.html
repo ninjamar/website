@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="ninjamar's website">
 
         <title>404 - ninjamar.dev</title>
 
@@ -14,12 +15,14 @@
     <body>
         <!-- Back to semantic html -->
         <header>
-            <nav>
-                <span>ninjamar.dev |</span>
-                <a href="/">home</a>
-                <a href="/projects/">projects</a>
-                <a href="/blog/">blog</a>
-            </nav>
+            <div class="content-sizing">
+                <span>ninjamar.dev</span>
+                <nav>
+                    <a href="/">home</a>
+                    <a href="/projects/">projects</a>
+                    <a href="/blog/">blog</a>
+                </nav>
+            </div>
         </header>
         <main>
             <div class="content-sizing">
@@ -41,7 +44,7 @@
             <span>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
             </span>
-            <a class="a-button" onclick="toggleTheme();">Toggle Theme</a>
+            <button class="a-button" onclick="toggleTheme();">Toggle Theme</a>
         </footer>
     </body>
 </html>

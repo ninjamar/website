@@ -1,6 +1,11 @@
 @import url("https://rsms.me/inter/inter.css");
 @import url("https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css");
 
+* {box-sizing: border-box;}
+
+p {
+    margin: 1em 0 1em 0;
+}
 /* Root variables */
 :root {
     --header-font-size: 2.2rem;
@@ -84,23 +89,52 @@ h4 { font-size: 1em; }
 
 /* Header */
 header {
-    height: 15%;
+    /* 
+        For some reason, the height gets messed up when switching from home to projects 
+        I fixed this by removing the height for the header.
+    */
+    /*height: 15%*/
     font-size: var(--header-font-size);
     color: var(--color-3);
-
+    /*
     display: flex;
     justify-content: center;
+    */
+
+    margin: 15px 0 15px 0;;
 }
 
+header > .content-sizing {
+    text-align: center;
+}
 /* Header navbar */
-header > nav {
+header nav {
+    /*float: right;*/
+
     display: flex;
     justify-content: space-evenly;
     gap: 1rem;
     flex-wrap: wrap;
 }
 
-a {
+@media (min-width: 515px) {
+    header nav {
+        float: right;
+    }
+    header > .content-sizing > span {
+        float: left;
+    }
+}
+
+.a-button {
+    /* Remove all button styling */
+    all: unset;
+
+    cursor: pointer;
+    user-select: none;
+}
+
+a, .a-button {
     /* Color and underline all links */
     color: var(--color-3);
     text-decoration: underline;
@@ -119,7 +153,7 @@ main {
 /* Margin around each one
 TODO: CHeck if can be done on body
 */
-header, footer {
+footer {
     margin: 15px;
 }
 
@@ -169,9 +203,6 @@ header, footer {
         value (left), then the minimum value is used. If it's greater than the
         maximum value, the maximum value is used.
 
-    NOTE: For accurate calculations, try to make the target element stretch from
-    end to end of the document, so the total width is 100vw.
-
     NOTE: This is very helpful because the calculation doesn't use percentages,
     thus meaning that it can be applied to a lot more elements.
     */
@@ -220,10 +251,6 @@ code {
     }
 }
 
-.a-button {
-    cursor: pointer;
-    user-select: none;
-}
 
 
 form > .row {
@@ -267,7 +294,7 @@ input[type=submit] {
 
 .math-block math {
     display: inline-block;
-    max-width: 100;
+    margin: 0.5em 0 0.5em 0;
 }
 
 /* TODO: Align divider in blog */

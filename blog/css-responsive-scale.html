@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="ninjamar's website">
 
         <title>Responsive Scaling with CSS - ninjamar.dev</title>
 
@@ -42,12 +43,14 @@
     <body>
         <!-- Back to semantic html -->
         <header>
-            <nav>
-                <span>ninjamar.dev |</span>
-                <a href="/">home</a>
-                <a href="/projects/">projects</a>
-                <a href="/blog/">blog</a>
-            </nav>
+            <div class="content-sizing">
+                <span>ninjamar.dev</span>
+                <nav>
+                    <a href="/">home</a>
+                    <a href="/projects/">projects</a>
+                    <a href="/blog/">blog</a>
+                </nav>
+            </div>
         </header>
         <main>
             <div class="content-sizing">
@@ -109,8 +112,7 @@ The resulting equation:
     If you open resize this page, notice how the width of this column gradually changes from 1008px at a 1440px viewport to
     275.2px at a 320px viewport.
 </p>
-<h2>An Important Note</h2>
-<p>Make sure that the parent element of which this formula is applied to takes up exactly 100vw. </p>
+
 <h2>Clamp</h2>
 
 <p>Since we used a linear equation, if the viewport is 201px wide, then the width becomes 197.34px. 
@@ -152,7 +154,7 @@ The resulting equation:
         </label>
     </div>
     <div class="row">
-        <input type="submit" onclick="event.preventDefault(); calculateValues();">
+        <input type="submit" onclick="event.preventDefault(); calculateValues();" value="Calculate">
     </div>
 </form>
 <div id="calculator-results" hidden>
@@ -169,7 +171,7 @@ The resulting equation:
             <span>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
             </span>
-            <a class="a-button" onclick="toggleTheme();">Toggle Theme</a>
+            <button class="a-button" onclick="toggleTheme();">Toggle Theme</a>
         </footer>
     </body>
 </html>

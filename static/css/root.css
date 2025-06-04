@@ -96,17 +96,34 @@ header {
     /*height: 15%*/
     font-size: var(--header-font-size);
     color: var(--color-3);
-
+    /*
     display: flex;
     justify-content: center;
+    */
+
+    margin: 15px 0 15px 0;;
 }
 
+header > .content-sizing {
+    text-align: center;
+}
 /* Header navbar */
-header > nav {
+header nav {
+    /*float: right;*/
+
     display: flex;
     justify-content: space-evenly;
     gap: 1rem;
     flex-wrap: wrap;
+}
+
+@media (min-width: 515px) {
+    header nav {
+        float: right;
+    }
+    header > .content-sizing > span {
+        float: left;
+    }
 }
 
 .a-button {
@@ -136,7 +153,7 @@ main {
 /* Margin around each one
 TODO: CHeck if can be done on body
 */
-header, footer {
+footer {
     margin: 15px;
 }
 
@@ -185,9 +202,6 @@ header, footer {
         This calculates the prefered value (middle). If it's less than the minimum
         value (left), then the minimum value is used. If it's greater than the
         maximum value, the maximum value is used.
-
-    NOTE: For accurate calculations, try to make the target element stretch from
-    end to end of the document, so the total width is 100vw.
 
     NOTE: This is very helpful because the calculation doesn't use percentages,
     thus meaning that it can be applied to a lot more elements.

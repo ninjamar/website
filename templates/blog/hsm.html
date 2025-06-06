@@ -5,7 +5,7 @@
 
 {% block static %}
     <script type="module">
-        import Component from "/static/projects/note/js/hsm.js";
+        import Component from "/static/projects/pinboard/js/hsm.js";
         class MyComponent extends Component {
             foo(){
                 this.querySelector("#here").innerHTML = "test";
@@ -47,7 +47,7 @@
     With HSM, I built a <a href="/projects/note.html">note taking app</a>. This app includes the ability to drag notes around and layer them.
 </p>
 <h2>Example</h2>
-<pre><code>import Component from &quot;/static/projects/note/js/hsm.js&quot;;
+<pre><code>import Component from &quot;./hsm.js&quot;;
 class MyComponent extends Component {
     foo(){
         this.querySelector(&quot;#here&quot;).innerHTML = &quot;test&quot;;
@@ -83,6 +83,7 @@ customElements.define(&quot;my-component&quot;, MyComponent);</code>
 <p>Then use  <code>&lt;my-component&gt;&lt;/my-component&gt;</code></p>
 <h4>Demo</h4>
 <!--Of course this breaks my site-->
+<!--TODO: Style this stuff-->
 <my-component></my-component>
 
 {% endblock content %}

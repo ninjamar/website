@@ -17,7 +17,6 @@ p {
     --color-light: #e5e5dd;
     --color-red: #e64959;
     --color-util: #a6a7a7;
-
 }
 
 /* Dark and light mode color choices */
@@ -48,7 +47,8 @@ html {
     /* Fallback font to sans-serif*/
     font-family: Inter, sans-serif;
     /* TODO: Use this as the fallback */
-    /*font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto;*/
+    /*font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif */
+    /* https://github.com/sindresorhus/modern-normalize/tree/main */
 
     font-weight: 300;
 
@@ -104,7 +104,7 @@ header {
     margin: 15px 0 15px 0;;
 }
 
-header > .content-sizing {
+header {
     text-align: center;
 }
 /* Header navbar */
@@ -121,12 +121,12 @@ header nav {
     header nav {
         float: right;
     }
-    header > .content-sizing > span {
+    header > span {
         float: left;
     }
 }
 
-.a-button {
+#theme-toggle {
     /* Remove all button styling */
     all: unset;
 
@@ -134,7 +134,7 @@ header nav {
     user-select: none;
 }
 
-a, .a-button {
+a, #theme-toggle {
     /* Color and underline all links */
     color: var(--color-3);
     text-decoration: underline;
@@ -158,7 +158,7 @@ footer {
 }
 
 /* Since main is a flexbox, use a content-wrapper to align content*/
-.content-sizing {
+body, .content-sizing {
     /* 
     Kinda complicated to calculate the proper value to make this design scale
     responsively.
@@ -207,8 +207,11 @@ footer {
     thus meaning that it can be applied to a lot more elements.
     */
     /* Use clamp to make sure the sizes never go out of bound*/
-    width: clamp(70vw, 65.4285714286vw + 65.828571429px, 86vw);
-    margin: auto;
+    /*width: clamp(70vw, 65.4285714286vw + 65.828571429px, 86vw);*/
+    width: calc(46.42857vw + 131.42857px);
+    /*margin: auto;*/
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Make footer go in the center */
@@ -223,10 +226,6 @@ footer {
     padding-bottom: 1em;
 }
 
-/* Utility class to center text */
-.center {
-    text-align: center;
-}
 
 /* TODO: Should this be pre:has(code) or just pre code or just pre */
 
@@ -253,7 +252,7 @@ code {
 
 
 
-form > .row {
+form > div {
     display: flex;
     gap: 1em;
     margin-bottom: 1rem;
@@ -298,3 +297,44 @@ input[type=submit] {
 }
 
 /* TODO: Align divider in blog */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1em;
+}
+
+.grid > .item {
+    outline: 4px solid var(--color-4);
+    /*padding: 1em;*/
+    padding: 0.5em;
+    border-radius: 10px;
+    /*text-align: center;*/
+
+    cursor: pointer;
+}
+
+.grid > .item:hover {
+    /* https://getcssscan.com/css-box-shadow-examples */
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.item-title {
+    margin: 0;
+}
+.item-tags {
+    font-size: 1.2rem;
+}
+.item-contents {
+    margin-bottom: 5px;
+}
+.item-contents p {
+    margin: 0;
+}
+
+.item-tags > code {
+    background: var(--color-3);
+    border-radius: 5px;
+    padding: 0.2em;
+    
+}

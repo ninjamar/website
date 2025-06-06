@@ -2,84 +2,131 @@
 {% block title %}Projects{% endblock title %}
 {% set projects = [    
         {
-            "title": "DNS Server",
-            "description": "A simple forwarding DNS Server",
-            "url": "https://github.com/ninjamar/dns-server"
+            "title": "CompactDNS",
+            "description": "CompactDNS (CDNS) is a minimalistic yet powerful DNS server designed for simplicity and speed.",
+            "url": "https://github.com/ninjamar/dns-server",
+            "tags": [
+                "Python"
+            ]
+        },
+        {
+            "title": "Polynomial Regression Calculator",
+            "description": "A program to create a polynomial regression for a coordinate list.",
+            "url": "https://github.com/ninjamar/poly_regress",
+            "tags": [
+                "Python",
+                "C++"
+            ]
         },
         {
             "title": "Captcha",
-            "description": "Captcha system",
-            "url": "https://github.com/ninjamar/captcha"
-        },
-        {
-            "title": "2Tetris",
-            "description": "Tetris, except you control two instances at once",
-            "url": "/projects/2tetris/"
-        },
-        {
-            "title": "Pen Video Player",
-            "description": "A video player for Scratch that uses the pen extension",
-            "url": "https://scratch.mit.edu/projects/602626065/"
-        },
-        {
-            "title": "Cloud List Engine",
-            "description": "A cloud list engine for Scratch",
-            "url": "https://scratch.mit.edu/projects/495545839/"
+            "description": "A program to generate a captcha for a web page, complete with an API and verification.",
+            "url": "https://github.com/ninjamar/captcha",
+            "tags": [
+                "JavaScript"
+            ]
         },
         {
             "title": "Editor",
-            "description": "A WYSIWYG Editor for the web",
-            "url": "/projects/editor/"
+            "description": "A WYSIWYG Editor for the web. Supports bold, italic, headers, and links.",
+            "url": "/projects/editor/",
+            "tags": [
+                "JavaScript",
+                "HTML",
+                "CSS"
+            ]
         },
         {
             "title": "ninjamar.dev",
-            "description": "This website",
-            "url": "https://github.com/ninjamar/website"
-        },
-        {
-            "title": "Pinboard",
-            "description": "A pinboard",
-            "url": "/projects/pinboard.html"
-        },
-        {
-            "title": "ninjasocial",
-            "description": "A social application",
-            "url": "https://github.com/ninjamar/ninjasocial"
-        },
-        {
-            "title": "hsm",
-            "description": "JavaScript Framework",
-            "url": "https://github.com/ninjamar/hsm"
+            "description": "This website.",
+            "url": "https://github.com/ninjamar/website",
+            "tags": [
+                "JavaScript",
+                "HTML",
+                "CSS"
+            ]
         },
         {
             "title": "nm",
-            "description": "A lisp like programming language",
-            "url": "https://github.com/ninjamar/nm"
+            "description": "A lisp like programming language implemented in Python.",
+            "url": "https://github.com/ninjamar/nm",
+            "tags": [
+                "Python",
+            ]
         },
         {
             "title": "containd",
             "description": "Containerization tool written in Python",
-            "url": "https://github.com/ninjamar/containd"
+            "url": "https://github.com/ninjamar/containd",
+            "tags": [
+                "Python",
+            ]
         },
         {
-            "title": "containd-cpp",
-            "description": "Containerization tool written in CPP",
-            "url": "https://github.com/ninjamar/containd-cpp"
+            "title": "ninjasocial",
+            "description": "A social application written using Django.",
+            "url": "https://github.com/ninjamar/ninjasocial",
+            "tags": [
+                "Python",
+                "JavaScript",
+                "HTML",
+                "CSS"
+            ]
         },
-        {
-            "title": "A note-taking app",
-            "description": "An app to take notes",
-            "url": "/projects/note.html"
-        }
     ]
 %}
 
+{% block static %}
+<style>
+    .project-item-indent {
+        margin-left: 1rem;
+    }
+</style>
+{% endblock static %}
 {% block content %}
-    <ul>
-        {% for project in projects %}
-            <li>
-                <a href="{{ project.url }}">{{ project.description }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+<!--
+<div class="grid">
+    {% for project in projects %}
+        <div class="item" onclick="window.open('{{ project.url }}')">
+            <h2 class="item-title">{{ project.title }}</h2>
+
+            <div class="item-contents">
+                <p>{{ project.description }}</p>
+            </div>
+
+            <div class="item-tags">
+                {% for tag in project.tags %}
+                    <code>{{ tag }}</code>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+-->
+<p>These are projects I have selected to be showcased here. All my projects are available on my
+    <a href="https://github.com/ninjamar">GitHub</a>.
+</p>
+<ul>
+    {% for project in projects %}
+    <!--
+        <li>
+            <div>
+                <h2>{{ project.title }}</h2>
+                <div class="item-tags">
+                    {% for tag in project.tags %}
+                        <code>{{ tag }}</code>
+                    {% endfor %}
+                </div>
+            </div>
+            <p>{{ project.description }}</p>
+        </li>
+    -->
+        <li>
+            <a href="{{ project.url }}">{{ project.title }}</a>
+            <div class="project-item-indent">
+                {{ project.description }}
+            <div>
+        </li>
+    {% endfor %}
+</ul>
 {% endblock content %}

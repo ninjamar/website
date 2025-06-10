@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="/static/css/root.css">
         
     <script type="module">
-        import Component from "/static/projects/note/js/hsm.js";
+        import Component from "/static/projects/pinboard/js/hsm.js";
         class MyComponent extends Component {
             foo(){
                 this.querySelector("#here").innerHTML = "test";
@@ -50,25 +50,20 @@
     <body>
         <!-- Back to semantic html -->
         <header>
-            <div class="content-sizing">
-                <span>ninjamar.dev</span>
-                <nav>
-                    <a href="/">home</a>
-                    <a href="/projects/">projects</a>
-                    <a href="/blog/">blog</a>
-                </nav>
-            </div>
+            <span>ninjamar.dev</span>
+            <nav>
+                <a href="/">home</a>
+                <a href="/projects/">projects</a>
+                <a href="/blog/">blog</a>
+            </nav>
         </header>
         <main>
-            <div class="content-sizing">
-                <h1>
-                    HSM: A JavaScript framework
-                    <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
-                    <span style="float: right;">Nov 29, 2023</span>
-                </h1>
-
-                <article id="content">
-                    
+            <h1>
+                HSM: A JavaScript framework
+                <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
+                <span style="float: right;">Nov 29, 2023</span>
+            </h1>
+            
 
 <p>
     HSM is a micro-framework for the web, which is an extension of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components">web component api</a>.
@@ -76,7 +71,7 @@
     With HSM, I built a <a href="/projects/note.html">note taking app</a>. This app includes the ability to drag notes around and layer them.
 </p>
 <h2>Example</h2>
-<pre><code>import Component from &quot;/static/projects/note/js/hsm.js&quot;;
+<pre><code>import Component from &quot;./hsm.js&quot;;
 class MyComponent extends Component {
     foo(){
         this.querySelector(&quot;#here&quot;).innerHTML = &quot;test&quot;;
@@ -112,18 +107,17 @@ customElements.define(&quot;my-component&quot;, MyComponent);</code>
 <p>Then use  <code>&lt;my-component&gt;&lt;/my-component&gt;</code></p>
 <h4>Demo</h4>
 <!--Of course this breaks my site-->
+<!--TODO: Style this stuff-->
 <my-component></my-component>
 
 
-                </article>
-            </div>
         </main>
-        <footer class="content-sizing">
+        <footer>
             <!--Could use list here -->
             <span>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
             </span>
-            <button class="a-button" onclick="toggleTheme();">Toggle Theme</a>
+            <button id="theme-toggle" onclick="toggleTheme();">Toggle Theme</a>
         </footer>
     </body>
 </html>

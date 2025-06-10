@@ -15,25 +15,20 @@
     <body>
         <!-- Back to semantic html -->
         <header>
-            <div class="content-sizing">
-                <span>ninjamar.dev</span>
-                <nav>
-                    <a href="/">home</a>
-                    <a href="/projects/">projects</a>
-                    <a href="/blog/">blog</a>
-                </nav>
-            </div>
+            <span>ninjamar.dev</span>
+            <nav>
+                <a href="/">home</a>
+                <a href="/projects/">projects</a>
+                <a href="/blog/">blog</a>
+            </nav>
         </header>
         <main>
-            <div class="content-sizing">
-                <h1>
-                    Test
-                    <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
-                    <span style="float: right;"></span>
-                </h1>
-
-                <article id="content">
-                    
+            <h1>
+                Test
+                <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
+                <span style="float: right;"></span>
+            </h1>
+            
     <div>
         
             <div style="background: aliceblue">
@@ -630,15 +625,13 @@
         
     </div>
 
-                </article>
-            </div>
         </main>
-        <footer class="content-sizing">
+        <footer>
             <!--Could use list here -->
             <span>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
             </span>
-            <button class="a-button" onclick="toggleTheme();">Toggle Theme</a>
+            <button id="theme-toggle" onclick="toggleTheme();">Toggle Theme</a>
         </footer>
     </body>
 </html>

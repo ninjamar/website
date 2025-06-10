@@ -43,25 +43,20 @@
     <body>
         <!-- Back to semantic html -->
         <header>
-            <div class="content-sizing">
-                <span>ninjamar.dev</span>
-                <nav>
-                    <a href="/">home</a>
-                    <a href="/projects/">projects</a>
-                    <a href="/blog/">blog</a>
-                </nav>
-            </div>
+            <span>ninjamar.dev</span>
+            <nav>
+                <a href="/">home</a>
+                <a href="/projects/">projects</a>
+                <a href="/blog/">blog</a>
+            </nav>
         </header>
         <main>
-            <div class="content-sizing">
-                <h1>
-                    Responsive Scaling with CSS
-                    <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
-                    <span style="float: right;">May 29, 2025</span>
-                </h1>
-
-                <article id="content">
-                    
+            <h1>
+                Responsive Scaling with CSS
+                <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
+                <span style="float: right;">May 29, 2025</span>
+            </h1>
+            
 <p>Implementing a responsive layout that can scale between mobile and desktop devices is not easy.
     Some of these methods include flexbox and media queries.
 </p>
@@ -133,7 +128,7 @@ The resulting equation:
 
 <h2>Calculator</h2>
 <form>
-    <div class="row">
+    <div>
         <label>
             Viewport Size (px)
             <input type="number" name="viewport1" id="viewport1" placeholder="1440">
@@ -143,7 +138,7 @@ The resulting equation:
             <input type="number" name="desired1" id="desired1" placeholder="1008">
         </label>
     </div>
-    <div class="row">
+    <div>
         <label>
             Viewport Size (px)
             <input type="number" name="viewport2" id="viewport2" placeholder="320">
@@ -153,7 +148,7 @@ The resulting equation:
             <input type="number" name="desired2" id="desired2" placeholder="275.2">
         </label>
     </div>
-    <div class="row">
+    <div>
         <input type="submit" onclick="event.preventDefault(); calculateValues();" value="Calculate">
     </div>
 </form>
@@ -163,15 +158,13 @@ The resulting equation:
 </div>
 
 
-                </article>
-            </div>
         </main>
-        <footer class="content-sizing">
+        <footer>
             <!--Could use list here -->
             <span>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
             </span>
-            <button class="a-button" onclick="toggleTheme();">Toggle Theme</a>
+            <button id="theme-toggle" onclick="toggleTheme();">Toggle Theme</a>
         </footer>
     </body>
 </html>

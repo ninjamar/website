@@ -11,98 +11,353 @@
         <script src="/static/js/base.js"></script>
         <link rel="stylesheet" href="/static/css/root.css">
         
+<style>
+    .project-item-indent {
+        margin-left: 1rem;
+    }
+</style>
+
     </head>
     <body>
         <!-- Back to semantic html -->
         <header>
-            <div class="content-sizing">
-                <span>ninjamar.dev</span>
-                <nav>
-                    <a href="/">home</a>
-                    <a href="/projects/">projects</a>
-                    <a href="/blog/">blog</a>
-                </nav>
-            </div>
+            <span>ninjamar.dev</span>
+            <nav>
+                <a href="/">home</a>
+                <a href="/projects/">projects</a>
+                <a href="/blog/">blog</a>
+            </nav>
         </header>
         <main>
-            <div class="content-sizing">
-                <h1>
-                    Projects
-                    <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
-                    <span style="float: right;"></span>
-                </h1>
+            <h1>
+                Projects
+                <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
+                <span style="float: right;"></span>
+            </h1>
+            
+<!--
+<div class="grid">
+    
+        <div class="item" onclick="window.open('https://github.com/ninjamar/dns-server')">
+            <h2 class="item-title">CompactDNS</h2>
 
-                <article id="content">
-                    
-    <ul>
-        
-            <li>
-                <a href="https://github.com/ninjamar/dns-server">A simple forwarding DNS Server</a>
-            </li>
-        
-            <li>
-                <a href="https://github.com/ninjamar/captcha">Captcha system</a>
-            </li>
-        
-            <li>
-                <a href="/projects/2tetris/">Tetris, except you control two instances at once</a>
-            </li>
-        
-            <li>
-                <a href="https://scratch.mit.edu/projects/602626065/">A video player for Scratch that uses the pen extension</a>
-            </li>
-        
-            <li>
-                <a href="https://scratch.mit.edu/projects/495545839/">A cloud list engine for Scratch</a>
-            </li>
-        
-            <li>
-                <a href="/projects/editor/">A WYSIWYG Editor for the web</a>
-            </li>
-        
-            <li>
-                <a href="https://github.com/ninjamar/website">This website</a>
-            </li>
-        
-            <li>
-                <a href="/projects/pinboard.html">A pinboard</a>
-            </li>
-        
-            <li>
-                <a href="https://github.com/ninjamar/ninjasocial">A social application</a>
-            </li>
-        
-            <li>
-                <a href="https://github.com/ninjamar/hsm">JavaScript Framework</a>
-            </li>
-        
-            <li>
-                <a href="https://github.com/ninjamar/nm">A lisp like programming language</a>
-            </li>
-        
-            <li>
-                <a href="https://github.com/ninjamar/containd">Containerization tool written in Python</a>
-            </li>
-        
-            <li>
-                <a href="https://github.com/ninjamar/containd-cpp">Containerization tool written in CPP</a>
-            </li>
-        
-            <li>
-                <a href="/projects/note.html">An app to take notes</a>
-            </li>
-        
-    </ul>
-
-                </article>
+            <div class="item-contents">
+                <p>CompactDNS (CDNS) is a minimalistic yet powerful DNS server designed for simplicity and speed.</p>
             </div>
+
+            <div class="item-tags">
+                
+                    <code>Python</code>
+                
+            </div>
+        </div>
+    
+        <div class="item" onclick="window.open('https://github.com/ninjamar/poly_regress')">
+            <h2 class="item-title">Polynomial Regression Calculator</h2>
+
+            <div class="item-contents">
+                <p>A program to create a polynomial regression for a coordinate list.</p>
+            </div>
+
+            <div class="item-tags">
+                
+                    <code>Python</code>
+                
+                    <code>C++</code>
+                
+            </div>
+        </div>
+    
+        <div class="item" onclick="window.open('https://github.com/ninjamar/captcha')">
+            <h2 class="item-title">Captcha</h2>
+
+            <div class="item-contents">
+                <p>A program to generate a captcha for a web page, complete with an API and verification.</p>
+            </div>
+
+            <div class="item-tags">
+                
+                    <code>JavaScript</code>
+                
+            </div>
+        </div>
+    
+        <div class="item" onclick="window.open('/projects/editor/')">
+            <h2 class="item-title">Editor</h2>
+
+            <div class="item-contents">
+                <p>A WYSIWYG Editor for the web. Supports bold, italic, headers, and links.</p>
+            </div>
+
+            <div class="item-tags">
+                
+                    <code>JavaScript</code>
+                
+                    <code>HTML</code>
+                
+                    <code>CSS</code>
+                
+            </div>
+        </div>
+    
+        <div class="item" onclick="window.open('https://github.com/ninjamar/website')">
+            <h2 class="item-title">ninjamar.dev</h2>
+
+            <div class="item-contents">
+                <p>This website.</p>
+            </div>
+
+            <div class="item-tags">
+                
+                    <code>JavaScript</code>
+                
+                    <code>HTML</code>
+                
+                    <code>CSS</code>
+                
+            </div>
+        </div>
+    
+        <div class="item" onclick="window.open('https://github.com/ninjamar/nm')">
+            <h2 class="item-title">nm</h2>
+
+            <div class="item-contents">
+                <p>A lisp like programming language implemented in Python.</p>
+            </div>
+
+            <div class="item-tags">
+                
+                    <code>Python</code>
+                
+            </div>
+        </div>
+    
+        <div class="item" onclick="window.open('https://github.com/ninjamar/containd')">
+            <h2 class="item-title">containd</h2>
+
+            <div class="item-contents">
+                <p>Containerization tool written in Python</p>
+            </div>
+
+            <div class="item-tags">
+                
+                    <code>Python</code>
+                
+            </div>
+        </div>
+    
+        <div class="item" onclick="window.open('https://github.com/ninjamar/ninjasocial')">
+            <h2 class="item-title">ninjasocial</h2>
+
+            <div class="item-contents">
+                <p>A social application written using Django.</p>
+            </div>
+
+            <div class="item-tags">
+                
+                    <code>Python</code>
+                
+                    <code>JavaScript</code>
+                
+                    <code>HTML</code>
+                
+                    <code>CSS</code>
+                
+            </div>
+        </div>
+    
+</div>
+-->
+<p>These are projects I have selected to be showcased here. All my projects are available on my
+    <a href="https://github.com/ninjamar">GitHub</a>.
+</p>
+<ul>
+    
+    <!--
+        <li>
+            <div>
+                <h2>CompactDNS</h2>
+                <div class="item-tags">
+                    
+                        <code>Python</code>
+                    
+                </div>
+            </div>
+            <p>CompactDNS (CDNS) is a minimalistic yet powerful DNS server designed for simplicity and speed.</p>
+        </li>
+    -->
+        <li>
+            <a href="https://github.com/ninjamar/dns-server">CompactDNS</a>
+            <div class="project-item-indent">
+                CompactDNS (CDNS) is a minimalistic yet powerful DNS server designed for simplicity and speed.
+            <div>
+        </li>
+    
+    <!--
+        <li>
+            <div>
+                <h2>Polynomial Regression Calculator</h2>
+                <div class="item-tags">
+                    
+                        <code>Python</code>
+                    
+                        <code>C++</code>
+                    
+                </div>
+            </div>
+            <p>A program to create a polynomial regression for a coordinate list.</p>
+        </li>
+    -->
+        <li>
+            <a href="https://github.com/ninjamar/poly_regress">Polynomial Regression Calculator</a>
+            <div class="project-item-indent">
+                A program to create a polynomial regression for a coordinate list.
+            <div>
+        </li>
+    
+    <!--
+        <li>
+            <div>
+                <h2>Captcha</h2>
+                <div class="item-tags">
+                    
+                        <code>JavaScript</code>
+                    
+                </div>
+            </div>
+            <p>A program to generate a captcha for a web page, complete with an API and verification.</p>
+        </li>
+    -->
+        <li>
+            <a href="https://github.com/ninjamar/captcha">Captcha</a>
+            <div class="project-item-indent">
+                A program to generate a captcha for a web page, complete with an API and verification.
+            <div>
+        </li>
+    
+    <!--
+        <li>
+            <div>
+                <h2>Editor</h2>
+                <div class="item-tags">
+                    
+                        <code>JavaScript</code>
+                    
+                        <code>HTML</code>
+                    
+                        <code>CSS</code>
+                    
+                </div>
+            </div>
+            <p>A WYSIWYG Editor for the web. Supports bold, italic, headers, and links.</p>
+        </li>
+    -->
+        <li>
+            <a href="/projects/editor/">Editor</a>
+            <div class="project-item-indent">
+                A WYSIWYG Editor for the web. Supports bold, italic, headers, and links.
+            <div>
+        </li>
+    
+    <!--
+        <li>
+            <div>
+                <h2>ninjamar.dev</h2>
+                <div class="item-tags">
+                    
+                        <code>JavaScript</code>
+                    
+                        <code>HTML</code>
+                    
+                        <code>CSS</code>
+                    
+                </div>
+            </div>
+            <p>This website.</p>
+        </li>
+    -->
+        <li>
+            <a href="https://github.com/ninjamar/website">ninjamar.dev</a>
+            <div class="project-item-indent">
+                This website.
+            <div>
+        </li>
+    
+    <!--
+        <li>
+            <div>
+                <h2>nm</h2>
+                <div class="item-tags">
+                    
+                        <code>Python</code>
+                    
+                </div>
+            </div>
+            <p>A lisp like programming language implemented in Python.</p>
+        </li>
+    -->
+        <li>
+            <a href="https://github.com/ninjamar/nm">nm</a>
+            <div class="project-item-indent">
+                A lisp like programming language implemented in Python.
+            <div>
+        </li>
+    
+    <!--
+        <li>
+            <div>
+                <h2>containd</h2>
+                <div class="item-tags">
+                    
+                        <code>Python</code>
+                    
+                </div>
+            </div>
+            <p>Containerization tool written in Python</p>
+        </li>
+    -->
+        <li>
+            <a href="https://github.com/ninjamar/containd">containd</a>
+            <div class="project-item-indent">
+                Containerization tool written in Python
+            <div>
+        </li>
+    
+    <!--
+        <li>
+            <div>
+                <h2>ninjasocial</h2>
+                <div class="item-tags">
+                    
+                        <code>Python</code>
+                    
+                        <code>JavaScript</code>
+                    
+                        <code>HTML</code>
+                    
+                        <code>CSS</code>
+                    
+                </div>
+            </div>
+            <p>A social application written using Django.</p>
+        </li>
+    -->
+        <li>
+            <a href="https://github.com/ninjamar/ninjasocial">ninjasocial</a>
+            <div class="project-item-indent">
+                A social application written using Django.
+            <div>
+        </li>
+    
+</ul>
+
         </main>
-        <footer class="content-sizing">
+        <footer>
             <!--Could use list here -->
             <span>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
             </span>
-            <button class="a-button" onclick="toggleTheme();">Toggle Theme</a>
+            <button id="theme-toggle" onclick="toggleTheme();">Toggle Theme</a>
         </footer>
     </body>
 </html>

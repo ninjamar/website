@@ -15,25 +15,20 @@
     <body>
         <!-- Back to semantic html -->
         <header>
-            <div class="content-sizing">
-                <span>ninjamar.dev</span>
-                <nav>
-                    <a href="/">home</a>
-                    <a href="/projects/">projects</a>
-                    <a href="/blog/">blog</a>
-                </nav>
-            </div>
+            <span>ninjamar.dev</span>
+            <nav>
+                <a href="/">home</a>
+                <a href="/projects/">projects</a>
+                <a href="/blog/">blog</a>
+            </nav>
         </header>
         <main>
-            <div class="content-sizing">
-                <h1>
-                    Home
-                    <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
-                    <span style="float: right;"></span>
-                </h1>
-
-                <article id="content">
-                    
+            <h1>
+                Home
+                <!-- Inline styles are bad, but this instance is so small, and doesn't even have a rule -->
+                <span style="float: right;"></span>
+            </h1>
+            
     <p>I'm Ram, aka ninjamar. I enjoy coding, gaming, soccer, and photography.</p>
     <p>Right now, I'm currently working on writing a DNS server which will provide adblocking functionality when Chrome kills off adblockers.
         <a href="https://github.com/ninjamar/compactdns">Check it out!</a>
@@ -76,15 +71,13 @@
     </ul>
 
 
-                </article>
-            </div>
         </main>
-        <footer class="content-sizing">
+        <footer>
             <!--Could use list here -->
             <span>&copy; Copyright 2025, ninjamar. All rights reserved.
                 <a href="/privacy.html">Privacy Policy</a>
             </span>
-            <button class="a-button" onclick="toggleTheme();">Toggle Theme</a>
+            <button id="theme-toggle" onclick="toggleTheme();">Toggle Theme</a>
         </footer>
     </body>
 </html>

@@ -16,8 +16,8 @@ OUTPUT_PREFIX = "./dist"
 RSYNC_COMMAND = "rsync -av {0} {1} {2}"
 
 
-# watchman-make -p 'static/**' --run '/opt/homebrew/bin/python3.11 build.py static'
-# watchman-make -p 'templates/**' --run 'python3.11 build.py template'
+# watchman-make -p 'static/**' --run '$(which python) build.py static'
+# watchman-make -p 'templates/**' --run '$(which python) build.py template'
 # http-server dist
 def unpack_submodules():
     # get all submodules

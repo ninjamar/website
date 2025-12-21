@@ -1,0 +1,14 @@
+[project]
+name = "ninjamar-dev"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "latex2mathml>=3.78.1",
+    "staticjinja>=5.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "isort>=7.0.0",
+    "ruff>=0.14.10",
+]

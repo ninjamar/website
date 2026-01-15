@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+.grid {
+    column-count: 4;
+    gap: 1rem;
+}
+
+.grid-item {
+    break-inside: avoid;
+}
+
+.grid-item img {
+    width: 100%; /* contain image to item */
+    display: block;
+    border-radius: 5px;
+}

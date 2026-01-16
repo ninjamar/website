@@ -2,16 +2,14 @@
     box-sizing: border-box;
 }
 .grid {
-    column-count: 4;
-    gap: 1rem;
-}
+    --grid-lanes-polyfill: 1;
+    display: grid-lanes;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 
-.grid-item {
-    break-inside: avoid;
+    gap: 1rem;
 }
 
 .grid-item img {
     width: 100%; /* contain image to item */
-    display: block;
     border-radius: 5px;
 }

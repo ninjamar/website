@@ -1,6 +1,64 @@
 * {
     box-sizing: border-box;
 }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    border: 0;
+}
+
+html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+body {
+    background: #151515;
+    color: #dddddd;
+}
+
+.layout {
+    margin: none;
+    width: 100%;
+    height: 100%;
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    padding: 20px 20px 20px 20px;
+
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.logo h1 {
+    font-weight: 300;
+    margin: 0;
+}
+
+.side-nav ul {
+    padding: 0;
+    list-style: none;
+    font-weight: 100;
+    font-size: 1.2rem;
+
+}
+.side-nav ul > li {
+    margin-bottom: 10px;
+}
+
+.side-tool {
+    font-weight: 100;
+}
+
+.content {
+    margin: 20px 20px 20px 250px;
+}
+
 .grid {
     --grid-lanes-polyfill: 1; /* The polyfill will pick this up on the radar */
     display: grid-lanes; /* Gets removed by browser*/
@@ -8,7 +66,6 @@
 
     gap: 1rem;
 }
-
 .grid-item img {
     width: 100%; /* contain image to item */
     border-radius: 5px;

@@ -2,9 +2,9 @@
     box-sizing: border-box;
 }
 .grid {
-    --grid-lanes-polyfill: 1;
-    display: grid-lanes;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    --grid-lanes-polyfill: 1; /* The polyfill will pick this up on the radar */
+    display: grid-lanes; /* Gets removed by browser*/
+    grid-template-columns: repeat(3, 1fr);
 
     gap: 1rem;
 }

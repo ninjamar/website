@@ -855,7 +855,6 @@
                     console.warn(`${POLYFILL_NAME}: Could not access stylesheet:`, e);
                 }
             } else {
-                console.log(node.styleSheets)
                 for (const sheet of node.styleSheets) {
                     handleRules(sheet);
                 }

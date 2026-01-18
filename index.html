@@ -1,16 +1,14 @@
 <html>
     <head>
         <title>Test</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+        <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script>
 
-        
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightbox2@2/dist/css/lightbox.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/lightbox2@2/dist/js/lightbox.min.js"></script>
     
-        <link rel="stylesheet" href="root.css">
-        <script src="grid-lanes-polyfill.js"></script>
-        <script src="root.js"></script>
+        <link rel="stylesheet" href="css/root.css">
+        <script src="js/grid-lanes-polyfill.js"></script>
+        <script src="js/root.js" type="module"></script>
 
     </head>
     <body>
@@ -27,28 +25,32 @@
                     </ul>
                 </div>
                 <div class="side-tool">
-                    <p>Equipment Used: Canon R10, Canon RF-S18-150mm f/3.5-6.3 IS STM, Sigma 30mm 1.4 DC DN Contemporary</p>
+                    <p><strong>Equipment Used:</strong>
+                        Canon R10, Canon RF-S18-150mm f/3.5-6.3 IS STM, Sigma 30mm 1.4 DC DN Contemporary</p>
                 </div>
 
             </div>
             <div class="content">
-                <div class="grid">
-                    <a class="grid-item" href="images/1.jpg" data-lightbox="gallery">
+                <div class="image-lanes">
+                    <a class="lane-photo" href="images/1.jpg" data-gallery="1">
                         <img src="images/1_t.jpg" loading="lazy">
                     </a>
-                    <a class="grid-item" href="images/2.jpg" data-lightbox="gallery">
+                    <a class="lane-photo" href="images/2.jpg" data-gallery="1">
                         <img src="images/2_t.jpg" loading="lazy">
                     </a>
-                    <a class="grid-item" href="images/3.jpg" data-lightbox="gallery">
+                    <a class="lane-photo" href="images/3.jpg" data-gallery="1">
                         <img src="images/3_t.jpg" loading="lazy">
                     </a>
-                    <a class="grid-item" href="images/4.jpg" data-lightbox="gallery">
+                    <a class="lane-photo" href="images/7.jpg" data-gallery="1">
+                        <img src="images/7_t.jpg" loading="lazy">
+                    </a>
+                    <a class="lane-photo" href="images/4.jpg" data-gallery="1">
                         <img src="images/4_t.jpg" loading="lazy">
                     </a>
-                    <a class="grid-item" href="images/5.jpg" data-lightbox="gallery">
+                    <a class="lane-photo" href="images/5.jpg" data-gallery="1">
                         <img src="images/5_t.jpg" loading="lazy">
                     </a>
-                    <a class="grid-item" href="images/6.jpg" data-lightbox="gallery">
+                    <a class="lane-photo" href="images/6.jpg" data-gallery="1">
                         <img src="images/6_t.jpg" loading="lazy">
                     </a>
                 </div>

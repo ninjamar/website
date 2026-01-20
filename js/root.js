@@ -1,7 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    // https://github.com/simonw/tools/commit/8ca341f1fa7f535682f4cf4271669c99ef0befbb
-    // TODO: Use resizeobserver and resize grid lanes on refresh
+    // https://github.com/ninjamar/grid-lanes-polyfill/
     if (GridLanesPolyfill.supportsGridLanes()) {
         console.log("Using native grid lanes;")
     } else {

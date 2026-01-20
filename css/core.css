@@ -58,11 +58,14 @@ strong, h1, h2, h3, h4, h5, h6 {
     --grid-lanes-polyfill: 1; /* The polyfill will pick this up on the radar */
     display: grid-lanes; /* Gets removed by browser*/
     grid-template-columns: repeat(3, 1fr);
+    /* Can't use fr for rows. Instead, use vw */
     gap: 1rem;
 }
 
 .lane-photo img {
     width: 100%; /* contain image to item */
+    height: 100%;
+    object-fit: contain; /* Preserve aspect ratio */
     border-radius: 5px;
 }
 

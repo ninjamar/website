@@ -834,7 +834,7 @@
             }
         };
         const handleRules = node => {
-            //debugger;
+            debugger;
             if ("styleSheet" in node){
                 node = node.styleSheet;
             }

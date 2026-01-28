@@ -3,9 +3,6 @@ from datetime import datetime
 from PIL import Image, ExifTags
 from pelican import signals
 
-EXIF_TAGS = {v: k for k, v in ExifTags.TAGS.items()}
-
-
 def _format_shutter(speed):
     if not speed:
         return "Unknown"
@@ -26,7 +23,7 @@ def read_exif(img):
     raw = img._getexif() or {}
     exif = {}
     for tag, value in raw.items():
-        name = EXIF_TAGS.get(tag, tag)
+        name = ExifTags.TAGS.get(tag, tag)
         exif[name] = value
     return exif
 

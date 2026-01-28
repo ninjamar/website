@@ -4,13 +4,15 @@
 {% block content %}
 
 <div class="image-lanes">
-{% for photo in photos_from_dir("cars") %}
+{% for photo in photos_from_dir(page.photo_dir) %}
     <a class="lane-photo" href="{{ photo.url }}" data-gallery="1" data-title="{{ photo.caption }}">
         <img src="{{ photo.thumb_url }}" loading="lazy">
     </a>
 {% endfor %}
 </div>
 
-{{ page.content }}
-
 {% endblock content %}
+
+{% block side %}
+<p><strong>Equipment Used</strong>: Canon R10, Canon RF-S18-150mm f/3.5-6.3 IS STM, Sigma 30mm 1.4 DC DN Contemporary</p>
+{% endblock side %}

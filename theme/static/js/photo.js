@@ -8,5 +8,5 @@ document.addEventListener("DOMContentLoaded", () => {
         GridLanesPolyfill.init({ force: true });
     }
 
-    const lightbox = GLightbox({ selector: ".lane-photo" });
+    const lightbox = GLightbox({ selector: ".photo-lightbox" });
 });

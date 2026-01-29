@@ -1,0 +1,22 @@
+<!--index.html is a reserved name in pelican causing a conflict with content/index.md -->
+
+{% extends "photo/photo_template.html" %}
+
+{% block photo_content %}
+
+<h1 class="title">{{ page.title }}</h1>
+
+<div class="image-lanes">
+    {% for p in pages %} <!-- cant use page-->
+        {% if p.slug != "index" and p.photo_dir %}
+            {% set photo = photos_from_dir(p.photo_dir)[0] %}
+            <a class="lane-photo" href="{{ p.url }}">
+                <img src="{{ photo.thumb_url }}" loading="lazy">
+                <p>{{ p.title }}</p>
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock photo_content %}
+ 

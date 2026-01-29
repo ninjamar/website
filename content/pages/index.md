@@ -1,6 +1,7 @@
 Title: About Me
 Save_as: index.html
 Template: page
+URL: /
 ---
 
 I'm Ram.

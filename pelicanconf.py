@@ -48,3 +48,8 @@ AUTHOR_SAVE_AS = ''
 CATEGORY_SAVE_AS = ''
 TAG_SAVE_AS = ''
 ARCHIVES_SAVE_AS = ''
+
+ARTICLE_URL = "{slug}"
+ARTICLE_SAVE_AS = "{slug}/index.html"
+PAGE_URL = "{slug}"
+PAGE_SAVE_AS = "{slug}/index.html"

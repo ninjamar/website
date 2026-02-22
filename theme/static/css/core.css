@@ -46,6 +46,11 @@ strong, h1, h2, h3, h4, h5, h6 {
     margin-bottom: 10px;
 }
 
+.side-nav ul > li > a {
+    text-decoration: inherit;
+    color: inherit;
+}
+
 .side-tool {
     font-weight: 100;
 }

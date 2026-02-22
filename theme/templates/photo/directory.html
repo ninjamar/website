@@ -2,18 +2,60 @@
 
 {% extends "photo/photo_template.html" %}
 
+{% block static %}
+{{ super() }}
+<style>
+
+.photo-container {
+    overflow: hidden; /* prevent the overlay from leaving the container */
+}
+.photo-overlay {
+    position: absolute;
+    opacity: 0;
+
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    user-select: none;
+    pointer-events: none; /* pass click through to link */
+}
+
+.photo-container:hover img {
+    filter: brightness(0.65);
+}
+.photo-container:hover .photo-overlay {
+    opacity: 1 !important;
+    color: white;
+}
+
+</style>
+
+{% endblock static %}
+
 {% block photo_content %}
 
-<h1 class="title">{{ page.title }}</h1>
-
 <div class="image-lanes">
+    {#
+        {% if page.content %}
+            <div>{{ page.content}}</div>
+        {% endif %}
+    #}
+    {# TODO: Use actual markdown generator #}
+
+
     {% for p in pages %} <!-- cant use page-->
         {% if p.slug != "index" and p.photo_dir %}
             {% set photo = photos_from_dir(p.photo_dir)[0] %}
-            <a class="lane-photo" href="{{ p.url }}">
-                <img src="{{ photo.thumb_url }}" loading="lazy">
-                <p>{{ p.title }}</p>
-            </a>
+            <div class="photo-container">
+                <a class="lane-photo" href="{{ p.url }}">
+                    <img src="{{ photo.thumb_url }}" loading="lazy">
+                </a>
+                <div class="photo-overlay"><h2>{{ p.title }}</h2></div>
+            </div>
         {% endif %}
     {% endfor %}
 </div>

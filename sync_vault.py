@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Written by Claude (claude-sonnet-4-6).
 """
 Obsidian vault sync — copies vault Markdown to the Pelican content tree.
 
@@ -33,6 +32,7 @@ from pathlib import Path
 import yaml
 
 IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'}
+EXCLUDED_DIRS = {'.obsidian', '_templates'}
 
 
 class VaultSync:
@@ -58,9 +58,20 @@ class VaultSync:
                 print(f'[skip]  {src} does not exist')
                 continue
             for md_file in sorted(src.rglob('*.md')):
-                if not self._passes_filters(md_file):
+                # Skip Obsidian internals and templates
+                if EXCLUDED_DIRS.intersection(md_file.parts):
                     continue
-                text = md_file.read_text(encoding='utf-8')
+
+                try:
+                    text = md_file.read_text(encoding='utf-8')
+                except OSError:
+                    continue
+
+                # Skip drafts
+                if self._is_draft(text):
+                    print(f'[draft] {md_file.name}')
+                    continue
+
                 text = self._apply_processors(text, md_file)
                 rel = md_file.relative_to(src)
                 dest_file = Path(dest) / rel
@@ -70,28 +81,11 @@ class VaultSync:
         self._copy_images()
 
     # -------------------------------------------------------------------------
-    # Filters — return False to skip a file
+    # Processors — transform content before writing
     # -------------------------------------------------------------------------
 
-    def _passes_filters(self, path: Path) -> bool:
-        # Skip Obsidian internals and template folders
-        excluded_dirs = {'.obsidian', '_templates'}
-        if excluded_dirs.intersection(path.parts):
-            return False
-
-        # Skip draft files (draft: true in YAML frontmatter)
-        try:
-            text = path.read_text(encoding='utf-8')
-        except OSError:
-            return False
-
-        if self._is_draft(text):
-            print(f'[draft] {path.name}')
-            return False
-
-        return True
-
     def _is_draft(self, text: str) -> bool:
+        """Check if YAML frontmatter has draft: true."""
         if not text.startswith('---'):
             return False
         end = text.find('\n---', 3)
@@ -103,24 +97,29 @@ class VaultSync:
         except yaml.YAMLError:
             return False
 
-    # -------------------------------------------------------------------------
-    # Processors — transform content before writing
-    # -------------------------------------------------------------------------
-
     def _apply_processors(self, text: str, path: Path) -> str:
+        text = self._lowercase_frontmatter(text)
         text = self._fix_image_embeds(text)
         text = self._ensure_slug(text, path)
         return text
 
+    def _lowercase_frontmatter(self, text: str) -> str:
+        """Lowercase all YAML frontmatter keys for consistency."""
+        if not text.startswith('---'):
+            return text
+        end = text.find('\n---', 3)
+        if end == -1:
+            return text
+        yaml_block = text[3:end]
+        # Replace each key: with key: (lowercased)
+        lowercased = re.sub(r'^(\w+):', lambda m: m.group(1).lower() + ':', yaml_block, flags=re.MULTILINE)
+        return '---' + lowercased + text[end:]
+
     def _fix_image_embeds(self, text: str) -> str:
         """Convert Obsidian image embeds: ![[img.ext]] → ![img](/static/images/vault/img.ext)"""
-        def _repl(m: re.Match) -> str:
-            img = m.group(1)
-            return f'![{img}](/static/images/vault/{img})'
-
         return re.sub(
             r'!\[\[([^\]]+\.(?:png|jpe?g|gif|webp|svg))\]\]',
-            _repl,
+            r'![\1](/static/images/vault/\1)',
             text,
             flags=re.IGNORECASE,
         )
@@ -135,7 +134,12 @@ class VaultSync:
         yaml_block = text[3:end]
         if 'slug:' in yaml_block:
             return text
-        slug = path.stem.lower().replace(' ', '-')
+        # Sanitize slug: lowercase, replace spaces, strip non-URL-safe chars
+        slug = path.stem.lower()
+        slug = slug.replace(' ', '-')
+        slug = re.sub(r'[^a-z0-9-]', '', slug)      # remove non-alphanumeric except hyphens
+        slug = re.sub(r'-{2,}', '-', slug)          # collapse consecutive hyphens
+        slug = slug.strip('-')                       # strip leading/trailing hyphens
         new_yaml = yaml_block.rstrip() + f'\nslug: {slug}'
         return '---' + new_yaml + text[end:]
 

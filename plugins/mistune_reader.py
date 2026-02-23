@@ -1,4 +1,3 @@
-# Written by Claude (claude-sonnet-4-6).
 """
 Pelican reader plugin that replaces the default Python-Markdown reader with
 mistune 3.x, supporting Obsidian syntax:
@@ -50,6 +49,26 @@ def preprocess_callouts(text: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Math preprocessor
+# ---------------------------------------------------------------------------
+
+# Mistune 3's block math regex requires whitespace after $$, but Obsidian allows
+# $$content immediately. This preprocessor normalizes $$ delimiters to be on their
+# own lines so mistune recognizes them as block math.
+_BLOCK_MATH_OPEN = re.compile(r'^\$\$(?!\$|\s*\n)(.+)', re.MULTILINE)
+_BLOCK_MATH_CLOSE = re.compile(r'^(.+?)\$\$$', re.MULTILINE)
+
+
+def preprocess_math(text: str) -> str:
+    """Normalize $$ delimiters to be on their own lines for mistune compatibility."""
+    # $$<content>  →  $$\n<content>
+    text = _BLOCK_MATH_OPEN.sub(r'$$\n\1', text)
+    # <content>$$  →  <content>\n$$
+    text = _BLOCK_MATH_CLOSE.sub(r'\1\n$$', text)
+    return text
+
+
+# ---------------------------------------------------------------------------
 # Wiki link inline plugin
 # ---------------------------------------------------------------------------
 
@@ -82,18 +101,16 @@ def _wiki_link_plugin(md):
 # ---------------------------------------------------------------------------
 
 class _ObsidianRenderer(mistune.HTMLRenderer):
-    # Allow raw HTML blocks (e.g. callout divs from the preprocessor)
+    """HTMLRenderer with wiki links and MathJax-friendly math output.
+    escape=False allows raw HTML blocks (e.g. callout divs from the preprocessor).
+    """
+
     def __init__(self):
         super().__init__(escape=False)
-    """HTMLRenderer extended with wiki links and MathJax-friendly math output."""
-
-    # --- Wiki links ----------------------------------------------------------
 
     def wiki_link(self, display: str, page: str) -> str:
         slug = page.lower().replace(' ', '-')
         return f'<a href="/{slug}">{display}</a>'
-
-    # --- Math (MathJax delimiters) -------------------------------------------
 
     def inline_math(self, text: str) -> str:
         return f'\\({text}\\)'
@@ -101,21 +118,15 @@ class _ObsidianRenderer(mistune.HTMLRenderer):
     def block_math(self, text: str) -> str:
         return f'\\[{text}\\]\n'
 
-    # Some mistune versions use 'math' for inline math
-    def math(self, text: str) -> str:
-        return f'\\({text}\\)'
-
 
 # ---------------------------------------------------------------------------
-# Markdown factory
+# Markdown instance (created once, reused across all files)
 # ---------------------------------------------------------------------------
 
-def _build_markdown() -> mistune.Markdown:
-    renderer = _ObsidianRenderer()
-    return mistune.create_markdown(
-        renderer=renderer,
-        plugins=['strikethrough', 'table', 'task_lists', 'math', _wiki_link_plugin],
-    )
+_MD = mistune.create_markdown(
+    renderer=_ObsidianRenderer(),
+    plugins=['strikethrough', 'table', 'task_lists', 'math', _wiki_link_plugin],
+)
 
 
 # ---------------------------------------------------------------------------
@@ -169,16 +180,13 @@ class MistuneReader(BaseReader):
 
         meta_raw, body = _split_frontmatter(raw)
 
-        # Process metadata through Pelican's normaliser (handles dates, lists, etc.)
         metadata: dict = {}
         for key, val in meta_raw.items():
             metadata[key] = self.process_metadata(key, str(val))
 
-        # Preprocess Obsidian callouts before markdown parsing
+        body = preprocess_math(body)
         body = preprocess_callouts(body)
-
-        md = _build_markdown()
-        content = md(body)
+        content = _MD(body)
 
         return content, metadata
 

@@ -2,48 +2,14 @@
 
 {% extends "photo/photo_template.html" %}
 
-{% block static %}
-{{ super() }}
-<style>
-
-.photo-container {
-    overflow: hidden; /* prevent the overlay from leaving the container */
-}
-.photo-overlay {
-    position: absolute;
-    opacity: 0;
-
-    top: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    user-select: none;
-    pointer-events: none; /* pass click through to link */
-}
-
-.photo-container:hover img {
-    filter: brightness(0.65);
-}
-.photo-container:hover .photo-overlay {
-    opacity: 1 !important;
-    color: white;
-}
-
-</style>
-
-{% endblock static %}
-
 {% block photo_content %}
 
+{% if page.content %}
+    <div class="photo-intro">{{ page.content }}</div>
+{% endif %}
+
 <div class="image-lanes">
-    
-    {% if page.content %}
-        <div>{{ page.content}}</div>
-    {% endif %}
-    
+
 
 
     {% for p in pages %} <!-- cant use page-->

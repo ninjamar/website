@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
+<nav class="article-nav">
+    <a href="/writings" class="back-link">← Writings</a>
+</nav>
 <div class="article">
     <h1 class="title">{{ article.title }}</h1>
     <p class="meta">{{ article.date.strftime('%B %d, %Y') }}</p>
+    <hr class="divider">
     {{ article.content }}
 </div>
 {% endblock content %}

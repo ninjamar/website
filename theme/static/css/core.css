@@ -1,11 +1,19 @@
-
+:root {
+    --bg: #151515;
+    --fg: #dddddd;
+    --muted: #666;
+    --border: #2d2d2d;
+    --hover: #ffffff;
+    --link-under: #444;
+    --sidebar-width: 250px;
+}
 
 html {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 body {
-    background: #151515;
-    color: #dddddd;
+    background: var(--bg);
+    color: var(--fg);
 }
 
 strong, h1, h2, h3, h4, h5, h6 {
@@ -13,7 +21,7 @@ strong, h1, h2, h3, h4, h5, h6 {
 }
 
 .layout {
-    margin: none;
+    margin: 0;
     width: 100%;
     height: 100%;
 }
@@ -21,7 +29,7 @@ strong, h1, h2, h3, h4, h5, h6 {
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px;
+    width: var(--sidebar-width);
     padding: 20px 20px 20px 20px;
 
     height: 100%;
@@ -29,34 +37,39 @@ strong, h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-right: 1px solid var(--border);
 }
 
 .logo h1 {
     margin: 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
 }
 
 .side-nav ul {
     padding: 0;
+    margin-top: 2rem;
     list-style: none;
     font-weight: 100;
-    font-size: 1.2rem;
-
+    font-size: 1rem;
 }
 .side-nav ul > li {
     margin-bottom: 10px;
 }
 
 .side-nav ul > li > a {
-    text-decoration: inherit;
-    color: inherit;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.15s;
 }
-
-.side-tool {
-    font-weight: 100;
+.side-nav ul > li > a:hover {
+    color: var(--hover);
 }
 
 .content {
-    margin: 20px 20px 20px 250px;
+    margin: 40px 20px 40px var(--sidebar-width);
 }
 
 .image-lanes {
@@ -64,22 +77,153 @@ strong, h1, h2, h3, h4, h5, h6 {
     display: grid-lanes; /* Gets removed by browser*/
     grid-template-columns: repeat(3, 1fr);
     /* Can't use fr for rows. Instead, use vw */
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .lane-photo img {
     width: 100%; /* contain image to item */
     height: 100%;
     object-fit: contain; /* Preserve aspect ratio */
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 
 .article {
     width: 70%;
     margin: auto;
+    font-size: 1rem;
     font-weight: 300;
+    line-height: 1.75;
 }
 .title {
     text-align: center;
 }
+
+/* --- Shared typography --- */
+.meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    margin: 0.25rem 0 0;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.75rem 0;
+}
+
+/* --- Article page --- */
+.article-nav {
+    margin-bottom: 1.5rem;
+}
+
+.back-link {
+    display: inline-block;
+    padding-left: 20px;
+    font-weight: 100;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.15s;
+}
+.back-link:hover {
+    color: var(--hover);
+}
+
+/* Article body links */
+.article a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--link-under);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s;
+}
+.article a:hover {
+    text-decoration-color: var(--fg);
+}
+
+/* --- Writings index --- */
+.writing-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+}
+.writing-entry:first-of-type {
+    border-top: 1px solid var(--border);
+}
+.writing-entry a {
+    text-decoration: none;
+    color: inherit;
+}
+.writing-entry h2 {
+    margin: 0;
+    font-size: 1rem;
+    transition: color 0.15s;
+}
+.writing-entry:hover h2 {
+    color: var(--hover);
+}
+.writing-entry .meta {
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin: 0 0 0 2rem;
+}
+
+/* --- Side-tool polish --- */
+.side-tool {
+    font-weight: 100;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+}
+.side-tool p {
+    margin: 0;
+}
+
+/* --- Photo hub --- */
+.photo-container {
+    position: relative;
+    overflow: hidden;
+}
+.photo-container img {
+    transition: filter 0.2s ease;
+}
+.photo-overlay {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+.photo-container:hover img {
+    filter: brightness(0.65);
+}
+.photo-container:hover .photo-overlay {
+    opacity: 1;
+    color: white;
+}
+.photo-overlay h2 {
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.04em;
+}
+.photo-intro {
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--muted);
+    margin-bottom: 2rem;
+}
+

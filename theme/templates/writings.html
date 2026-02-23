@@ -5,7 +5,7 @@
     {% for article in articles %}
     <div class="writing-entry">
         <a href="/{{ article.url }}"><h2>{{ article.title }}</h2></a>
-        <p class="meta">{{ article.date.strftime('%B %d, %Y') }}</p>
+        <p class="meta">{{ article.date.strftime('%b %Y') }}</p>
     </div>
     {% endfor %}
 </div>

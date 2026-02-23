@@ -1,5 +1,11 @@
 {% extends "photo/photo_template.html" %}
 
+{% block photo_nav %}
+<nav class="article-nav">
+    <a href="/photos" class="back-link">← Photography</a>
+</nav>
+{% endblock %}
+
 {% block photo_content %}
 
 <div class="image-lanes">
@@ -11,7 +17,3 @@
 </div>
 
 {% endblock photo_content %}
-
-{% block side %}
-<p><strong>Equipment Used</strong>: Canon R10, Canon RF-S18-150mm f/3.5-6.3 IS STM, Sigma 30mm 1.4 DC DN Contemporary</p>
-{% endblock side %}

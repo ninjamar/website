@@ -39,12 +39,11 @@
 {% block photo_content %}
 
 <div class="image-lanes">
-    {#
-        {% if page.content %}
-            <div>{{ page.content}}</div>
-        {% endif %}
-    #}
-    {# TODO: Use actual markdown generator #}
+    
+    {% if page.content %}
+        <div>{{ page.content}}</div>
+    {% endif %}
+    
 
 
     {% for p in pages %} <!-- cant use page-->

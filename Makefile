@@ -68,5 +68,9 @@ devserver-global:
 publish:
 	"$(PELICAN)" "$(INPUTDIR)" -o "$(OUTPUTDIR)" -s "$(PUBLISHCONF)" $(PELICANOPTS)
 
+sync:
+	$(PY) sync_vault.py
 
-.PHONY: html help clean regenerate serve serve-global devserver devserver-global publish 
+sync-html: sync html
+
+.PHONY: html help clean regenerate serve serve-global devserver devserver-global publish sync sync-html

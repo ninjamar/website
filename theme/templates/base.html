@@ -4,6 +4,15 @@
         {% block static %}{% endblock static %}
 
         <link rel="stylesheet" href="/static/css/root.css">
+        <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [["\\(", "\\)"]],
+                displayMath: [["\\[", "\\]"]]
+            }
+        };
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
     </head>
     <body>
         <div class="layout">
@@ -15,7 +24,7 @@
                     <ul>
                         <li><a href="/">About Me</a></li>
                         <li><a href="/photos">Photography</a></li>
-                        <li>Writings</li>
+                        <li><a href="/writings">Writings</a></li>
                     </ul>
                 </div>
                 <div class="side-tool">

@@ -38,18 +38,20 @@ DEFAULT_PAGINATION = 10
 THEME_STATIC_DIR = 'static/'
 THEME = "theme"
 PLUGIN_PATHS = ["plugins"]
-PLUGINS = ["photos_from_dir"]
+PLUGINS = ["photos_from_dir", "mistune_reader"]
 PAGE_PATHS = ["pages"]
 
 
-# Only build the website. Do not add blogging architecture
-DIRECT_TEMPLATES = ["index"]
+DIRECT_TEMPLATES = ["index", "writings"]
 AUTHOR_SAVE_AS = ''
 CATEGORY_SAVE_AS = ''
 TAG_SAVE_AS = ''
 ARCHIVES_SAVE_AS = ''
 
-ARTICLE_URL = "{slug}"
-ARTICLE_SAVE_AS = "{slug}/index.html"
+WRITINGS_SAVE_AS = "writings/index.html"
+WRITINGS_URL = "writings/"
+
+ARTICLE_URL = "writings/{slug}"
+ARTICLE_SAVE_AS = "writings/{slug}/index.html"
 PAGE_URL = "{slug}"
 PAGE_SAVE_AS = "{slug}/index.html"

@@ -78,6 +78,8 @@ strong, h1, h2, h3, h4, h5, h6 {
     grid-template-columns: repeat(3, 1fr);
     /* Can't use fr for rows. Instead, use vw */
     gap: 1.5rem;
+
+    margin: 0 2em 2em 2em;
 }
 
 .lane-photo img {
@@ -113,12 +115,8 @@ strong, h1, h2, h3, h4, h5, h6 {
     margin: 1.75rem 0;
 }
 
-/* --- Article page --- */
-.article-nav {
-    margin-bottom: 1.5rem;
-}
-
 .back-link {
+    position: absolute;
     display: inline-block;
     padding-left: 20px;
     font-weight: 100;
@@ -186,10 +184,7 @@ strong, h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- Photo hub --- */
-.photo-container {
-    position: relative;
-    overflow: hidden;
-}
+
 .photo-container img {
     transition: filter 0.2s ease;
 }
@@ -206,24 +201,15 @@ strong, h1, h2, h3, h4, h5, h6 {
     pointer-events: none;
     transition: opacity 0.2s ease;
 }
+.photo-overlay * {
+    font-size: 1.25rem;
+}
+
 .photo-container:hover img {
     filter: brightness(0.65);
 }
 .photo-container:hover .photo-overlay {
     opacity: 1;
     color: white;
-}
-.photo-overlay h2 {
-    font-size: 1rem;
-    font-weight: 400;
-    margin: 0;
-    letter-spacing: 0.04em;
-}
-.photo-intro {
-    font-weight: 300;
-    font-size: 1rem;
-    line-height: 1.75;
-    color: var(--muted);
-    margin-bottom: 2rem;
 }
 

@@ -2,15 +2,22 @@
 
 {% extends "photo/photo_template.html" %}
 
+{% block static %}
+{{ super() }}
+<style>
+    .image-lanes > .article > :first-child {
+        margin-top: 0;
+    }
+</style>
+{% endblock static %}
+
 {% block photo_content %}
 
-{% if page.content %}
-    <div class="photo-intro">{{ page.content }}</div>
-{% endif %}
 
 <div class="image-lanes">
 
 
+    <div class="article">{{ page.content }}</div>
 
     {% for p in pages %} <!-- cant use page-->
         {% if p.slug != "index" and p.photo_dir %}

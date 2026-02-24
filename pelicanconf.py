@@ -35,7 +35,7 @@ DEFAULT_PAGINATION = 10
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
 # THEME_STATIC_PATHS = ['static']
-THEME_STATIC_DIR = 'static/'
+THEME_STATIC_DIR = "static/"
 THEME = "theme"
 PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["photos_from_dir", "mistune_reader", "projects_reader"]
@@ -45,10 +45,10 @@ IGNORE_FILES = [".#*", "projects/*"]
 
 
 DIRECT_TEMPLATES = ["index", "writings", "projects"]
-AUTHOR_SAVE_AS = ''
-CATEGORY_SAVE_AS = ''
-TAG_SAVE_AS = ''
-ARCHIVES_SAVE_AS = ''
+AUTHOR_SAVE_AS = ""
+CATEGORY_SAVE_AS = ""
+TAG_SAVE_AS = ""
+ARCHIVES_SAVE_AS = ""
 
 WRITINGS_SAVE_AS = "writings/index.html"
 WRITINGS_URL = "writings/"

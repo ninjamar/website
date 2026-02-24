@@ -15,7 +15,6 @@ import yaml
 from pelican import signals
 from pelican.readers import BaseReader
 
-
 # ---------------------------------------------------------------------------
 # Callout preprocessor
 # ---------------------------------------------------------------------------
@@ -25,7 +24,7 @@ from pelican.readers import BaseReader
 #   > content line 1
 #   > content line 2
 _CALLOUT_RE = re.compile(
-    r'^> \[!(\w+)\][ \t]*(.*?)\n((?:>[ \t]?.*\n?)*)',
+    r"^> \[!(\w+)\][ \t]*(.*?)\n((?:>[ \t]?.*\n?)*)",
     re.MULTILINE,
 )
 
@@ -34,13 +33,10 @@ def _callout_repl(m: re.Match) -> str:
     kind = m.group(1).lower()
     title = m.group(2).strip()
     body_lines = m.group(3)
-    body = re.sub(r'^>[ \t]?', '', body_lines, flags=re.MULTILINE).strip()
-    title_html = f'<strong class="callout-title">{title}</strong>\n' if title else ''
+    body = re.sub(r"^>[ \t]?", "", body_lines, flags=re.MULTILINE).strip()
+    title_html = f'<strong class="callout-title">{title}</strong>\n' if title else ""
     return (
-        f'<div class="callout callout-{kind}">\n'
-        f'{title_html}'
-        f'<p>{body}</p>\n'
-        f'</div>\n\n'
+        f'<div class="callout callout-{kind}">\n{title_html}<p>{body}</p>\n</div>\n\n'
     )
 
 
@@ -55,16 +51,16 @@ def preprocess_callouts(text: str) -> str:
 # Mistune 3's block math regex requires whitespace after $$, but Obsidian allows
 # $$content immediately. This preprocessor normalizes $$ delimiters to be on their
 # own lines so mistune recognizes them as block math.
-_BLOCK_MATH_OPEN = re.compile(r'^\$\$(?!\$|\s*\n)(.+)', re.MULTILINE)
-_BLOCK_MATH_CLOSE = re.compile(r'^(.+?)\$\$$', re.MULTILINE)
+_BLOCK_MATH_OPEN = re.compile(r"^\$\$(?!\$|\s*\n)(.+)", re.MULTILINE)
+_BLOCK_MATH_CLOSE = re.compile(r"^(.+?)\$\$$", re.MULTILINE)
 
 
 def preprocess_math(text: str) -> str:
     """Normalize $$ delimiters to be on their own lines for mistune compatibility."""
     # $$<content>  →  $$\n<content>
-    text = _BLOCK_MATH_OPEN.sub(r'$$\n\1', text)
+    text = _BLOCK_MATH_OPEN.sub(r"$$\n\1", text)
     # <content>$$  →  <content>\n$$
-    text = _BLOCK_MATH_CLOSE.sub(r'\1\n$$', text)
+    text = _BLOCK_MATH_CLOSE.sub(r"\1\n$$", text)
     return text
 
 
@@ -74,31 +70,34 @@ def preprocess_math(text: str) -> str:
 
 # No capture groups — mistune merges all patterns into one combined regex,
 # so numbered groups don't match what you'd expect.  Extract from group(0).
-_WIKI_PATTERN = r'\[\[[^\]|]+?(?:\|[^\]]+?)?\]\]'
+_WIKI_PATTERN = r"\[\[[^\]|]+?(?:\|[^\]]+?)?\]\]"
 
 
 def _parse_wiki_link(inline, m, state):
-    full = m.group(0)          # e.g. "[[About Me]]" or "[[Projects|Display]]"
-    inner = full[2:-2]         # strip [[ and ]]
-    if '|' in inner:
-        page, display = inner.split('|', 1)
+    full = m.group(0)  # e.g. "[[About Me]]" or "[[Projects|Display]]"
+    inner = full[2:-2]  # strip [[ and ]]
+    if "|" in inner:
+        page, display = inner.split("|", 1)
     else:
         page = display = inner
-    state.append_token({
-        'type': 'wiki_link',
-        'raw': display.strip(),
-        'attrs': {'page': page.strip()},
-    })
+    state.append_token(
+        {
+            "type": "wiki_link",
+            "raw": display.strip(),
+            "attrs": {"page": page.strip()},
+        }
+    )
     return m.end()
 
 
 def _wiki_link_plugin(md):
-    md.inline.register('wiki_link', _WIKI_PATTERN, _parse_wiki_link, before='link')
+    md.inline.register("wiki_link", _WIKI_PATTERN, _parse_wiki_link, before="link")
 
 
 # ---------------------------------------------------------------------------
 # Custom renderer
 # ---------------------------------------------------------------------------
+
 
 class _ObsidianRenderer(mistune.HTMLRenderer):
     """HTMLRenderer with wiki links and MathJax-friendly math output.
@@ -109,14 +108,14 @@ class _ObsidianRenderer(mistune.HTMLRenderer):
         super().__init__(escape=False)
 
     def wiki_link(self, display: str, page: str) -> str:
-        slug = page.lower().replace(' ', '-')
+        slug = page.lower().replace(" ", "-")
         return f'<a href="/{slug}">{display}</a>'
 
     def inline_math(self, text: str) -> str:
-        return f'\\({text}\\)'
+        return f"\\({text}\\)"
 
     def block_math(self, text: str) -> str:
-        return f'\\[{text}\\]\n'
+        return f"\\[{text}\\]\n"
 
 
 # ---------------------------------------------------------------------------
@@ -125,13 +124,14 @@ class _ObsidianRenderer(mistune.HTMLRenderer):
 
 _MD = mistune.create_markdown(
     renderer=_ObsidianRenderer(),
-    plugins=['strikethrough', 'table', 'task_lists', 'math', _wiki_link_plugin],
+    plugins=["strikethrough", "table", "task_lists", "math", _wiki_link_plugin],
 )
 
 
 # ---------------------------------------------------------------------------
 # Frontmatter parser
 # ---------------------------------------------------------------------------
+
 
 def _split_frontmatter(text: str) -> tuple[dict, str]:
     """
@@ -140,11 +140,11 @@ def _split_frontmatter(text: str) -> tuple[dict, str]:
     Returns (metadata_dict, body_string).
     """
     # YAML frontmatter (--- delimited)
-    if text.startswith('---'):
-        end = text.find('\n---', 3)
+    if text.startswith("---"):
+        end = text.find("\n---", 3)
         if end != -1:
             yaml_block = text[3:end].strip()
-            body = text[end + 4:].lstrip('\n')
+            body = text[end + 4 :].lstrip("\n")
             try:
                 meta = yaml.safe_load(yaml_block) or {}
                 if isinstance(meta, dict):
@@ -153,16 +153,16 @@ def _split_frontmatter(text: str) -> tuple[dict, str]:
                 pass
 
     # Pelican-style: "Key: Value" lines until first blank line
-    lines = text.split('\n')
+    lines = text.split("\n")
     meta: dict = {}
     i = 0
     for i, line in enumerate(lines):
         if not line.strip():
             break
-        if ':' in line:
-            key, _, val = line.partition(':')
+        if ":" in line:
+            key, _, val = line.partition(":")
             meta[key.strip().lower()] = val.strip()
-    body = '\n'.join(lines[i + 1:])
+    body = "\n".join(lines[i + 1 :])
     return meta, body
 
 
@@ -170,12 +170,13 @@ def _split_frontmatter(text: str) -> tuple[dict, str]:
 # Reader class
 # ---------------------------------------------------------------------------
 
+
 class MistuneReader(BaseReader):
     enabled = True
-    file_extensions = ['md', 'markdown']
+    file_extensions = ["md", "markdown"]
 
     def read(self, filename: str) -> tuple[str, dict]:
-        with open(filename, encoding='utf-8') as f:
+        with open(filename, encoding="utf-8") as f:
             raw = f.read()
 
         meta_raw, body = _split_frontmatter(raw)
@@ -195,9 +196,10 @@ class MistuneReader(BaseReader):
 # Plugin registration
 # ---------------------------------------------------------------------------
 
+
 def _add_reader(readers) -> None:
-    readers.reader_classes['md'] = MistuneReader
-    readers.reader_classes['markdown'] = MistuneReader
+    readers.reader_classes["md"] = MistuneReader
+    readers.reader_classes["markdown"] = MistuneReader
 
 
 def register() -> None:

@@ -313,3 +313,5 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/node,python
 output/
 vault.cfg
+
+.claude/

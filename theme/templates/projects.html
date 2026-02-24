@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block static %}
+{{ super() }}
+<style>
+.entry > p {
+    margin: 0 0 0 2rem;
+}
+</style>
+{% endblock static %}
+
+{% block content %}
+<div class="article">
+    <h1 class="title">Projects</h1>
+    {% for project in projects %}
+    <div class="entry">
+        <a href="{{ project.url }}"><h2>{{ project.title }}</h2></a>
+        <p class="meta">{{ project.info }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

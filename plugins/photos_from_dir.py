@@ -1,8 +1,10 @@
+from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
-from datetime import datetime
-from PIL import Image, ExifTags
+
 from pelican import signals
+from PIL import ExifTags, Image
+
 
 def _format_shutter(speed):
     if not speed:
@@ -38,9 +40,11 @@ def parse_date(exif):
                 pass
     return datetime.min  # Earliest possible date (1970?)
 
+
 # Cache this function as it performs IO operations including reading EXIF data,
 # which isn't fast. This function does not need to regenerate the thumbnail or
 # # read EXIF for every call. It only needs to return the image listing.
+
 
 @lru_cache()
 def photos_from_dir(subfolder):

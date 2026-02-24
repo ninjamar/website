@@ -143,29 +143,29 @@ strong, h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- Writings index --- */
-.writing-entry {
+.entry {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     padding: 1rem 0;
     border-bottom: 1px solid var(--border);
 }
-.writing-entry:first-of-type {
+.entry:first-of-type {
     border-top: 1px solid var(--border);
 }
-.writing-entry a {
+.entry a {
     text-decoration: none;
     color: inherit;
 }
-.writing-entry h2 {
+.entry h2 {
     margin: 0;
     font-size: 1rem;
     transition: color 0.15s;
 }
-.writing-entry:hover h2 {
+.entry:hover h2 {
     color: var(--hover);
 }
-.writing-entry .meta {
+.entry.writing-entry .meta {
     white-space: nowrap;
     flex-shrink: 0;
     margin: 0 0 0 2rem;

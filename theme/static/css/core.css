@@ -58,15 +58,26 @@ strong, h1, h2, h3, h4, h5, h6 {
 .side-nav ul > li {
     margin-bottom: 10px;
 }
-
-.side-nav ul > li > a {
+.side-nav ul > li > a{
     text-decoration: none;
     color: var(--muted);
     transition: color 0.15s;
+
+    &:hover { /* The and selector refers to the current element in nesting*/
+        color: var(--hover);
+    }
 }
-.side-nav ul > li > a:hover {
-    color: var(--hover);
+/* 
+.parent {
+    .class {
+        -- Matches .parent .class
+    }
+    &.class {
+        -- Matches .parent.class
+    }
 }
+*/
+
 
 .content {
     margin: 40px 20px 40px var(--sidebar-width);
@@ -141,9 +152,10 @@ strong, h1, h2, h3, h4, h5, h6 {
     text-decoration-color: var(--link-under);
     text-underline-offset: 3px;
     transition: text-decoration-color 0.15s;
-}
-.article a:hover {
-    text-decoration-color: var(--fg);
+
+    &:hover {
+        text-decoration-color: var(--fg);
+    }
 }
 
 /* --- Writings index --- */
@@ -154,10 +166,12 @@ strong, h1, h2, h3, h4, h5, h6 {
     padding: 1rem 0;
     border-bottom: 1px solid var(--border);
     gap: 1rem;
+    &:first-of-type {
+        border-top: 1px solid var(--border);
+    }
+
 }
-.entry:first-of-type {
-    border-top: 1px solid var(--border);
-}
+
 .entry a {
     text-decoration: none;
     color: inherit;

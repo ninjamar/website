@@ -1,6 +1,7 @@
 @import url("https://cdn.jsdelivr.net/npm/modern-normalize@3.0.1/modern-normalize.min.css");
-@import url("./core.css");
-@import url("./lightbox.css");
+@import url("./base.css");
+@import url("./layouts/all.css");
+@import url("./utilities.css");
 
 * {
     box-sizing: border-box;

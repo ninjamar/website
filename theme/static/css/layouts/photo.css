@@ -1,0 +1,60 @@
+/*
+ * photo.css
+ * Photo grid layout and gallery card hover effects.
+ *
+ * Contents:
+ *  - Image grid lanes (.image-lanes, .lane-photo)
+ *  - Gallery card container and overlay (.photo-container, .photo-overlay)
+ *  - Photo container hover effects
+ */
+
+.image-lanes {
+    --grid-lanes-polyfill: 1;
+    display: grid-lanes;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 0 2em 2em 2em;
+}
+
+.lane-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 3px;
+}
+
+.photo-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.photo-container img {
+    transition: filter 0.2s ease;
+}
+
+.photo-overlay {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.photo-overlay * {
+    font-size: 1.25rem;
+}
+
+.photo-container:hover img {
+    filter: brightness(0.65);
+}
+
+.photo-container:hover .photo-overlay {
+    opacity: 1;
+    color: white;
+}

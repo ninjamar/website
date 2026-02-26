@@ -1,0 +1,13 @@
+/*
+ * utilities.css
+ * Reusable utility classes.
+ *
+ * Contents:
+ *  - Horizontal rule divider (.divider)
+ */
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.75rem 0;
+}

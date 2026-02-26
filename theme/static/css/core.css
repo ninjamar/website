@@ -109,6 +109,10 @@ strong, h1, h2, h3, h4, h5, h6 {
     margin: 0.25rem 0 0;
 }
 
+.infobox {
+    color: var(--muted);
+}
+
 .divider {
     border: none;
     border-top: 1px solid var(--border);
@@ -149,6 +153,7 @@ strong, h1, h2, h3, h4, h5, h6 {
     align-items: baseline;
     padding: 1rem 0;
     border-bottom: 1px solid var(--border);
+    gap: 1rem;
 }
 .entry:first-of-type {
     border-top: 1px solid var(--border);
@@ -212,4 +217,3 @@ strong, h1, h2, h3, h4, h5, h6 {
     opacity: 1;
     color: white;
 }
-

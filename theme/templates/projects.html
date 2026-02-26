@@ -3,9 +3,26 @@
 {% block static %}
 {{ super() }}
 <style>
-.entry > p {
-    margin: 0 0 0 2rem;
+
+/* Fractional units: make the div have 1 part while the meta has 3 parts */
+.entry > div {
+    flex: 2;
 }
+.entry > p {
+    flex: 5;
+    margin: 0;
+}
+.entry h2 {
+    font-size: 1.17rem;
+}
+
+.wrapper {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 </style>
 {% endblock static %}
 
@@ -14,8 +31,13 @@
     <h1 class="title">Projects</h1>
     {% for project in projects %}
     <div class="entry">
-        <a href="{{ project.url }}"><h2>{{ project.title }}</h2></a>
-        <p class="meta">{{ project.info }}</p>
+        <div class="wrapper">
+            <a href="{{ project.url }}"><h2>{{ project.title }}</h2></a>
+
+            <span class="meta" style="flex-grow: 1;">{{ project.subtitle }}</span>
+            <span class="meta">{{ project.year }}</span>
+        </div>
+        <p class="">{{ project.info }}</p>
     </div>
     {% endfor %}
 </div>

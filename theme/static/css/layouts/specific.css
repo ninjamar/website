@@ -1,0 +1,95 @@
+/* 
+    This file includes layouts for specific elements that probably only exist
+    once.
+*/
+
+/*
+ * layout.css
+ * Structural layout — sidebar, content area, article column, navigation, and list entries.
+ *
+ * Contents:
+ *  - Page shell (.layout)
+ *  - Sidebar and logo (.sidebar, .logo)
+ *  - Side navigation (.side-nav)
+ *  - Sidebar info panel (.side-tool)
+ *  - Main content area (.content)
+ *  - Article column and links (.article, .article a)
+ *  - Back navigation (.back-link)
+ *  - List entries (.entry) — shared by writings and projects
+ */
+
+.layout {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    padding: 20px 20px 20px 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid var(--border);
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.side-nav ul {
+    padding: 0;
+    margin-top: 2rem;
+    list-style: none;
+    font-weight: 100;
+    font-size: 1rem;
+}
+
+.side-nav ul > li {
+    margin-bottom: 10px;
+}
+
+.side-nav ul > li > a {
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.15s;
+
+    &:hover {
+        color: var(--hover);
+    }
+}
+
+.back-link {
+    position: absolute;
+    display: inline-block;
+    padding-left: 20px;
+    font-weight: 100;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.15s;
+    &:hover {
+        color: var(--hover);
+    }
+}
+
+.side-tool {
+    font-weight: 100;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+}
+
+.side-tool p {
+    margin: 0;
+}

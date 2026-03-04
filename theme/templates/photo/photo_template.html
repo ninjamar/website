@@ -4,19 +4,20 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
         <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/ninjamar/grid-lanes-polyfill@ec2bea3d7c63/grid-lanes-polyfill.js"></script>
-        <script src="/static/js/photo.js" type="module"></script>
+
 {% endblock static %}
 
 {% block page_content %}
 
-{% block photo_nav %}{% endblock %}
+    <div class="full-article">
+        <!-- This is here so title is not inside the article -->
+        <h1 class="title">{{ page.title }}</h1>
+        <hr class="divider">
 
-<!-- This is here so title is not inside the article -->
-<h1 class="title">{{ page.title }}</h1>
-<hr class="divider">
+        {% block photo_content %}
+        {% endblock photo_content %}
+    </div>
 
-    {% block photo_content %}
-    {% endblock photo_content %}
 
 {% endblock page_content %}
 

@@ -1,6 +1,6 @@
 @import url("https://cdn.jsdelivr.net/npm/modern-normalize@3.0.1/modern-normalize.min.css");
 @import url("./base.css");
-@import url("./layouts/all.css");
+@import url("./layouts/layout.css");
 @import url("./utilities.css");
 
 * {

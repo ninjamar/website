@@ -18,6 +18,7 @@
    --hover: #ffffff;
    --link-under: #444;
    --sidebar-width: 250px;
+   --mobile-min-width: 740px;
 }
 
 html {

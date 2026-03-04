@@ -3,9 +3,13 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% if article is defined %}{{ article.title }}{% elif page is defined %}{{ page.title }}{% else %}Ram Nathirmal{% endif %}</title>
-        {% block static %}{% endblock static %}
 
         <link rel="stylesheet" href="/static/css/root.css">
+        <script src="/static/js/index.js"></script>
+
+
+        {% block static %}{% endblock static %}
+
         <script>
         window.MathJax = {
             tex: {
@@ -34,7 +38,10 @@
 
             </div>
             <div class="content">
-                {% block content %}{% endblock content%}
+                {% block page_nav %}{% endblock %}
+                <div class="content-inner">
+                    {% block content %}{% endblock content %}
+                </div>
             </div>
         </div>
     </body>

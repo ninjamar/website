@@ -9,7 +9,7 @@
 <div class="image-lanes">
 {% for photo in photos_from_dir(page.photo_dir) %}
     <a class="lane-photo photo-lightbox" href="{{ photo.url }}" data-gallery="1" data-title="{{ photo.caption }}">
-        <img src="{{ photo.thumb_url }}" loading="lazy">
+        <img src="{{ photo.thumb_url }}">
     </a>
 {% endfor %}
 </div>

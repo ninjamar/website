@@ -58,3 +58,26 @@
     opacity: 1;
     color: white;
 }
+
+
+body.mobile {
+    .image-lanes {
+        display: block;
+        --grid-lanes-polyfill: 0;
+        grid-template-columns: none;
+        margin: 0;
+        gap: 0;
+    }
+    .lane-photo {
+        display: block;
+
+        /* Use important to override grid lanes polyfill */
+        position: inherit !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: auto !important;
+    }
+    .lane-photo img {
+        height: auto;
+    }
+}

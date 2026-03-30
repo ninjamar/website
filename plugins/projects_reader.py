@@ -13,6 +13,9 @@ def read_projects(projects_dir):
         return projects
 
     path = os.path.join(projects_dir, "projects.md")
+    if not os.path.exists(path):
+        return projects
+
     with open(path) as f:
         lines = f.readlines()
 

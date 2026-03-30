@@ -6,7 +6,7 @@ dependencies = [
     "pelican[markdown]>=4.11.0.post0",
     "pillow>=12.1.0",
     "mistune>=3.0",
-    "pyyaml>=6.0",
+    "python-frontmatter>=1.0.0",
 ]
 
 [dependency-groups]

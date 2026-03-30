@@ -311,7 +311,14 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/node,python
+
+# Generated
 output/
+
+# Synced from vault (source of truth in Obsidian vault)
+content/
+
+# Local config (contains vault path)
 vault.cfg
 
 .claude/

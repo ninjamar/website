@@ -65,6 +65,21 @@ def preprocess_math(text: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Embed preprocessor
+# ---------------------------------------------------------------------------
+
+# Image extensions recognized in embeds
+_IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
+_EXT_PAT = "|".join(re.escape(e.lstrip(".")) for e in _IMAGE_EXTS)
+_EMBED_RE = re.compile(rf"!\[\[([^\]]+\.(?:{_EXT_PAT}))\]\]", re.IGNORECASE)
+
+
+def preprocess_embeds(text: str) -> str:
+    """Rewrite Obsidian image embeds to standard Markdown."""
+    return _EMBED_RE.sub(r"![\1](/static/images/vault/\1)", text)
+
+
+# ---------------------------------------------------------------------------
 # Wiki link inline plugin
 # ---------------------------------------------------------------------------
 
@@ -182,6 +197,7 @@ class MistuneReader(BaseReader):
 
         body = preprocess_math(body)
         body = preprocess_callouts(body)
+        body = preprocess_embeds(body)
         content = _MD(body)
 
         return content, metadata

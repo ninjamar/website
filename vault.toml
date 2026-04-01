@@ -1,0 +1,8 @@
+# Articles require: title, date, slug, publish
+
+articles = ["blog"] # creates content/articles/blog
+files = ["pages", "projects.toml"] # creates content/files/pages/ and content/files/projects.toml
+
+[vault]
+# Absolute path to your Obsidian vault
+path = "~/coding/obs/Website"

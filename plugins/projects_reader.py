@@ -1,19 +1,20 @@
-"""Plugin to read projects from YAML file and inject as Jinja2 global."""
+"""Plugin to read projects from TOML file and inject as Jinja2 global."""
 
 import os
+import tomllib
 
-import yaml
 from pelican import signals
 
 
 def read_projects(projects_dir):
-    """Read all projects from content/projects.yml"""
-    path = os.path.join(projects_dir, "projects.yml")
+    """Read all projects from content/files/projects.toml"""
+    path = os.path.join(projects_dir, "files", "projects.toml")
     if not os.path.exists(path):
         return []
 
-    with open(path) as f:
-        return yaml.safe_load(f) or []
+    with open(path, "rb") as f:
+        data = tomllib.load(f)
+    return data.get("projects", [])
 
 
 def inject_projects(generator):

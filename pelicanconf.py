@@ -39,9 +39,9 @@ THEME_STATIC_DIR = "static/"
 THEME = "theme"
 PLUGIN_PATHS = ["plugins"]
 PLUGINS = ["photos_from_dir", "mistune_reader", "projects_reader"]
-PAGE_PATHS = ["pages"]
-ARTICLE_PATHS = ["blog"]
-IGNORE_FILES = [".#*", "projects/*"]
+PAGE_PATHS = ["files/pages"]
+ARTICLE_PATHS = ["articles/blog"]
+IGNORE_FILES = [".#*"]
 
 
 DIRECT_TEMPLATES = ["index", "writings", "projects"]

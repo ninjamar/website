@@ -41,4 +41,8 @@ publish:
 clean:
 	[ ! -d "$(OUTPUTDIR)" ] || rm -rf "$(OUTPUTDIR)"
 
-.PHONY: sync html sync-html devserver publish clean
+# Remove generated output + synced content
+clean-all: clean
+	rm -rf "$(INPUTDIR)"
+
+.PHONY: sync html sync-html devserver publish clean clean-all

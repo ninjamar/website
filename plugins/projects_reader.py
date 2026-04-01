@@ -1,46 +1,19 @@
-"""Plugin to read projects from markdown files and inject as Jinja2 global."""
+"""Plugin to read projects from YAML file and inject as Jinja2 global."""
 
 import os
 
+import yaml
 from pelican import signals
 
 
 def read_projects(projects_dir):
-    """Read all projects from content/projects.md"""
-    projects = []
-
-    if not os.path.exists(projects_dir):
-        return projects
-
-    path = os.path.join(projects_dir, "projects.md")
+    """Read all projects from content/projects.yml"""
+    path = os.path.join(projects_dir, "projects.yml")
     if not os.path.exists(path):
-        return projects
+        return []
 
     with open(path) as f:
-        lines = f.readlines()
-
-    project = {}
-    for line in lines:
-        line = line.strip()
-
-        if not line:
-            continue
-
-        if line == "---":
-            projects.append(project)
-            project = {}
-
-            continue
-
-        if ":" in line:
-            key, value = line.split(":", 1)
-            key = key.lower()
-            project[key.strip()] = value.strip()
-
-    # Append the last one
-    if project:
-        projects.append(project)
-    return projects
+        return yaml.safe_load(f) or []
 
 
 def inject_projects(generator):

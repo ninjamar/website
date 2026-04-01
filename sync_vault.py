@@ -9,13 +9,14 @@ Usage:
 Configuration: vault.cfg (gitignored)
     [vault]
     path = /path/to/your/vault
-    attachment_folder = attachments   # optional, default: attachments
 
     [mappings]
-    Blog = content                   # vault subfolder → pelican dest
-    Pages = content/pages
+    Blog = content                    # articles: validated + transformed
 
-Required frontmatter fields:
+    [copies]
+    Pages = content/pages             # raw copy (folder or file), no processing
+
+Required frontmatter fields for articles:
     title, date, slug, publish
 
 Fields auto-injected if missing:
@@ -39,13 +40,12 @@ import yaml
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg"}
 EXCLUDED_DIRS = {".obsidian", "_templates"}
 
-# Build embed regex from IMAGE_EXTS to ensure consistency
 _EXT_PAT = "|".join(re.escape(e.lstrip(".")) for e in IMAGE_EXTS)
 EMBED_RE = re.compile(rf"!\[\[([^\]]+\.(?:{_EXT_PAT}))\]\]", re.IGNORECASE)
 
 
-def load_config(config_path: str) -> tuple[Path, str, dict[str, str], dict[str, str]]:
-    """Load vault path, attachment folder, mappings, and files from config file."""
+def load_config(config_path: str) -> tuple[Path, dict[str, str], dict[str, str]]:
+    """Load vault path, mappings, and copies from config."""
     cfg = configparser.ConfigParser()
     if not cfg.read(config_path):
         raise FileNotFoundError(
@@ -53,15 +53,14 @@ def load_config(config_path: str) -> tuple[Path, str, dict[str, str], dict[str, 
             "Copy vault.cfg and set your vault path."
         )
     vault_path = Path(cfg["vault"]["path"]).expanduser().resolve()
-    attachment_folder = cfg.get("vault", "attachment_folder", fallback="attachments")
     mappings = dict(cfg["mappings"])
-    files = dict(cfg["files"]) if cfg.has_section("files") else {}
-    return vault_path, attachment_folder, mappings, files
+    copies = dict(cfg["copies"]) if cfg.has_section("copies") else {}
+    return vault_path, mappings, copies
 
 
 def process_file(text: str) -> tuple[str | None, str]:
     """
-    Parse, validate, transform. Returns (output_text, "") on success,
+    Parse, validate, transform an article. Returns (output_text, "") on success,
     or (None, reason) on failure.
 
     Required fields: title, date, slug, publish (all case-insensitive).
@@ -75,23 +74,17 @@ def process_file(text: str) -> tuple[str | None, str]:
     except yaml.YAMLError as exc:
         return None, f"invalid frontmatter: {exc}"
 
-    # Normalize keys to lowercase
     meta = {k.lower(): v for k, v in post.metadata.items()}
 
-    # Check required fields
     required = {"title", "date", "slug", "publish"}
     missing = sorted(required - set(meta.keys()))
     if missing:
         return None, f"missing: {', '.join(missing)}"
 
-    # Reject if publish is false
     if str(meta.get("publish", "")).lower() in ("false", "no", "0"):
         return None, "publish: false"
 
-    # Inject template: article if missing
     meta.setdefault("template", "article")
-
-    # Update metadata and transform content
     post.metadata = meta
     post.content = EMBED_RE.sub(r"![\1](/static/images/vault/\1)", post.content)
 
@@ -99,14 +92,13 @@ def process_file(text: str) -> tuple[str | None, str]:
 
 
 def sync_markdown(vault_path: Path, src_folder: str, dest: Path) -> None:
-    """Sync markdown files from vault source to Pelican destination."""
+    """Sync article markdown files and resource files from vault to Pelican content."""
     src = vault_path / src_folder
     if not src.exists():
         logging.info(f"[skip]  {src} does not exist")
         return
 
     for md_file in sorted(src.rglob("*.md")):
-        # Skip Obsidian internals and templates (check only vault-relative path)
         if EXCLUDED_DIRS.intersection(md_file.relative_to(src).parts):
             continue
 
@@ -116,54 +108,92 @@ def sync_markdown(vault_path: Path, src_folder: str, dest: Path) -> None:
             logging.warning(f"[warn]  {md_file.name} — read error: {exc}")
             continue
 
-        # Parse, validate, and transform
         text, reason = process_file(text)
         if text is None:
             logging.info(f"[skip]  {md_file.name} — {reason}")
             continue
 
-        # Write to destination
-        rel = md_file.relative_to(src)
-        dest_file = dest / rel
+        dest_file = dest / md_file.relative_to(src)
         dest_file.parent.mkdir(parents=True, exist_ok=True)
         dest_file.write_text(text, encoding="utf-8")
         logging.info(f"[sync]  {md_file.name} → {dest_file}")
 
+    for res_file in sorted(src.rglob("*")):
+        if not res_file.is_file():
+            continue
+        if EXCLUDED_DIRS.intersection(res_file.relative_to(src).parts):
+            continue
+        if res_file.suffix.lower() == ".md":
+            continue
+        dest_file = dest / res_file.relative_to(src)
+        dest_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(res_file, dest_file)
+        logging.info(f"[copy]  {res_file.name} → {dest_file}")
 
-def copy_images(vault_path: Path, attachment_folder: str) -> None:
-    """Copy images from vault attachment folder to theme static directory."""
-    attach_dir = vault_path / attachment_folder
-    dest_dir = Path("theme/static/images/vault")
-    if not attach_dir.exists():
+
+def copy(vault_path: Path, src_rel: str, dest: Path) -> None:
+    """Copy a file or folder from vault to dest with no processing.
+
+    For folders: recurses, skips excluded dirs, lowercases filenames.
+    For files: copies directly to dest path.
+    """
+    src = vault_path / src_rel
+    if not src.exists():
+        logging.warning(f"[skip]  {src_rel} does not exist in vault")
         return
 
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    for img in attach_dir.rglob("*"):
-        if img.suffix.lower() in IMAGE_EXTS:
-            shutil.copy2(img, dest_dir / img.name)
-            logging.info(f"[image] {img.name} → {dest_dir}")
-
-
-def copy_files(vault_path: Path, files: dict[str, str]) -> None:
-    """Copy raw files from vault root to content/ (no frontmatter processing)."""
-    for src_rel, dest_rel in files.items():
-        src = vault_path / src_rel
-        dest = Path(dest_rel)
-        if not src.exists():
-            logging.warning(f"[skip]  {src_rel} does not exist in vault")
-            continue
+    if src.is_file():
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(src, dest)
-        logging.info(f"[file]  {src_rel} → {dest_rel}")
+        logging.info(f"[copy]  {src.name} → {dest}")
+        return
+
+    for src_file in sorted(src.rglob("*")):
+        if not src_file.is_file():
+            continue
+        if EXCLUDED_DIRS.intersection(src_file.relative_to(src).parts):
+            continue
+        rel = src_file.relative_to(src)
+        dest_file = dest / rel.parent / rel.name.lower()
+        dest_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src_file, dest_file)
+        logging.info(f"[copy]  {src_file.name} → {dest_file}")
+
+
+def copy_assets(vault_path: Path) -> None:
+    """Copy all non-markdown files from anywhere in the vault.
+
+    Images go to theme/static/images/vault/. Everything else goes to content/.
+    Files are copied flat (no subdirectories preserved).
+    """
+    image_dest = Path("theme/static/images/vault")
+    data_dest = Path("content")
+    image_dest.mkdir(parents=True, exist_ok=True)
+    data_dest.mkdir(parents=True, exist_ok=True)
+
+    for asset in vault_path.rglob("*"):
+        if not asset.is_file():
+            continue
+        if EXCLUDED_DIRS.intersection(asset.relative_to(vault_path).parts):
+            continue
+        if asset.suffix.lower() == ".md":
+            continue
+        if asset.suffix.lower() in IMAGE_EXTS:
+            shutil.copy2(asset, image_dest / asset.name)
+            logging.info(f"[image] {asset.name} → {image_dest}")
+        else:
+            shutil.copy2(asset, data_dest / asset.name)
+            logging.info(f"[asset] {asset.name} → {data_dest}")
 
 
 def main(config_path: str = "vault.cfg") -> None:
-    """Run the sync: load config, sync folders, copy raw files, copy images."""
-    vault_path, attachment_folder, mappings, files = load_config(config_path)
+    """Run the sync: articles, raw copies, images."""
+    vault_path, mappings, copies = load_config(config_path)
     for vault_folder, dest in mappings.items():
         sync_markdown(vault_path, vault_folder, Path(dest))
-    copy_files(vault_path, files)
-    copy_images(vault_path, attachment_folder)
+    for src_rel, dest in copies.items():
+        copy(vault_path, src_rel, Path(dest))
+    copy_assets(vault_path)
 
 
 if __name__ == "__main__":

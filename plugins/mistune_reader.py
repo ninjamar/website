@@ -10,8 +10,8 @@ mistune 3.x, supporting Obsidian syntax:
 
 import re
 
+import frontmatter
 import mistune
-import yaml
 from pelican import signals
 from pelican.readers import BaseReader
 
@@ -137,33 +137,28 @@ def _split_frontmatter(text: str) -> tuple[dict, str]:
     """
     Parse YAML --- frontmatter or Pelican-style Key: Value metadata.
 
-    Returns (metadata_dict, body_string).
+    Returns (metadata_dict, body_string). Keys are always lowercased.
     """
-    # YAML frontmatter (--- delimited)
+    text = text.lstrip("\n")
+
+    # YAML frontmatter (--- delimited): delegate to python-frontmatter
     if text.startswith("---"):
-        end = text.find("\n---", 3)
-        if end != -1:
-            yaml_block = text[3:end].strip()
-            body = text[end + 4 :].lstrip("\n")
-            try:
-                meta = yaml.safe_load(yaml_block) or {}
-                if isinstance(meta, dict):
-                    return meta, body
-            except yaml.YAMLError:
-                pass
+        try:
+            post = frontmatter.loads(text)
+            return {k.lower(): v for k, v in post.metadata.items()}, post.content
+        except Exception:
+            pass
 
     # Pelican-style: "Key: Value" lines until first blank line
     lines = text.split("\n")
     meta: dict = {}
-    i = 0
     for i, line in enumerate(lines):
         if not line.strip():
-            break
+            return meta, "\n".join(lines[i + 1 :])
         if ":" in line:
             key, _, val = line.partition(":")
             meta[key.strip().lower()] = val.strip()
-    body = "\n".join(lines[i + 1 :])
-    return meta, body
+    return meta, ""
 
 
 # ---------------------------------------------------------------------------

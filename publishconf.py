@@ -1,4 +1,4 @@
-# This file is only used if you use `make publish` or
+# This file is only used if you use `just publish` or
 # explicitly specify it as your config file.
 
 import os

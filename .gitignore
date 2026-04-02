@@ -313,7 +313,7 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/node,python
 
 # Generated
-output/
+dist/
 
 # Synced from vault (source of truth in Obsidian vault)
 content/
@@ -322,3 +322,4 @@ content/
 vault.cfg
 
 .claude/
+.pnpm-store

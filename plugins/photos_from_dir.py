@@ -5,6 +5,8 @@ from pathlib import Path
 from pelican import signals
 from PIL import ExifTags, Image
 
+_output_path = "output"  # Default, will be set by plugin init
+
 
 def _format_shutter(speed):
     if not speed:
@@ -49,7 +51,7 @@ def parse_date(exif):
 @lru_cache()
 def photos_from_dir(subfolder):
     base_dir = Path("theme/static/images") / subfolder
-    output_dir = Path("output/static/images") / subfolder
+    output_dir = Path(_output_path) / "static/images" / subfolder
     output_dir.mkdir(exist_ok=True, parents=True)
 
     results = []
@@ -80,6 +82,9 @@ def photos_from_dir(subfolder):
 
 
 def add_to_jinja(pelican):
+    global _output_path
+    _output_path = pelican.settings.get("OUTPUT_PATH", "output")
+    photos_from_dir.cache_clear()  # Clear cache in case output path changed
     pelican.env.globals["photos_from_dir"] = photos_from_dir
 
 

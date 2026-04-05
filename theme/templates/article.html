@@ -5,7 +5,7 @@
 {% block content %}
 <div class="article">
     <h1 class="title">{{ article.title }}</h1>
-    <p class="meta">{{ article.date.strftime('%B %d, %Y') }}</p>
+    <p class="meta" style="text-align: center;">{{ article.date.strftime('%B %d, %Y') }}</p>
     <hr class="divider">
     {{ article.content }}
 </div>

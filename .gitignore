@@ -324,3 +324,4 @@ vault.cfg
 .claude/
 .pnpm-store
 ignore/
+.playwright-mcp/

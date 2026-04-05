@@ -13,10 +13,11 @@
 :root {
    --bg: #151515;
    --fg: #dddddd;
-   --muted: #666;
+   --muted: #8a8a8a;
    --border: #2d2d2d;
    --hover: #ffffff;
-   --link-under: #444;
+   --link-under: #555;
+   --accent: #7ba4bc;
    --sidebar-width: 250px;
    --mobile-min-width: 740px;
 }
@@ -28,14 +29,34 @@ html {
 body {
     background: var(--bg);
     color: var(--fg);
+    font-weight: 100;
 }
 
 strong, h1, h2, h3, h4, h5, h6 {
-    font-weight: 400;
+    font-weight: 200;
 }
 
 h1, h2, h3, h4, h5, h6 {
     &.title {
         text-align: center;
     }
+}
+
+.article h2 {
+    font-size: 1.2rem;
+    font-weight: 200;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.article h3 {
+    font-size: 1.05rem;
+    font-weight: 200;
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.article p {
+    margin-top: 0;
+    margin-bottom: 1rem;
 }

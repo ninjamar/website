@@ -1,256 +1,203 @@
-/* 
-    This file includes layouts for specific elements that probably only exist
-    once.
-*/
-
 /*
  * layout.css
- * Structural layout — sidebar, content area, article column, navigation, and list entries.
- *
- * Contents:
- *  - Page shell (.layout)
- *  - Sidebar and logo (.sidebar, .logo)
- *  - Side navigation (.side-nav)
- *  - Sidebar info panel (.side-tool)
- *  - Main content area (.content)
- *  - Article column and links (.article, .article a)
- *  - Back navigation (.back-link)
- *  - List entries (.entry) — shared by writings and projects
+ * Two-column layout: sidebar + content area.
+ * Key points:
+ *  - Sidebar is sticky, 180px wide
+ *  - Content area uses flexbox column for back-link as in-flow element
+ *  - Article is centered within content-inner via flexbox
+ *  - Photography pages use .full-article (no max-width constraint)
+ *  - Back-link is a block element, not position: absolute
+ *  - Consistent spacing via CSS custom properties
  */
 
 @import url("./lightbox.css");
 @import url("./photo.css");
 
+/* ────────────────────────────────────────────────────────────
+   Macro Layout
+   ──────────────────────────────────────────────────────────── */
 
 .layout {
-    margin: 0;
+    display: flex;
     width: 100%;
     min-height: 100vh;
-    
-    display: flex;
+    margin: 0;
 }
+
+/* ────────────────────────────────────────────────────────────
+   Sidebar (left column)
+   ──────────────────────────────────────────────────────────── */
 
 .sidebar {
     position: sticky;
     top: 0;
-
-    /* flex-stretch: 0;*/
-    flex-basis: clamp(120px, 20vw, 250px);
-    align-self: flex-start;
+    flex: 0 0 var(--sidebar-width);
     height: 100vh;
-
-    padding: 20px;
-
-    border-right: 1px solid var(--border);
-
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    padding: var(--sp-5) var(--sp-4);
+    border-right: 1px solid var(--border);
+    background: var(--sidebar-bg);
+
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.content {
-    width: 0;
-    flex-grow: 1;
-    position: relative;
+.sidebar-top,
+.sidebar-bottom {
+    flex-shrink: 0;
 }
 
-.content-inner {
-    padding: 20px 20px 20px 20px;
+.sidebar-bottom {
+    margin-top: var(--sp-5);
+}
 
-    display: flex;
-    justify-content: center;
+/* ────────────────────────────────────────────────────────────
+   Logo
+   ──────────────────────────────────────────────────────────── */
 
-    font-size: 1rem;
-    font-weight: 100;
-    line-height: 1.75;
+.logo {
+    margin-bottom: var(--sp-5);
 }
 
 .logo h1 {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 100;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 400;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    color: var(--fg);
+    line-height: 1.5;
 }
 
-.side-nav ul {
-    padding: 0;
-    margin-top: 2rem;
+/* ────────────────────────────────────────────────────────────
+   Navigation List
+   ──────────────────────────────────────────────────────────── */
+
+.nav-list {
     list-style: none;
-    font-weight: 100;
-    font-size: 1rem;
+    margin: 0;
+    padding: 0;
 }
 
-.side-nav ul > li {
-    margin-bottom: 10px;
+.nav-list li {
+    margin-bottom: var(--sp-2);
+    position: relative;
 }
 
-.side-nav ul > li > a {
-    text-decoration: none;
+.nav-list a {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
     color: var(--muted);
-    transition: color 0.15s;
-    letter-spacing: 0.01em;
+    text-decoration: none;
+    padding-left: var(--sp-4);
+    position: relative;
+    transition: color 0.12s ease;
+
+    /* Accent marker square on hover */
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 3px;
+        background: var(--accent);
+        border-radius: 1px;
+        opacity: 0;
+        transition: opacity 0.12s ease;
+    }
+
+    &:hover {
+        color: var(--hover);
+        &::before { opacity: 1; }
+    }
+}
+
+/* ────────────────────────────────────────────────────────────
+   Content Area (right column)
+   ──────────────────────────────────────────────────────────── */
+
+.content {
+    flex: 1 1 0;
+    min-width: 0;  /* prevent flex overflow */
+    position: relative;  /* for any absolute-positioned children (legacy support) */
+
+    display: flex;
+    flex-direction: column;  /* allows back-link to sit above content-inner in flow */
+}
+
+/* ────────────────────────────────────────────────────────────
+   Back-link (breadcrumb navigation)
+   ──────────────────────────────────────────────────────────── */
+
+.back-link {
+    display: block;
+    flex-shrink: 0;
+
+    padding: var(--sp-3) var(--sp-5);
+
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    text-decoration: none;
+
+    border-bottom: 1px solid var(--border);
+
+    transition: color 0.12s ease;
 
     &:hover {
         color: var(--hover);
     }
 }
 
+/* ────────────────────────────────────────────────────────────
+   Content Inner (flex container for centering article)
+   ──────────────────────────────────────────────────────────── */
+
+.content-inner {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: var(--sp-6) var(--sp-5);  /* 2rem vert, 1.5rem horiz */
+}
+
+/* ────────────────────────────────────────────────────────────
+   Article Columns
+   ──────────────────────────────────────────────────────────── */
 
 .article {
-    /*width: 70%;*/
-    /*width: clamp(70%, calc(0.57 * 100vw - 13px), 90%);*/
-    width: clamp(70%, 56.94444vw + 13px, 90%);
+    width: 100%;
+    max-width: var(--content-max);
 }
 
 .full-article {
     width: 100%;
+    /* NO max-width — used by photo pages to allow full-width grid */
 }
 
-/* At 720 px, need to make sidebar go to top. Unfortunately, I want this to be
-a variable, so I need a hack to do this: use resizeobserver to apply a class onto
-the root element.
-
-*/
-/*@media (max-width: 740px){/*/
-body.mobile {
-    .layout {
-        flex-direction: column;
-    }
-    .content {
-        width: auto;
-    }
-    .sidebar {
-        flex-basis: auto;
-        height: fit-content;
-        width: 100vw;
-
-        border-bottom: 1px solid var(--border);
-        border-right: none;
-
-        background: var(--bg);
-        z-index: 1;
-    }
-    .side-nav ul {
-        margin: 0;
-    }
-    .side-nav ul > li {
-        display: inline;
-    }
-
-    .back-link {
-        position: static;
-        display: block;
-        padding: 1rem 0 0 1rem;
-    }
-
-    .article {
-        width: 85%;
-    }
-}
-
-
-/* Collapse: sidebar becomes horizontal top bar at mobile */
-/*
-@media (max-width: 640px) {
-    .layout {
-        flex-direction: column;
-    }
-    .sidebar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        align-items: center;
-        padding: 12px 20px;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-    }
-    .side-nav ul {
-        display: flex;
-        flex-direction: row;
-        gap: 1.5rem;
-        margin-top: 0;
-        margin-left: auto;
-    }
-    .side-nav ul > li {
-        margin-bottom: 0;
-    }
-    .side-tool {
-        display: none;
-    }
-    .content {
-        margin: 20px;
-    }
-    .article {
-        width: 100%;
-    }
-}
-*/
-
-
-
-.back-link {
-    position: absolute;
-    top: 1.25rem;
-    left: 1.25rem;
-    display: inline-block;
-    padding-left: 0;
-    font-weight: 100;
-    color: var(--muted);
-    font-size: 0.85rem;
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    transition: color 0.15s;
-    &:hover {
-        color: var(--hover);
-    }
-}
-
-.side-tool {
-    font-weight: 100;
-    font-size: 0.8rem;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    padding-top: 1.25rem;
-}
-
-.side-tool p {
-    margin: 0;
-}
-
-/* Dropins */
-.meta {
-    color: var(--muted);
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
-    margin: 0.25rem 0 0;
-    font-weight: 100;
-}
-
-
-.article a {
-    color: inherit;
-    text-decoration: underline;
-    text-decoration-color: var(--link-under);
-    text-underline-offset: 3px;
-    transition: text-decoration-color 0.15s;
-
-    &:hover {
-        text-decoration-color: var(--accent);
-    }
-}
+/* ────────────────────────────────────────────────────────────
+   Entry List (writings, projects)
+   ──────────────────────────────────────────────────────────── */
 
 .entry {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 1rem 0;
+    padding: var(--sp-3) 0;
     border-bottom: 1px solid var(--border);
-    gap: 1rem;
+    gap: var(--sp-4);
 
     &:first-of-type {
         border-top: 1px solid var(--border);
@@ -265,18 +212,169 @@ body.mobile {
 
 .entry h2 {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 200;
-    transition: color 0.15s, transform 0.15s;
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    transition: color 0.12s ease;
 }
 
 .entry:hover h2 {
-    color: var(--hover);
-    transform: translateX(4px);
+    color: var(--accent);
 }
 
 .entry.writing-entry .meta {
     white-space: nowrap;
     flex-shrink: 0;
-    margin: 0 0 0 2rem;
+    margin: 0 0 0 var(--sp-4);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Side Tool (equipment info, etc.)
+   ──────────────────────────────────────────────────────────── */
+
+.side-tool {
+    font-weight: 300;
+    font-size: 0.72rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: var(--sp-4);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+}
+
+.side-tool p {
+    margin: 0;
+    margin-bottom: var(--sp-2);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Meta / Label Typography
+   ──────────────────────────────────────────────────────────── */
+
+.meta {
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    margin: var(--sp-1) 0 0;
+    font-weight: 400;
+}
+
+.article-meta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin: var(--sp-1) 0 0;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.meta-label {
+    color: var(--accent);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    font-weight: 300;
+    opacity: 0.85;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Article Links
+   ──────────────────────────────────────────────────────────── */
+
+.article a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--link-under);
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.12s ease, color 0.12s ease;
+
+    &:hover {
+        text-decoration-color: var(--accent);
+        color: var(--hover);
+    }
+}
+
+/* ────────────────────────────────────────────────────────────
+   Mobile Layout (body.mobile class set by JS)
+   ──────────────────────────────────────────────────────────── */
+
+body.mobile {
+    .layout {
+        flex-direction: column;
+    }
+
+    .content {
+        width: auto;
+    }
+
+    .sidebar {
+        position: static;
+        flex: none;
+        height: auto;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: var(--sp-2) var(--sp-4);
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        overflow: visible;
+    }
+
+    .sidebar-bottom {
+        display: none;  /* no room on mobile nav bar */
+        margin-top: 0;
+    }
+
+    .logo {
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .logo h1 {
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+    }
+
+    .nav-list {
+        display: flex;
+        gap: var(--sp-4);
+        margin: 0;
+    }
+
+    .nav-list li {
+        display: inline;
+        margin-bottom: 0;
+    }
+
+    .nav-list a {
+        padding-left: 0;
+
+        &::before {
+            display: none;
+        }
+    }
+
+    .back-link {
+        padding: var(--sp-2) var(--sp-4);
+        font-size: 0.7rem;
+    }
+
+    .content-inner {
+        padding: var(--sp-5) var(--sp-4);
+        justify-content: center;
+    }
+
+    .article {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .entry {
+        flex-direction: column;
+        gap: var(--sp-2);
+    }
 }

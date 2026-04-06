@@ -23,19 +23,20 @@
     <body>
         <div class="layout">
             <div class="sidebar">
-                <div class="side-nav">
+                <div class="sidebar-top">
                     <div class="logo">
                         <h1>Ram Nathirmal</h1>
                     </div>
-                    <ul>
-                        <li><a href="/">About Me</a></li>
+                    <ul class="nav-list">
+                        <li><a href="/">About</a></li>
                         <li><a href="/photos">Photography</a></li>
                         <li><a href="/writings">Writings</a></li>
                         <li><a href="/projects">Projects</a></li>
                     </ul>
                 </div>
-                {% block sidebar %}{% endblock sidebar %}
-
+                <div class="sidebar-bottom">
+                    {% block sidebar %}{% endblock sidebar %}
+                </div>
             </div>
             <div class="content">
                 {% block page_nav %}{% endblock %}

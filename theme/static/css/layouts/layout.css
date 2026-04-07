@@ -52,6 +52,19 @@
 
 .sidebar-bottom {
     margin-top: var(--sp-5);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-year {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-top: var(--sp-4);
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border);
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -65,9 +78,9 @@
 .logo h1 {
     margin: 0;
     font-family: var(--mono);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 400;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--fg);
     line-height: 1.5;
@@ -100,15 +113,15 @@
     position: relative;
     transition: color 0.12s ease;
 
-    /* Accent marker square on hover */
+    /* Accent marker bar on hover/active */
     &::before {
         content: '';
         position: absolute;
         left: 0;
         top: 50%;
         transform: translateY(-50%);
-        width: 3px;
-        height: 3px;
+        width: 2px;
+        height: 10px;
         background: var(--accent);
         border-radius: 1px;
         opacity: 0;
@@ -117,6 +130,11 @@
 
     &:hover {
         color: var(--hover);
+        &::before { opacity: 1; }
+    }
+
+    &.active {
+        color: var(--fg);
         &::before { opacity: 1; }
     }
 }
@@ -155,8 +173,17 @@
 
     transition: color 0.12s ease;
 
+    &::before {
+        content: '← ';
+        opacity: 0.7;
+    }
+
     &:hover {
-        color: var(--hover);
+        color: var(--accent);
+
+        &::before {
+            opacity: 1;
+        }
     }
 }
 
@@ -170,7 +197,7 @@
     justify-content: center;
     align-items: flex-start;
 
-    padding: var(--sp-6) var(--sp-5);  /* 2rem vert, 1.5rem horiz */
+    padding: var(--sp-7) var(--sp-6);  /* 2.5rem vert, 2rem horiz */
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -195,12 +222,18 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: var(--sp-3) 0;
+    padding: var(--sp-3) var(--sp-2);
     border-bottom: 1px solid var(--border);
     gap: var(--sp-4);
+    margin: 0 calc(-1 * var(--sp-2));
+    transition: background 0.15s ease;
 
     &:first-of-type {
         border-top: 1px solid var(--border);
+    }
+
+    &:hover {
+        background: rgba(77, 157, 224, 0.04);
     }
 }
 
@@ -216,7 +249,7 @@
     font-size: 0.9rem;
     font-weight: 400;
     letter-spacing: 0.01em;
-    transition: color 0.12s ease;
+    transition: color 0.15s ease;
 }
 
 .entry:hover h2 {
@@ -240,7 +273,7 @@
     border-top: 1px solid var(--border);
     padding-top: var(--sp-4);
     line-height: 1.6;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
 }
 
 .side-tool p {
@@ -294,6 +327,46 @@
         text-decoration-color: var(--accent);
         color: var(--hover);
     }
+}
+
+/* ────────────────────────────────────────────────────────────
+   Projects
+   ──────────────────────────────────────────────────────────── */
+
+.entry > div {
+    flex: 3;
+}
+
+.entry > p {
+    flex: 7;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.7;
+}
+
+.entry h2 {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+}
+
+.wrapper {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.wrapper .meta {
+    line-height: 1.4;
+}
+
+.wrapper .meta:first-of-type {
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+    margin-bottom: 0.3rem;
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -364,7 +437,7 @@ body.mobile {
     }
 
     .content-inner {
-        padding: var(--sp-5) var(--sp-4);
+        padding: var(--sp-6) var(--sp-5);
         justify-content: center;
     }
 

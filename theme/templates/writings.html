@@ -3,7 +3,7 @@
 <div class="article">
     <h1 class="title">Writings</h1>
     {% for article in articles %}
-    <div class="entry writing-entry">
+    <div class="entry">
         <a href="/{{ article.url }}"><h2>{{ article.title }}</h2></a>
         <p class="meta">{{ article.date.strftime('%b %Y') }}</p>
     </div>

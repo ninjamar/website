@@ -47,7 +47,7 @@ body:not(.mobile) .image-lanes {
 }
 
 .photo-overlay * {
-    font-size: 1.25rem;
+    font-size: var(--fs-overlay);
 }
 
 .photo-container:hover img {

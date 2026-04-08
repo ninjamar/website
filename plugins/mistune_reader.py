@@ -15,6 +15,11 @@ import mistune
 from pelican import signals
 from pelican.readers import BaseReader
 
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name, TextLexer
+from pygments.lexers import ClassNotFound
+from pygments.formatters import HtmlFormatter
+
 # ---------------------------------------------------------------------------
 # Callout preprocessor
 # ---------------------------------------------------------------------------
@@ -131,6 +136,20 @@ class _ObsidianRenderer(mistune.HTMLRenderer):
 
     def block_math(self, text: str) -> str:
         return f"\\[{text}\\]\n"
+
+    def block_code(self, code: str, info: str = None, **attrs) -> str:
+        """Render code blocks with Pygments highlighting (Nord style)."""
+        if info:
+            try:
+                lexer = get_lexer_by_name(info)
+            except ClassNotFound:
+                lexer = TextLexer()
+        else:
+            lexer = TextLexer()
+
+        formatter = HtmlFormatter(style="nord", cssclass="highlight", nowrap=False)
+        highlighted = highlight(code, lexer, formatter)
+        return highlighted
 
 
 # ---------------------------------------------------------------------------

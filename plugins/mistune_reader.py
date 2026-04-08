@@ -147,7 +147,7 @@ class _ObsidianRenderer(mistune.HTMLRenderer):
         else:
             lexer = TextLexer()
 
-        formatter = HtmlFormatter(style="nord", cssclass="highlight", nowrap=False)
+        formatter = HtmlFormatter(style="nord", cssclass="highlight", nowrap=False, linenos="inline")
         highlighted = highlight(code, lexer, formatter)
         return highlighted
 

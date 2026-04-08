@@ -75,9 +75,10 @@
 
     /* Typography Scale — Line Height */
     --lh-heading:  1.3;
+    --lh-code:     1.35; /* From vscode */
+
     --lh-compact:  1.4;
     --lh-normal:   1.5;
-    --lh-code:     1.6;
     --lh-body:     1.7;
     --lh-prose:    1.8;
 

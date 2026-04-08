@@ -187,6 +187,7 @@ dependencies = [
     { name = "mistune" },
     { name = "pelican", extra = ["markdown"] },
     { name = "pillow" },
+    { name = "pygments" },
     { name = "python-frontmatter" },
 ]
 
@@ -202,6 +203,7 @@ requires-dist = [
     { name = "mistune", specifier = ">=3.0" },
     { name = "pelican", extras = ["markdown"], specifier = ">=4.11.0.post0" },
     { name = "pillow", specifier = ">=12.1.0" },
+    { name = "pygments", specifier = ">=2.18.0" },
     { name = "python-frontmatter", specifier = ">=1.0.0" },
 ]
 

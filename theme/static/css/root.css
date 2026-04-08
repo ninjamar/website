@@ -2,6 +2,7 @@
 @import url("./base.css");
 @import url("./layouts/layout.css");
 @import url("./utilities.css");
+@import url("./highlight.css");
 
 * {
     box-sizing: border-box;

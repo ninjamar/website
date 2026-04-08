@@ -45,17 +45,6 @@
     overflow-x: hidden;
 }
 
-.sidebar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: -1px;
-    width: 1px;
-    height: 2.5rem;
-    background: var(--accent);
-    opacity: 0.5;
-}
-
 .sidebar-top,
 .sidebar-bottom {
     flex-shrink: 0;
@@ -69,9 +58,9 @@
 
 .sidebar-year {
     font-family: var(--mono);
-    font-size: 0.72rem;
-    font-weight: 400;
-    letter-spacing: 0.05em;
+    font-size: var(--fs-micro);
+    font-weight: var(--fw-normal);
+    letter-spacing: var(--ls-ui);
     color: var(--muted);
     margin-top: var(--sp-4);
     padding-top: var(--sp-4);
@@ -83,20 +72,18 @@
    ──────────────────────────────────────────────────────────── */
 
 .logo {
-    margin-bottom: var(--sp-5);
-    padding-bottom: var(--sp-4);
-    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--sp-2);
 }
 
 .logo h1 {
     margin: 0;
     font-family: var(--mono);
-    font-size: 0.75rem;
-    font-weight: 400;
-    letter-spacing: 0.12em;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-normal);
+    letter-spacing: var(--ls-logo);
     text-transform: uppercase;
     color: var(--fg);
-    line-height: 1.5;
+    line-height: var(--lh-normal);
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -110,33 +97,31 @@
 }
 
 .nav-list li {
-    margin-bottom: var(--sp-2);
+    /*margin-bottom: var(--sp-2);*/
     position: relative;
 }
 
 .nav-list a {
     display: block;
     font-family: var(--mono);
-    font-size: 0.85rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    /*font-size: var(--fs-code);*/
+    font-weight: var(--fw-normal);
+    letter-spacing: var(--ls-normal);
     color: var(--muted);
     text-decoration: none;
     padding-left: var(--sp-4);
     position: relative;
     transition: color 0.12s ease;
 
-    /* Accent marker bar on hover/active */
+    /* Terminal prompt indicator on hover/active */
     &::before {
-        content: '';
+        content: '❯';
         position: absolute;
         left: 0;
         top: 50%;
         transform: translateY(-50%);
-        width: 2px;
-        height: 10px;
-        background: var(--accent);
-        border-radius: 1px;
+        color: var(--accent);
+        font-size: var(--fs-icon);
         opacity: 0;
         transition: opacity 0.12s ease;
     }
@@ -176,9 +161,9 @@
     padding: var(--sp-3) var(--sp-5);
 
     font-family: var(--mono);
-    font-size: 0.8rem;
-    font-weight: 400;
-    letter-spacing: 0.03em;
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-normal);
+    letter-spacing: var(--ls-ui);
     color: var(--muted);
     text-decoration: none;
 
@@ -210,7 +195,7 @@
     justify-content: center;
     align-items: flex-start;
 
-    padding: var(--sp-5) var(--sp-5);  /* 1.5rem all */
+    padding: var(--sp-5) var(--sp-5);
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -246,7 +231,7 @@
     }
 
     &:hover {
-        background: rgba(212, 135, 10, 0.05);
+        background: rgba(59, 67, 86, 0.6);
     }
 }
 
@@ -257,11 +242,11 @@
 }
 
 .entry h2 {
-    margin: 0;
+    margin: 0 0 var(--sp-1) 0;
     font-family: var(--mono);
-    font-size: 0.95rem;
-    font-weight: 400;
-    letter-spacing: 0.01em;
+    font-size: var(--fs-secondary);
+    font-weight: var(--fw-normal);
+    letter-spacing: var(--ls-heading);
     transition: color 0.15s ease;
 }
 
@@ -269,24 +254,19 @@
     color: var(--accent);
 }
 
-.entry.writing-entry .meta {
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin: 0 0 0 var(--sp-4);
-}
 
 /* ────────────────────────────────────────────────────────────
    Side Tool (equipment info, etc.)
    ──────────────────────────────────────────────────────────── */
 
 .side-tool {
-    font-weight: 300;
-    font-size: 0.72rem;
+    font-weight: var(--fw-light);
+    font-size: var(--fs-micro);
     color: var(--muted);
     border-top: 1px solid var(--border);
     padding-top: var(--sp-4);
-    line-height: 1.6;
-    letter-spacing: 0.04em;
+    line-height: var(--lh-code);
+    letter-spacing: var(--ls-ui);
 }
 
 .side-tool p {
@@ -299,73 +279,41 @@
    ──────────────────────────────────────────────────────────── */
 
 .meta {
-    color: var(--muted);
-    font-size: 0.8rem;
-    letter-spacing: 0.03em;
-    margin: var(--sp-1) 0 0;
-    font-weight: 400;
-}
-
-.article-meta {
     font-family: var(--mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-normal);
+    letter-spacing: var(--ls-ui);
     color: var(--muted);
     margin: var(--sp-1) 0 0;
-    display: flex;
-    align-items: center;
-    gap: var(--sp-2);
 }
 
 .meta-label {
     color: var(--accent);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    font-weight: 300;
+    font-size: var(--fs-micro);
+    letter-spacing: var(--ls-label);
+    font-weight: var(--fw-light);
     opacity: 0.85;
 }
 
 /* ────────────────────────────────────────────────────────────
    Article Links
    ──────────────────────────────────────────────────────────── */
-
-.article a {
-    color: inherit;
-    text-decoration: underline;
-    text-decoration-color: var(--link-under);
-    text-underline-offset: 3px;
-    transition: text-decoration-color 0.12s ease, color 0.12s ease;
-
-    &:hover {
-        text-decoration-color: var(--accent);
-        color: var(--hover);
-    }
-}
+/* Article link styles in base.css */
 
 /* ────────────────────────────────────────────────────────────
    Projects
    ──────────────────────────────────────────────────────────── */
 
-.entry > div {
-    flex: 3;
-}
-
 .entry > p {
     flex: 7;
     margin: 0;
-    font-size: 0.95rem;
-    font-weight: 300;
-    line-height: 1.7;
-}
-
-.entry h2 {
-    font-family: var(--mono);
-    font-size: 0.95rem;
-    font-weight: 400;
-    margin-bottom: 0.2rem;
+    font-size: var(--fs-secondary);
+    font-weight: var(--fw-light);
+    line-height: var(--lh-body);
 }
 
 .wrapper {
+    flex: 3;
     align-self: stretch;
     display: flex;
     flex-direction: column;
@@ -373,11 +321,11 @@
 }
 
 .wrapper .meta {
-    line-height: 1.4;
+    line-height: var(--lh-compact);
 }
 
 .wrapper .meta:first-of-type {
-    font-size: 0.8rem;
+    font-size: var(--fs-caption);
     margin-top: 0.2rem;
     margin-bottom: 0.3rem;
 }
@@ -421,8 +369,8 @@ body.mobile {
     }
 
     .logo h1 {
-        font-size: 0.65rem;
-        letter-spacing: 0.08em;
+        font-size: var(--fs-micro);
+        letter-spacing: var(--ls-label);
     }
 
     .nav-list {
@@ -446,7 +394,7 @@ body.mobile {
 
     .back-link {
         padding: var(--sp-2) var(--sp-4);
-        font-size: 0.7rem;
+        font-size: var(--fs-micro);
     }
 
     .content-inner {

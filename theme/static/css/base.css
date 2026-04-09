@@ -1,6 +1,6 @@
 /*
  * base.css
- * Design tokens, global defaults, and typography.
+ * Design tokens, global defaults, typography, and article prose styling.
  *
  * Contents:
  *  - Design tokens (:root)
@@ -9,6 +9,12 @@
  *  - Page title (h1.title)
  *  - Article prose (h2, h3, p, ul, ol, code, pre)
  *  - Article links
+ *  - Article blockquote
+ *  - Article table
+ *  - Callouts (Obsidian-style)
+ *  - Task lists
+ *  - Strikethrough (del)
+ *  - Horizontal rules
  *  - Meta / label typography
  */
 
@@ -120,7 +126,7 @@ strong, b {
 h1.title {
     font-family: var(--mono);
     font-size: var(--fs-title);
-    font-weight: var(--fw-light);
+    font-weight: var(--fw-medium);
     letter-spacing: var(--ls-normal);
     margin: 0 0 var(--sp-2) 0;
     color: var(--fg);
@@ -187,4 +193,132 @@ h1.title {
     background: none;
     padding: 0;
     border-radius: 0;
+}
+
+/* ── Article Links ──────────────────────────────────────────── */
+
+.article a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--link-under);
+    text-underline-offset: 3px;
+}
+
+.article a:hover {
+    color: var(--hover);
+    text-decoration-color: var(--accent);
+}
+
+.article a:visited {
+    color: var(--accent-dim);
+}
+
+/* ── Article Blockquote ─────────────────────────────────────── */
+
+.article blockquote {
+    border-left: 2px solid var(--accent-dim);
+    color: var(--muted);
+    background: var(--sidebar-bg);
+    padding: var(--sp-3) var(--sp-4);
+    margin: 0 0 var(--sp-4) 0;
+    border-radius: 0 2px 2px 0;
+}
+
+.article blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* ── Article Table ──────────────────────────────────────────── */
+
+.article table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: var(--sp-4);
+    font-size: var(--fs-secondary);
+}
+
+.article th,
+.article td {
+    border: 1px solid var(--border);
+    padding: var(--sp-2) var(--sp-3);
+    text-align: left;
+}
+
+.article th {
+    background: var(--sidebar-bg);
+    color: var(--fg);
+    font-weight: var(--fw-medium);
+}
+
+.article tr:nth-child(even) td {
+    background: rgba(44, 50, 64, 0.4);
+}
+
+/* ── Callouts (Obsidian-style) ──────────────────────────────── */
+
+.callout {
+    border-left: 2px solid var(--border);
+    background: var(--sidebar-bg);
+    padding: var(--sp-3) var(--sp-4);
+    margin-bottom: var(--sp-4);
+    border-radius: 0 2px 2px 0;
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+.callout-title {
+    display: block;
+    font-weight: var(--fw-medium);
+    color: var(--fg);
+    margin-bottom: var(--sp-2);
+}
+
+.callout-note                        { border-left-color: var(--accent); }
+.callout-note .callout-title         { color: var(--accent); }
+
+.callout-tip, .callout-success       { border-left-color: var(--green); }
+.callout-tip .callout-title,
+.callout-success .callout-title      { color: var(--green); }
+
+.callout-warning, .callout-caution   { border-left-color: var(--yellow); }
+.callout-warning .callout-title,
+.callout-caution .callout-title      { color: var(--yellow); }
+
+.callout-danger, .callout-error      { border-left-color: var(--red); }
+.callout-danger .callout-title,
+.callout-error .callout-title        { color: var(--red); }
+
+.callout-info, .callout-question     { border-left-color: var(--purple); }
+.callout-info .callout-title,
+.callout-question .callout-title     { color: var(--purple); }
+
+/* ── Task Lists ─────────────────────────────────────────────── */
+
+.article .task-list-item {
+    list-style: none;
+    margin-left: calc(-1 * var(--sp-5));
+    padding-left: var(--sp-5);
+}
+
+.article .task-list-item-checkbox {
+    accent-color: var(--accent);
+    margin-right: var(--sp-2);
+    cursor: default;
+}
+
+/* ── Strikethrough ──────────────────────────────────────────── */
+
+.article del {
+    color: var(--muted);
+    text-decoration-color: var(--red);
+}
+
+/* ── Horizontal Rule (prose) ────────────────────────────────── */
+
+.article hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: var(--sp-5) 0;
 }

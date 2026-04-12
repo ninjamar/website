@@ -22,22 +22,22 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wdth,wght@0,75..100,100..700;1,75..100,100..700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Fira+Code:wght@300..700&display=swap');
 
 :root {
-    /* Colors — Nord iTerm2 palette (exact hex from com.googlecode.iterm2) */
-    --bg:         #222630;
-    --sidebar-bg: #2c3240;
-    --fg:         #cfd5e3;
-    --muted:      #606878;
-    --border:     #3b4356;
-    --hover:      #e7eaf1;
-    --accent:     #76b3c5;
-    --accent-dim: #6e8fb3;
-    --link-under: #3b4356;
+    /* Colors — Gruvbox (medium contrast) */
+    --bg:         #282828;
+    --sidebar-bg: #3c3836;
+    --fg:         #fbf1c7;
+    --muted:      #bdae93;
+    --border:     #504945;
+    --hover:      #d5c4a1;
+    --accent:     #689d6a;
+    --accent-dim: #458588;
+    --link-under: #665c54;
 
-    /* Aurora colors for syntax/accents */
-    --red:        #af4b57;
-    --green:      #92b279;
-    --yellow:     #e5c078;
-    --purple:     #a3799d;
+    /* Gruvbox palette */
+    --red:        #cc241d;
+    --green:      #98971a;
+    --yellow:     #d79921;
+    --purple:     #b16286;
 
     /* Font stacks — Fira Code for terminal feel */
     --sans: "IBM Plex Sans", system-ui, sans-serif;
@@ -181,7 +181,7 @@ h1.title {
     font-family: var(--code);
     font-size: var(--fs-code);
     font-weight: var(--fw-normal);
-    border-left: 2px solid var(--accent-dim);
+    border-left: 2px solid var(--border);
     border-radius: 0 2px 2px 0;
     padding: var(--sp-4);
     overflow-x: auto;

@@ -17,8 +17,11 @@ sync-html: sync html
 devserver:
     {{pelican}} -lr {{input}} -o {{dist}} -s {{conf}}
 
-publish:
+publish: clean-all sync
     {{pelican}} {{input}} -o {{dist}} -s {{pubconf}}
+
+deploy: publish
+    pnpm exec wrangler pages deploy {{ dist }}
 
 clean:
     rm -rf {{dist}}

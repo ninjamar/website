@@ -327,3 +327,4 @@ ignore/
 .playwright-mcp/
 .wrangler
 vault.toml
+.DS_Store

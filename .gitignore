@@ -325,3 +325,4 @@ vault.cfg
 .pnpm-store
 ignore/
 .playwright-mcp/
+.wrangler

@@ -23,7 +23,7 @@
         {% if p.slug != "index" and p.photo_dir %}
             {% set photo = photos_from_dir(p.photo_dir)[0] %}
             <div class="photo-container">
-                <a class="lane-photo" href="{{ p.url }}">
+                <a class="lane-photo" href="/{{ p.url }}">
                     <img src="{{ photo.thumb_url }}" loading="lazy">
                 </a>
                 <div class="photo-overlay"><h2>{{ p.title }}</h2></div>

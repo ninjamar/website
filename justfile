@@ -21,7 +21,7 @@ publish: clean-all sync
     {{pelican}} {{input}} -o {{dist}} -s {{pubconf}}
 
 deploy: publish
-    pnpm exec wrangler pages deploy {{ dist }}
+    pnpm exec wrangler pages deploy {{dist}}
 
 clean:
     rm -rf {{dist}}

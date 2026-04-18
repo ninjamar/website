@@ -326,3 +326,4 @@ vault.cfg
 ignore/
 .playwright-mcp/
 .wrangler
+vault.toml

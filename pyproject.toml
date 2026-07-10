@@ -5,7 +5,7 @@ requires-python = ">=3.14"
 dependencies = [
     "pelican[markdown]>=4.11.0.post0",
     "pillow>=12.1.0",
-    "mistune>=3.0",
+    "mistune>=3.3.0",
     "python-frontmatter>=1.0.0",
     "pygments>=2.18.0",
 ]

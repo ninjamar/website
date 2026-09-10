@@ -6,6 +6,9 @@ dist    := "dist"
 conf    := "pelicanconf.py"
 pubconf := "publishconf.py"
 
+default:
+    @just --list
+
 sync:
     {{py}} sync_vault.py
 
